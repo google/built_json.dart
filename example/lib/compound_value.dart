@@ -4,37 +4,43 @@
 
 library compound_value;
 
+import 'package:built_json/built_json.dart';
 import 'package:built_value/built_value.dart';
-
-import 'value.dart';
+import 'package:example/value.dart';
+import 'package:example/test_enum.dart';
 
 part 'compound_value.g.dart';
 
-/// Example of how to use built_value.
+/// Example of how to use built_json.
 ///
-/// The value class must implement [Built]. It must be abstract, and have
-/// fields declared as abstract getters. Finally, it must have a particular
-/// constructor and factory, as shown here.
+/// Declare a top level [BuiltJsonSerializers] field called
+/// builtJsonSerializers. The built_json code generator will provide the
+/// implementation. You usually only need to do this once per project.
+BuiltJsonSerializers builtJsonSerializers = _$builtJsonSerializers;
+
+/// Example built_value type.
 abstract class CompoundValue
     implements Built<CompoundValue, CompoundValueBuilder> {
-  Value get value;
+  /// Example of how to make a built_value type serializable.
+  ///
+  /// Declare a static final [BuiltJsonSerializer] field called `serializer`.
+  /// The built_json code generator will provide the implementation. You need to
+  /// do this for every type you want to serialize.
+  static final BuiltJsonSerializer<CompoundValue> serializer =
+      _$compoundValueSerializer;
+
+  Value get aValue;
+  TestEnum get aTestEnum;
 
   CompoundValue._();
   factory CompoundValue([updates(CompoundValueBuilder b)]) = _$CompoundValue;
 }
 
-/// The builder class must implement [Builder]. It must be abstract, and have
-/// fields declared as normal public fields. Finally, it must have a particular
-/// constructor and factory, as shown here.
-///
-/// Defaults can be specified by assigning them to fields here.
-///
-/// Validation can be done by overriding the [build] method.
+/// Builder class for [CompoundValue].
 abstract class CompoundValueBuilder
     implements Builder<CompoundValue, CompoundValueBuilder> {
-  ValueBuilder value = new ValueBuilder()
-    ..anInt = 0
-    ..aString = '1';
+  ValueBuilder aValue = new ValueBuilder();
+  TestEnum aTestEnum;
 
   CompoundValueBuilder._();
   factory CompoundValueBuilder() = _$CompoundValueBuilder;

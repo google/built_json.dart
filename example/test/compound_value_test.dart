@@ -3,18 +3,44 @@
 // license that can be found in the LICENSE file.
 
 import 'package:example/compound_value.dart';
+import 'package:example/test_enum.dart' hide builtJsonSerializers;
 import 'package:test/test.dart';
 
 void main() {
-  group('compound value', () {
-    test('can be instantiated', () {
-      new CompoundValue();
+  group('Value', () {
+    test('can be serialized', () {
+      final compoundValue = new CompoundValue((b) => b
+        ..aValue.anInt = 1
+        ..aValue.aString = 'two'
+        ..aValue.anObject = 3
+        ..aTestEnum = TestEnum.no);
+
+      // TODO(davidmorgan): distinguish value of expected type from class with one field.
+      expect(builtJsonSerializers.serialize(compoundValue), {
+        'CompoundValue': {
+          'aValue': {
+            'anInt': 1,
+            'aString': 'two',
+            'anObject': {'int': 3},
+            'aDefaultInt': 7,
+            'listOfInt': {'List<int>': []},
+          },
+          'aTestEnum': 'no'
+        }
+      });
     });
 
-    test('allows nested updates', () {
-      expect(new CompoundValue((b) => b.value
-        ..anInt = 1
-        ..anObject = 2).value.anInt, 1);
+    test('can be deserialized', () {
+      final compoundValue = new CompoundValue((b) => b
+        ..aValue.anInt = 1
+        ..aValue.aString = 'two'
+        ..aValue.anObject = 3
+        ..aTestEnum = TestEnum.no);
+
+      expect(
+          builtJsonSerializers
+              .deserialize(builtJsonSerializers.serialize(compoundValue)),
+          compoundValue);
     });
   });
 }

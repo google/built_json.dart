@@ -5,16 +5,26 @@
 library value;
 
 import 'package:built_collection/built_collection.dart';
+import 'package:built_json/built_json.dart';
 import 'package:built_value/built_value.dart';
 
 part 'value.g.dart';
 
-/// Example of how to use built_value.
+/// Example of how to use built_json.
 ///
-/// The value class must implement [Built]. It must be abstract, and have
-/// fields declared as abstract getters. Finally, it must have a particular
-/// constructor and factory, as shown here.
+/// Declare a top level [BuiltJsonSerializers] field called
+/// builtJsonSerializers. The built_json code generator will provide the
+/// implementation. You usually only need to do this once per project.
+BuiltJsonSerializers builtJsonSerializers = _$builtJsonSerializers;
+
+/// Example built_value type.
 abstract class Value implements Built<Value, ValueBuilder> {
+  /// Example of how to make a built_value type serializable.
+  ///
+  /// Declare a static final [BuiltJsonSerializer] field called `serializer`.
+  /// The built_json code generator will provide the implementation. You need to
+  /// do this for every type you want to serialize.
+  static final BuiltJsonSerializer<Value> serializer = _$valueSerializer;
   static final int youCanHaveStaticFields = 3;
 
   int get anInt;
@@ -29,13 +39,7 @@ abstract class Value implements Built<Value, ValueBuilder> {
   factory Value([updates(ValueBuilder b)]) = _$Value;
 }
 
-/// The builder class must implement [Builder]. It must be abstract, and have
-/// fields declared as normal public fields. Finally, it must have a particular
-/// constructor and factory, as shown here.
-///
-/// Defaults can be specified by assigning them to fields here.
-///
-/// Validation can be done by overriding the [build] method.
+/// Builder class for [Value].
 abstract class ValueBuilder implements Builder<Value, ValueBuilder> {
   int anInt;
   String aString;
@@ -51,3 +55,4 @@ abstract class ValueBuilder implements Builder<Value, ValueBuilder> {
     aDefaultInt = value;
   }
 }
+

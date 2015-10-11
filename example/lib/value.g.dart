@@ -1,7 +1,51 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// 2015-10-10T22:34:42.541Z
+// 2015-11-08T12:39:28.012Z
 
 part of value;
+
+// **************************************************************************
+// Generator: BuiltJsonGenerator
+// Target: library value
+// **************************************************************************
+
+BuiltJsonSerializers _$builtJsonSerializers = new BuiltJsonSerializers()
+  ..add(new _$ValueSerializer());
+BuiltJsonSerializer<Value> _$valueSerializer = new _$ValueSerializer();
+
+class _$ValueSerializer implements BuiltJsonSerializer<Value> {
+  final Type type = _$Value;
+  final String typeName = 'Value';
+  Object serialize(BuiltJsonSerializers builtJsonSerializers, Value object,
+      {String expectedType}) {
+    return {
+      'anInt':
+          builtJsonSerializers.serialize(object.anInt, expectedType: 'int'),
+      'aString': builtJsonSerializers.serialize(object.aString,
+          expectedType: 'String'),
+      'anObject': builtJsonSerializers.serialize(object.anObject,
+          expectedType: 'Object'),
+      'aDefaultInt': builtJsonSerializers.serialize(object.aDefaultInt,
+          expectedType: 'int'),
+      'listOfInt': builtJsonSerializers.serialize(object.listOfInt,
+          expectedType: 'BuiltList<int>'),
+    };
+  }
+
+  Value deserialize(BuiltJsonSerializers builtJsonSerializers, Object object,
+      {String expectedType}) {
+    return new Value((b) => b
+      ..anInt =
+          builtJsonSerializers.deserialize(object['anInt'], expectedType: 'int')
+      ..aString = builtJsonSerializers.deserialize(object['aString'],
+          expectedType: 'String')
+      ..anObject = builtJsonSerializers.deserialize(object['anObject'],
+          expectedType: 'Object')
+      ..aDefaultInt = builtJsonSerializers.deserialize(object['aDefaultInt'],
+          expectedType: 'int')
+      ..listOfInt.replace(builtJsonSerializers.deserialize(object['listOfInt'],
+          expectedType: 'BuiltList<int>')));
+  }
+}
 
 // **************************************************************************
 // Generator: BuiltValueGenerator
@@ -91,7 +135,7 @@ class _$ValueBuilder extends ValueBuilder {
     super.aString = other.aString;
     super.anObject = other.anObject;
     super.aDefaultInt = other.aDefaultInt;
-    super.listOfInt = other.listOfInt.toBuilder();
+    super.listOfInt = other.listOfInt?.toBuilder();
   }
 
   void update(updates(ValueBuilder b)) {
@@ -103,5 +147,5 @@ class _$ValueBuilder extends ValueBuilder {
       aString: aString,
       anObject: anObject,
       aDefaultInt: aDefaultInt,
-      listOfInt: listOfInt.build());
+      listOfInt: listOfInt?.build());
 }
