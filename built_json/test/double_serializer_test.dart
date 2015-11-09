@@ -6,35 +6,35 @@ import 'package:built_json/built_json.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final serializer = new BuiltJsonSerializers();
+  final serializers = new Serializers();
 
-  group('double', () {
+  group('double with known genericType', () {
+    final data = 3.141592653589793;
+    final serialized = '3.141592653589793';
+    final genericType = const GenericType(double);
+
     test('can be serialized', () {
-      expect(serializer.serialize(3.0), {'double': '3.0'});
+      expect(serializers.serialize(data, genericType: genericType), serialized);
     });
 
     test('can be deserialized', () {
-      expect(serializer.deserialize(serializer.serialize(3.0)), 3.0);
+      expect(
+          serializers.deserialize(serialized, genericType: genericType), data);
     });
   });
 
-  group('int', () {
+  group('double with unknown genericType', () {
+    final data = 3.141592653589793;
+    final serialized = ['double', '3.141592653589793'];
+    final genericType = const GenericType();
+
     test('can be serialized', () {
-      expect(serializer.serialize(3), {'int': 3});
+      expect(serializers.serialize(data, genericType: genericType), serialized);
     });
 
     test('can be deserialized', () {
-      expect(serializer.deserialize(serializer.serialize(3)), 3);
-    });
-  });
-
-  group('String', () {
-    test('can be serialized', () {
-      expect(serializer.serialize('hello'), {'String': 'hello'});
-    });
-
-    test('can be deserialized', () {
-      expect(serializer.deserialize(serializer.serialize('hello')), 'hello');
+      expect(
+          serializers.deserialize(serialized, genericType: genericType), data);
     });
   });
 }

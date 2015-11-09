@@ -5,36 +5,42 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_json/built_json.dart';
 
-class BuiltMapSerializer implements BuiltJsonSerializer<BuiltMap> {
-  final Type type = BuiltMap;
-  final String typeName = 'Map';
+class BuiltMapSerializer implements Serializer<BuiltMap> {
+  final bool structured = true;
+  final Iterable<Type> types = new BuiltList<Type>([BuiltMap]);
+  final String wireName = 'map';
 
-  Object serialize(BuiltJsonSerializers builtJsonSerializers, BuiltMap object,
-      {String expectedType}) {
-    final expectedKeyType =
-        expectedType.substring(0, expectedType.indexOf(', '));
-    final expectedValueType =
-        expectedType.substring(expectedType.indexOf(', ') + 2);
+  @override
+  Object serialize(Serializers serializers, BuiltMap object,
+      {GenericType genericType: const GenericType()}) {
+    final keyTypes = genericType.leaves.isEmpty
+        ? const GenericType()
+        : genericType.leaves[0];
+    final valueTypes = genericType.leaves.isEmpty
+        ? const GenericType()
+        : genericType.leaves[1];
 
     final result = <Object>[];
     for (final key in object.keys) {
-      result.add(
-          builtJsonSerializers.serialize(key, expectedType: expectedKeyType));
+      result.add(serializers.serialize(key, genericType: keyTypes));
       final value = object[key];
-      result.add(builtJsonSerializers.serialize(value,
-          expectedType: expectedValueType));
+      result.add(serializers.serialize(value, genericType: valueTypes));
     }
     return result;
   }
 
-  BuiltMap deserialize(BuiltJsonSerializers builtJsonSerializers, Object object,
-      {String expectedType}) {
-    final expectedKeyType =
-        expectedType.substring(0, expectedType.indexOf(', '));
-    final expectedValueType =
-        expectedType.substring(expectedType.indexOf(', ') + 2);
+  @override
+  BuiltMap deserialize(Serializers serializers, Object object,
+      {GenericType genericType: const GenericType()}) {
+    final keyTypes = genericType.leaves.isEmpty
+        ? const GenericType()
+        : genericType.leaves[0];
+    final valueTypes = genericType.leaves.isEmpty
+        ? const GenericType()
+        : genericType.leaves[1];
 
-    final result = new MapBuilder<Object, Object>();
+    final result = serializers.newBuilder(genericType) as MapBuilder ??
+        new MapBuilder<Object, Object>();
     final list = object as List<Object>;
 
     if (list.length & 1 == 1) {
@@ -42,10 +48,9 @@ class BuiltMapSerializer implements BuiltJsonSerializer<BuiltMap> {
     }
 
     for (int i = 0; i != list.length; i += 2) {
-      final key = builtJsonSerializers.deserialize(list[i],
-          expectedType: expectedKeyType);
-      final value = builtJsonSerializers.deserialize(list[i + 1],
-          expectedType: expectedValueType);
+      final key = serializers.deserialize(list[i], genericType: keyTypes);
+      final value =
+          serializers.deserialize(list[i + 1], genericType: valueTypes);
       result[key] = value;
     }
 

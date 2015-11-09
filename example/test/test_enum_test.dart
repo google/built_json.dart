@@ -8,13 +8,11 @@ import 'package:test/test.dart';
 void main() {
   group('TestEnum', () {
     test('can be serialized', () {
-      expect(builtJsonSerializers.serialize(TestEnum.yes), {'TestEnum': 'yes'});
+      expect(serializers.serialize(TestEnum.yes), ['TestEnum', 'yes']);
     });
 
     test('can be deserialized', () {
-      expect(
-          builtJsonSerializers
-              .deserialize(builtJsonSerializers.serialize(TestEnum.maybe)),
+      expect(serializers.deserialize(serializers.serialize(TestEnum.maybe)),
           TestEnum.maybe);
     });
   });

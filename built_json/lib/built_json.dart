@@ -5,6 +5,7 @@
 library built_json;
 
 import 'src/bool_serializer.dart';
+import 'src/built_json_serializers.dart';
 import 'src/built_list_serializer.dart';
 import 'src/built_map_serializer.dart';
 import 'src/built_set_serializer.dart';
@@ -12,121 +13,115 @@ import 'src/double_serializer.dart';
 import 'src/int_serializer.dart';
 import 'src/string_serializer.dart';
 
-/// Serializes a single class.
+export 'package:built_collection/built_collection.dart' show BuiltList;
+
+/// Serializes all known classes.
 ///
 /// See <https://github.com/google/built_json.dart/tree/master/example>
-abstract class BuiltJsonSerializer<T> {
-  Type get type;
-  String get typeName;
+abstract class Serializers {
+  /// Default [Serializers] that can serialize primitives and collections.
+  ///
+  /// Use [toBuilder] to add more serializers.
+  factory Serializers() {
+    return (new SerializersBuilder()
+      ..add(new BoolSerializer())
+      ..add(new BuiltListSerializer())
+      ..add(new BuiltMapSerializer())
+      ..add(new BuiltSetSerializer())
+      ..add(new DoubleSerializer())
+      ..add(new IntSerializer())
+      ..add(new StringSerializer())).build();
+  }
 
-  Object serialize(BuiltJsonSerializers builtJsonSerializers, T object,
-      {String expectedType});
-  T deserialize(BuiltJsonSerializers builtJsonSerializers, Object object,
-      {String expectedType});
+  /// Serializes [object].
+  ///
+  /// A [Serializer] must have been provided for every the object uses.
+  ///
+  /// Types that are known statically can be provided via [genericType]. This
+  /// will reduce the amount of data needed on the wire. The exact same
+  /// [genericType] will be needed to deserialize.
+  ///
+  /// Create one using [SerializersBuilder].
+  Object serialize(Object object,
+      {GenericType genericType: const GenericType()});
+
+  /// Deserializes [serialized].
+  ///
+  /// A [Serializer] must have been provided for every the object uses.
+  ///
+  /// If [serialized] was produced by calling [serialize] with [genericType],
+  /// the exact same [genericType] must be provided to deserialize.
+  Object deserialize(Object serialized,
+      {GenericType genericType: const GenericType()});
+
+  /// Creates a new builder for the type represented by [genericType].
+  ///
+  /// For example, if [genericType] is `BuiltList<int, String>`, returns a
+  /// `ListBuilder<int, String>`. This helps serializers to instantiate with
+  /// correct generic type parameters.
+  ///
+  /// May return null if no matching builder factory has been added. In this
+  /// case the serializer should fall back to `Object`.
+  Object newBuilder(GenericType genericType);
+
+  SerializersBuilder toBuilder();
 }
 
-/// Serializes all transitive dependencies of a class.
+/// Builder for [Serializers].
+abstract class SerializersBuilder {
+  factory SerializersBuilder() = BuiltJsonSerializersBuilder;
+
+  void add(Serializer serializer);
+
+  void addBuilderFactory(GenericType genericType, Function function);
+
+  Serializers build();
+}
+
+/// A tree of [Type] instances.
+class GenericType {
+  /// The root of the type.
+  final Type root;
+
+  /// Type parameters of the type.
+  final List<GenericType> leaves;
+
+  const GenericType([this.root = Object, this.leaves = const []]);
+
+  bool get isObject => root == Object;
+}
+
+/// Serializes a single type.
 ///
-/// See <https://github.com/google/built_json.dart/tree/master/example>
-// TODO(davidmorgan): make immutable.
-class BuiltJsonSerializers {
-  Map<String, String> _deobfuscatedNames = <String, String>{};
-  Map<String, BuiltJsonSerializer> _serializersByName =
-      <String, BuiltJsonSerializer>{};
+/// You should not usually need to implement this interface. Implementations
+/// are provided for collections and primitives in `built_json`. Classes using
+/// `built_value` and enums using `EnumClass` can have implementations
+/// generated using `built_json_generator`.
+abstract class Serializer<T> {
+  /// Whether the serialized format for this type is structured or primitive.
+  bool get structured;
 
-  BuiltJsonSerializers() {
-    add(new BoolSerializer());
-    add(new DoubleSerializer());
-    add(new IntSerializer());
-    add(new StringSerializer());
+  /// The [Type]s that can be serialized.
+  ///
+  /// They must all be equal to T or subclasses of T.
+  Iterable<Type> get types;
 
-    add(new BuiltListSerializer());
-    add(new BuiltMapSerializer());
-    add(new BuiltSetSerializer());
-  }
+  /// The wire name of the serializable type. For most classes, the class name.
+  /// For primitives and collections a lower-case name is defined as part of
+  /// the `built_json` wire format.
+  String get wireName;
 
-  void addAll(BuiltJsonSerializers builtJsonSerializers) {
-    for (final serializer in builtJsonSerializers._serializersByName.values) {
-      add(serializer);
-    }
-  }
+  /// Serializes [object].
+  ///
+  /// Use [serializers] as needed for nested serialization. Information about
+  /// the type being serialized is provided in [genericType].
+  Object serialize(Serializers serializers, T object,
+      {GenericType genericType: const GenericType()});
 
-  void add(BuiltJsonSerializer builtJsonSerializer) {
-    _deobfuscatedNames[_getName(builtJsonSerializer.type)] =
-        builtJsonSerializer.typeName;
-    _serializersByName[builtJsonSerializer.typeName] = builtJsonSerializer;
-  }
-
-  Object serialize(Object object, {String expectedType}) {
-    final rawName = _deobfuscatedNames[_getName(object.runtimeType)];
-    if (rawName == null) throw new StateError(
-        "No serializer for '${object.runtimeType}'.");
-
-    var genericType = _getGenericName(object.runtimeType);
-
-    // TODO(davidmorgan): handle this generically.
-    if (genericType == 'BuiltList<int>') {
-      genericType = 'List<int>';
-    }
-    if (genericType == 'BuiltSet<int>') {
-      genericType = 'Set<int>';
-    }
-
-    final genericName =
-        genericType == null ? rawName : '$rawName<$genericType>';
-
-    if (genericName == expectedType) {
-      return _serializersByName[rawName]
-          .serialize(this, object, expectedType: genericType);
-    } else {
-      return <String, Object>{
-        genericName: _serializersByName[rawName]
-            .serialize(this, object, expectedType: genericType)
-      };
-    }
-  }
-
-  Object deserialize(Object object, {String expectedType}) {
-    if (object is Map) {
-      if (object.keys.length > 1) {
-        // Must be expectedType.
-        // TODO(davidmorgan): distinguish in the one field case.
-        if (expectedType == null) {
-          throw new StateError('Need an expected type here.');
-        }
-        final typeName = _makeRaw(expectedType);
-        final genericName = _getGeneric(expectedType);
-        return _serializersByName[typeName]
-            .deserialize(this, object, expectedType: genericName);
-      } else {
-        final typeName = _makeRaw(object.keys.single);
-        final genericName = _getGeneric(object.keys.single);
-        return _serializersByName[typeName]
-            .deserialize(this, object.values.single, expectedType: genericName);
-      }
-    } else {
-      final serializer = _serializersByName[_makeRaw(expectedType)];
-      if (serializer == null) {
-        throw new StateError('No serializer for $expectedType');
-      }
-      return serializer.deserialize(this, object,
-          expectedType: _getGeneric(expectedType));
-    }
-  }
-
-  String _getName(Type type) => _makeRaw(type.toString());
-
-  String _makeRaw(String name) {
-    final genericsStart = name.indexOf('<');
-    return genericsStart == -1 ? name : name.substring(0, genericsStart);
-  }
-
-  String _getGenericName(Type type) => _getGeneric(type.toString());
-
-  String _getGeneric(String name) {
-    final genericsStart = name.indexOf('<');
-    return genericsStart == -1
-        ? null
-        : name.substring(genericsStart + 1, name.length - 1);
-  }
+  /// Deserializes [serialized].
+  ///
+  /// Use [serializers] as needed for nested deserialization. Information about
+  /// the type being deserialized is provided in [genericType].
+  T deserialize(Serializers serializers, Object serialized,
+      {GenericType genericType: const GenericType()});
 }

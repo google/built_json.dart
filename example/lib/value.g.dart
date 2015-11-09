@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// 2015-11-08T12:39:28.012Z
+// 2015-12-08T16:15:17.773Z
 
 part of value;
 
@@ -8,42 +8,82 @@ part of value;
 // Target: library value
 // **************************************************************************
 
-BuiltJsonSerializers _$builtJsonSerializers = new BuiltJsonSerializers()
-  ..add(new _$ValueSerializer());
-BuiltJsonSerializer<Value> _$valueSerializer = new _$ValueSerializer();
+Serializers _$serializers = (new Serializers().toBuilder()
+  ..add(TestEnum.serializer)
+  ..add(CompoundValue.serializer)
+  ..add(Value.serializer)).build();
+Serializer<Value> _$valueSerializer = new _$ValueSerializer();
 
-class _$ValueSerializer implements BuiltJsonSerializer<Value> {
-  final Type type = _$Value;
-  final String typeName = 'Value';
-  Object serialize(BuiltJsonSerializers builtJsonSerializers, Value object,
-      {String expectedType}) {
-    return {
-      'anInt':
-          builtJsonSerializers.serialize(object.anInt, expectedType: 'int'),
-      'aString': builtJsonSerializers.serialize(object.aString,
-          expectedType: 'String'),
-      'anObject': builtJsonSerializers.serialize(object.anObject,
-          expectedType: 'Object'),
-      'aDefaultInt': builtJsonSerializers.serialize(object.aDefaultInt,
-          expectedType: 'int'),
-      'listOfInt': builtJsonSerializers.serialize(object.listOfInt,
-          expectedType: 'BuiltList<int>'),
-    };
+class _$ValueSerializer implements Serializer<Value> {
+  final bool structured = true;
+  final Iterable<Type> types = new BuiltList<Type>([Value, _$Value]);
+  final String wireName = 'Value';
+
+  @override
+  Object serialize(Serializers serializers, Value object,
+      {GenericType genericType: const GenericType()}) {
+    return [
+      'anInt',
+      serializers.serialize(object.anInt, genericType: const GenericType(int)),
+      'aString',
+      serializers.serialize(object.aString,
+          genericType: const GenericType(String)),
+      'anObject',
+      serializers.serialize(object.anObject,
+          genericType: const GenericType(Object)),
+      'aDefaultInt',
+      serializers.serialize(object.aDefaultInt,
+          genericType: const GenericType(int)),
+      'listOfInt',
+      serializers.serialize(object.listOfInt,
+          genericType:
+              const GenericType(BuiltList, const [const GenericType(int)])),
+    ];
   }
 
-  Value deserialize(BuiltJsonSerializers builtJsonSerializers, Object object,
-      {String expectedType}) {
-    return new Value((b) => b
-      ..anInt =
-          builtJsonSerializers.deserialize(object['anInt'], expectedType: 'int')
-      ..aString = builtJsonSerializers.deserialize(object['aString'],
-          expectedType: 'String')
-      ..anObject = builtJsonSerializers.deserialize(object['anObject'],
-          expectedType: 'Object')
-      ..aDefaultInt = builtJsonSerializers.deserialize(object['aDefaultInt'],
-          expectedType: 'int')
-      ..listOfInt.replace(builtJsonSerializers.deserialize(object['listOfInt'],
-          expectedType: 'BuiltList<int>')));
+  @override
+  Value deserialize(Serializers serializers, Object object,
+      {GenericType genericType: const GenericType()}) {
+    final result = new ValueBuilder();
+
+    var key;
+    var value;
+    var expectingKey = true;
+    for (final item in object as List) {
+      if (expectingKey) {
+        key = item;
+        expectingKey = false;
+      } else {
+        value = item;
+        expectingKey = true;
+
+        switch (key as String) {
+          case 'anInt':
+            result.anInt = serializers.deserialize(value,
+                genericType: const GenericType(int));
+            break;
+          case 'aString':
+            result.aString = serializers.deserialize(value,
+                genericType: const GenericType(String));
+            break;
+          case 'anObject':
+            result.anObject = serializers.deserialize(value,
+                genericType: const GenericType(Object));
+            break;
+          case 'aDefaultInt':
+            result.aDefaultInt = serializers.deserialize(value,
+                genericType: const GenericType(int));
+            break;
+          case 'listOfInt':
+            result.listOfInt.replace(serializers.deserialize(value,
+                genericType: const GenericType(
+                    BuiltList, const [const GenericType(int)])));
+            break;
+        }
+      }
+    }
+
+    return result.build();
   }
 }
 

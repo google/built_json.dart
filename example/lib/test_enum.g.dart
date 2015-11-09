@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// 2015-11-08T11:58:53.606Z
+// 2015-12-08T16:15:17.703Z
 
 part of test_enum;
 
@@ -8,20 +8,23 @@ part of test_enum;
 // Target: library test_enum
 // **************************************************************************
 
-BuiltJsonSerializers _$builtJsonSerializers = new BuiltJsonSerializers()
-  ..add(new _$TestEnumSerializer());
-BuiltJsonSerializer<TestEnum> _$testEnumSerializer = new _$TestEnumSerializer();
+Serializers _$serializers = (new Serializers().toBuilder()
+  ..add(TestEnum.serializer)
+  ..add(Value.serializer)
+  ..add(CompoundValue.serializer)).build();
+Serializer<TestEnum> _$testEnumSerializer = new _$TestEnumSerializer();
 
-class _$TestEnumSerializer implements BuiltJsonSerializer<TestEnum> {
-  final Type type = TestEnum;
-  final String typeName = 'TestEnum';
-  Object serialize(BuiltJsonSerializers builtJsonSerializers, TestEnum object,
-      {String expectedType}) {
+class _$TestEnumSerializer implements Serializer<TestEnum> {
+  final bool structured = false;
+  final Iterable<Type> types = new BuiltList<Type>([TestEnum]);
+  final String wireName = 'TestEnum';
+  @override Object serialize(Serializers serializers, TestEnum object,
+      {GenericType genericType: const GenericType()}) {
     return object.name;
   }
 
-  TestEnum deserialize(BuiltJsonSerializers builtJsonSerializers, Object object,
-      {String expectedType}) {
+  @override TestEnum deserialize(Serializers serializers, Object object,
+      {GenericType genericType: const GenericType()}) {
     return TestEnum.valueOf(object);
   }
 }

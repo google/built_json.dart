@@ -5,21 +5,33 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_json/built_json.dart';
 
-class BuiltSetSerializer implements BuiltJsonSerializer<BuiltSet> {
-  final Type type = BuiltSet;
-  final String typeName = 'Set';
+class BuiltSetSerializer implements Serializer<BuiltSet> {
+  final bool structured = true;
+  final Iterable<Type> types = new BuiltList<Type>([BuiltSet]);
+  final String wireName = 'set';
 
-  Object serialize(BuiltJsonSerializers builtJsonSerializers, BuiltSet object,
-      {String expectedType}) {
-    return object
-        .map((item) =>
-            builtJsonSerializers.serialize(item, expectedType: expectedType))
-        .toList();
+  @override
+  Object serialize(Serializers serializers, BuiltSet object,
+      {GenericType genericType: const GenericType()}) {
+    final valueGenericType = genericType.leaves.isEmpty
+        ? const GenericType()
+        : genericType.leaves[0];
+
+    return object.map(
+        (item) => serializers.serialize(item, genericType: valueGenericType));
   }
 
-  BuiltSet deserialize(BuiltJsonSerializers builtJsonSerializers, Object object,
-      {String expectedType}) {
-    return new BuiltSet<Object>((object as Iterable).map((item) =>
-        builtJsonSerializers.deserialize(item, expectedType: expectedType)));
+  @override
+  BuiltSet deserialize(Serializers serializers, Object object,
+      {GenericType genericType: const GenericType()}) {
+    final valueGenericType = genericType.leaves.isEmpty
+        ? const GenericType()
+        : genericType.leaves[0];
+
+    final result = serializers.newBuilder(genericType) as SetBuilder ??
+        new SetBuilder<Object>();
+    result.addAll((object as Iterable).map((item) =>
+        serializers.deserialize(item, genericType: valueGenericType)));
+    return result.build();
   }
 }

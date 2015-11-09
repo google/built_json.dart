@@ -2,19 +2,23 @@
 // All rights reserved. Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+import 'package:built_collection/built_collection.dart';
 import 'package:built_json/built_json.dart';
 
-class IntSerializer implements BuiltJsonSerializer<int> {
-  final Type type = int;
-  final String typeName = 'int';
+class IntSerializer implements Serializer<int> {
+  final bool structured = false;
+  final Iterable<Type> types = new BuiltList<Type>([int]);
+  final String wireName = 'int';
 
-  Object serialize(BuiltJsonSerializers builtJsonSerializers, int object,
-      {String expectedType}) {
+  @override
+  Object serialize(Serializers serializers, int object,
+      {GenericType genericType: const GenericType()}) {
     return object;
   }
 
-  int deserialize(BuiltJsonSerializers builtJsonSerializers, Object object,
-      {String expectedType}) {
+  @override
+  int deserialize(Serializers serializers, Object object,
+      {GenericType genericType: const GenericType()}) {
     return object as int;
   }
 }

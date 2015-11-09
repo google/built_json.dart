@@ -7,24 +7,26 @@ library value;
 import 'package:built_collection/built_collection.dart';
 import 'package:built_json/built_json.dart';
 import 'package:built_value/built_value.dart';
+import 'package:example/compound_value.dart';
+import 'package:example/test_enum.dart';
 
 part 'value.g.dart';
 
 /// Example of how to use built_json.
 ///
-/// Declare a top level [BuiltJsonSerializers] field called
-/// builtJsonSerializers. The built_json code generator will provide the
+/// Declare a top level [Serializers] field called
+/// serializers. The built_json code generator will provide the
 /// implementation. You usually only need to do this once per project.
-BuiltJsonSerializers builtJsonSerializers = _$builtJsonSerializers;
+Serializers serializers = _$serializers;
 
 /// Example built_value type.
 abstract class Value implements Built<Value, ValueBuilder> {
   /// Example of how to make a built_value type serializable.
   ///
-  /// Declare a static final [BuiltJsonSerializer] field called `serializer`.
+  /// Declare a static final [Serializer] field called `serializer`.
   /// The built_json code generator will provide the implementation. You need to
   /// do this for every type you want to serialize.
-  static final BuiltJsonSerializer<Value> serializer = _$valueSerializer;
+  static final Serializer<Value> serializer = _$valueSerializer;
   static final int youCanHaveStaticFields = 3;
 
   int get anInt;

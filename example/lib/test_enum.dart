@@ -6,25 +6,26 @@ library test_enum;
 
 import 'package:built_json/built_json.dart';
 import 'package:enum_class/enum_class.dart';
+import 'package:example/compound_value.dart';
+import 'package:example/value.dart';
 
 part 'test_enum.g.dart';
 
 /// Example of how to use built_json.
 ///
-/// Declare a top level [BuiltJsonSerializers] field called
-/// builtJsonSerializers. The built_json code generator will provide the
+/// Declare a top level [Serializers] field called
+/// serializers. The built_json code generator will provide the
 /// implementation. You usually only need to do this once per project.
-BuiltJsonSerializers builtJsonSerializers = _$builtJsonSerializers;
-
+Serializers serializers = _$serializers;
 
 /// Example [EnumClass].
 class TestEnum extends EnumClass {
   /// Example of how to make an [EnumClass] serializable.
   ///
-  /// Declare a static final [BuiltJsonSerializer] field called `serializer`.
+  /// Declare a static final [Serializers] field called `serializer`.
   /// The built_json code generator will provide the implementation. You need to
   /// do this for every type you want to serialize.
-  static final BuiltJsonSerializer<TestEnum> serializer = _$testEnumSerializer;
+  static final Serializer<TestEnum> serializer = _$testEnumSerializer;
 
   static const TestEnum yes = _$yes;
   static const TestEnum no = _$no;
@@ -35,4 +36,3 @@ class TestEnum extends EnumClass {
   static BuiltSet<TestEnum> get values => _$values;
   static TestEnum valueOf(String name) => _$valueOf(name);
 }
-

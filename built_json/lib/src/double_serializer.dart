@@ -2,20 +2,24 @@
 // All rights reserved. Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+import 'package:built_collection/built_collection.dart';
 import 'package:built_json/built_json.dart';
 
 // TODO(davidmorgan): support special values.
-class DoubleSerializer implements BuiltJsonSerializer<double> {
-  final Type type = double;
-  final String typeName = 'double';
+class DoubleSerializer implements Serializer<double> {
+  final bool structured = false;
+  final Iterable<Type> types = new BuiltList<Type>([double]);
+  final String wireName = 'double';
 
-  Object serialize(BuiltJsonSerializers builtJsonSerializers, double object,
-      {String expectedType}) {
+  @override
+  Object serialize(Serializers serializers, double object,
+      {GenericType genericType: const GenericType()}) {
     return object.toString();
   }
 
-  double deserialize(BuiltJsonSerializers builtJsonSerializers, Object object,
-      {String expectedType}) {
+  @override
+  double deserialize(Serializers serializers, Object object,
+      {GenericType genericType: const GenericType()}) {
     return double.parse(object as String);
   }
 }

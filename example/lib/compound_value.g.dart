@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// 2015-11-08T12:38:01.349Z
+// 2015-12-08T16:15:17.813Z
 
 part of compound_value;
 
@@ -8,35 +8,62 @@ part of compound_value;
 // Target: library compound_value
 // **************************************************************************
 
-BuiltJsonSerializers _$builtJsonSerializers = new BuiltJsonSerializers()
-  ..add(new _$CompoundValueSerializer())
-  ..add(Value.serializer)
-  ..add(TestEnum.serializer);
-BuiltJsonSerializer<CompoundValue> _$compoundValueSerializer =
+Serializers _$serializers = (new Serializers().toBuilder()
+  ..add(TestEnum.serializer)
+  ..add(CompoundValue.serializer)
+  ..add(Value.serializer)).build();
+Serializer<CompoundValue> _$compoundValueSerializer =
     new _$CompoundValueSerializer();
 
-class _$CompoundValueSerializer implements BuiltJsonSerializer<CompoundValue> {
-  final Type type = _$CompoundValue;
-  final String typeName = 'CompoundValue';
-  Object serialize(
-      BuiltJsonSerializers builtJsonSerializers, CompoundValue object,
-      {String expectedType}) {
-    return {
-      'aValue':
-          builtJsonSerializers.serialize(object.aValue, expectedType: 'Value'),
-      'aTestEnum': builtJsonSerializers.serialize(object.aTestEnum,
-          expectedType: 'TestEnum'),
-    };
+class _$CompoundValueSerializer implements Serializer<CompoundValue> {
+  final bool structured = true;
+  final Iterable<Type> types =
+      new BuiltList<Type>([CompoundValue, _$CompoundValue]);
+  final String wireName = 'CompoundValue';
+
+  @override
+  Object serialize(Serializers serializers, CompoundValue object,
+      {GenericType genericType: const GenericType()}) {
+    return [
+      'aValue',
+      serializers.serialize(object.aValue,
+          genericType: const GenericType(Value)),
+      'aTestEnum',
+      serializers.serialize(object.aTestEnum,
+          genericType: const GenericType(TestEnum)),
+    ];
   }
 
-  CompoundValue deserialize(
-      BuiltJsonSerializers builtJsonSerializers, Object object,
-      {String expectedType}) {
-    return new CompoundValue((b) => b
-      ..aValue.replace(builtJsonSerializers.deserialize(object['aValue'],
-          expectedType: 'Value'))
-      ..aTestEnum = builtJsonSerializers.deserialize(object['aTestEnum'],
-          expectedType: 'TestEnum'));
+  @override
+  CompoundValue deserialize(Serializers serializers, Object object,
+      {GenericType genericType: const GenericType()}) {
+    final result = new CompoundValueBuilder();
+
+    var key;
+    var value;
+    var expectingKey = true;
+    for (final item in object as List) {
+      if (expectingKey) {
+        key = item;
+        expectingKey = false;
+      } else {
+        value = item;
+        expectingKey = true;
+
+        switch (key as String) {
+          case 'aValue':
+            result.aValue.replace(serializers.deserialize(value,
+                genericType: const GenericType(Value)));
+            break;
+          case 'aTestEnum':
+            result.aTestEnum = serializers.deserialize(value,
+                genericType: const GenericType(TestEnum));
+            break;
+        }
+      }
+    }
+
+    return result.build();
   }
 }
 

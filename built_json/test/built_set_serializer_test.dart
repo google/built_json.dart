@@ -7,45 +7,62 @@ import 'package:built_json/built_json.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final serializer = new BuiltJsonSerializers();
+  final serializers = new Serializers();
 
-  group('BuiltSet', () {
+  group('BuiltSet with known genericType', () {
+    final data = new BuiltSet<int>([1, 2, 3]);
+    final genericType =
+        const GenericType(BuiltSet, const [const GenericType(int)]);
+    final serialized = [1, 2, 3];
+
     test('can be serialized', () {
-      final list = new BuiltSet<int>([1, 2, 3]);
-      expect(serializer.serialize(list), {
-        'Set<int>': [1, 2, 3]
-      });
+      expect(serializers.serialize(data, genericType: genericType), serialized);
     });
 
     test('can be deserialized', () {
-      final list = new BuiltSet<int>([1, 2, 3]);
-      expect(serializer.deserialize(serializer.serialize(list)), list);
+      expect(
+          serializers.deserialize(serialized, genericType: genericType), data);
     });
 
-    test('can be serialized when nested', () {
-      final list = new BuiltSet<BuiltSet<int>>([
-        new BuiltSet<int>([1, 2, 3]),
-        new BuiltSet<int>([2, 3, 4]),
-        new BuiltSet<int>([3, 4, 5])
-      ]);
-
-      expect(serializer.serialize(list), {
-        'Set<Set<int>>': [
-          [1, 2, 3],
-          [2, 3, 4],
-          [3, 4, 5]
-        ]
-      });
+    test('loses generic type without builder', () {
+      expect(
+          serializers
+              .deserialize(serialized, genericType: genericType)
+              .runtimeType
+              .toString(),
+          'BuiltSet<Object>');
     });
 
-    test('can be deserialized when nested', () {
-      final list = new BuiltSet<BuiltSet<int>>([
-        new BuiltSet<int>([1, 2, 3]),
-        new BuiltSet<int>([2, 3, 4]),
-        new BuiltSet<int>([3, 4, 5])
-      ]);
+    test('keeps generic type with builder', () {
+      final genericSerializer = (serializers.toBuilder()
+        ..addBuilderFactory(genericType, () => new SetBuilder<int>())).build();
 
-      expect(serializer.deserialize(serializer.serialize(list)), list);
+      expect(
+          genericSerializer
+              .deserialize(serialized, genericType: genericType)
+              .runtimeType
+              .toString(),
+          'BuiltSet<int>');
+    });
+  });
+
+  group('BuiltSet with unknown genericType', () {
+    final data = new BuiltSet<int>([1, 2, 3]);
+    final genericType = const GenericType();
+    final serialized = [
+      'set',
+      ['int', 1],
+      ['int', 2],
+      ['int', 3]
+    ];
+
+    test('can be serialized', () {
+      expect(serializers.serialize(data, genericType: genericType), serialized);
+    });
+
+    test('can be deserialized', () {
+      expect(
+          serializers.deserialize(serialized, genericType: genericType), data);
     });
   });
 }

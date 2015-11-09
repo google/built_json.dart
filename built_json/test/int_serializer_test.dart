@@ -6,25 +6,35 @@ import 'package:built_json/built_json.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final serializer = new BuiltJsonSerializers();
+  final serializers = new Serializers();
 
-  group('int', () {
+  group('int with known genericType', () {
+    final data = 42;
+    final serialized = 42;
+    final genericType = const GenericType(int);
+
     test('can be serialized', () {
-      expect(serializer.serialize(3), {'int': 3});
+      expect(serializers.serialize(data, genericType: genericType), serialized);
     });
 
     test('can be deserialized', () {
-      expect(serializer.deserialize(serializer.serialize(3)), 3);
+      expect(
+          serializers.deserialize(serialized, genericType: genericType), data);
     });
   });
 
-  group('String', () {
+  group('int with unknown genericType', () {
+    final data = 42;
+    final serialized = ['int', 42];
+    final genericType = const GenericType();
+
     test('can be serialized', () {
-      expect(serializer.serialize('hello'), {'String': 'hello'});
+      expect(serializers.serialize(data, genericType: genericType), serialized);
     });
 
     test('can be deserialized', () {
-      expect(serializer.deserialize(serializer.serialize('hello')), 'hello');
+      expect(
+          serializers.deserialize(serialized, genericType: genericType), data);
     });
   });
 }
