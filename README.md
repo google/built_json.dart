@@ -1,6 +1,18 @@
 # Built JSON for Dart
 
-JSON serialization for Built Collections, Built Values and Enum Classes.
+## Introduction
+
+Built JSON provides serialization for the
+[Libraries for Object Oriented Dart](https://github.com/google/built_value.dart/blob/master/libraries_for_object_oriented_dart.md#libraries-for-object-oriented-dart).
+
+This allows a complete serializable object oriented data model to built from
+[Enum Classes](https://github.com/google/enum_class.dart#enum-classes-for-dart),
+[Built Collections](https://github.com/google/built_collection.dart#built-collections-for-dart)
+and
+[Built Values](https://github.com/google/built_value.dart#built-values-for-dart).
+
+
+## Examples
 
 See
 [this example](https://github.com/google/built_json.dart/tree/master/example)
