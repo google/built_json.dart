@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// 2015-12-08T16:15:17.703Z
+// 2015-12-08T16:56:15.642Z
 
 part of test_enum;
 
@@ -18,12 +18,15 @@ class _$TestEnumSerializer implements Serializer<TestEnum> {
   final bool structured = false;
   final Iterable<Type> types = new BuiltList<Type>([TestEnum]);
   final String wireName = 'TestEnum';
-  @override Object serialize(Serializers serializers, TestEnum object,
+
+  @override
+  Object serialize(Serializers serializers, TestEnum object,
       {GenericType genericType: const GenericType()}) {
     return object.name;
   }
 
-  @override TestEnum deserialize(Serializers serializers, Object object,
+  @override
+  TestEnum deserialize(Serializers serializers, Object object,
       {GenericType genericType: const GenericType()}) {
     return TestEnum.valueOf(object);
   }
