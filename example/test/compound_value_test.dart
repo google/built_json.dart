@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 import 'package:example/compound_value.dart';
-import 'package:example/test_enum.dart' hide builtJsonSerializers;
+import 'package:example/test_enum.dart' hide serializers;
 import 'package:test/test.dart';
 
 void main() {
@@ -15,19 +15,24 @@ void main() {
         ..aValue.anObject = 3
         ..aTestEnum = TestEnum.no);
 
-      // TODO(davidmorgan): distinguish value of expected type from class with one field.
-      expect(builtJsonSerializers.serialize(compoundValue), {
-        'CompoundValue': {
-          'aValue': {
-            'anInt': 1,
-            'aString': 'two',
-            'anObject': {'int': 3},
-            'aDefaultInt': 7,
-            'listOfInt': {'List<int>': []},
-          },
-          'aTestEnum': 'no'
-        }
-      });
+      expect(serializers.serialize(compoundValue), [
+        'CompoundValue',
+        'aValue',
+        [
+          'anInt',
+          1,
+          'aString',
+          'two',
+          'anObject',
+          ['int', 3],
+          'aDefaultInt',
+          7,
+          'listOfInt',
+          [],
+        ],
+        'aTestEnum',
+        'no',
+      ]);
     });
 
     test('can be deserialized', () {
@@ -37,9 +42,7 @@ void main() {
         ..aValue.anObject = 3
         ..aTestEnum = TestEnum.no);
 
-      expect(
-          builtJsonSerializers
-              .deserialize(builtJsonSerializers.serialize(compoundValue)),
+      expect(serializers.deserialize(serializers.serialize(compoundValue)),
           compoundValue);
     });
   });

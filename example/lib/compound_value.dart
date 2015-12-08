@@ -13,21 +13,20 @@ part 'compound_value.g.dart';
 
 /// Example of how to use built_json.
 ///
-/// Declare a top level [BuiltJsonSerializers] field called
-/// builtJsonSerializers. The built_json code generator will provide the
+/// Declare a top level [Serializers] field called
+/// serializers. The built_json code generator will provide the
 /// implementation. You usually only need to do this once per project.
-BuiltJsonSerializers builtJsonSerializers = _$builtJsonSerializers;
+Serializers serializers = _$serializers;
 
 /// Example built_value type.
 abstract class CompoundValue
     implements Built<CompoundValue, CompoundValueBuilder> {
   /// Example of how to make a built_value type serializable.
   ///
-  /// Declare a static final [BuiltJsonSerializer] field called `serializer`.
+  /// Declare a static final [Serializers] field called `serializer`.
   /// The built_json code generator will provide the implementation. You need to
   /// do this for every type you want to serialize.
-  static final BuiltJsonSerializer<CompoundValue> serializer =
-      _$compoundValueSerializer;
+  static final Serializer<CompoundValue> serializer = _$compoundValueSerializer;
 
   Value get aValue;
   TestEnum get aTestEnum;

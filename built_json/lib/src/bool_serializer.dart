@@ -2,19 +2,23 @@
 // All rights reserved. Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+import 'package:built_collection/built_collection.dart';
 import 'package:built_json/built_json.dart';
 
-class BoolSerializer implements BuiltJsonSerializer<bool> {
-  final Type type = bool;
-  final String typeName = 'bool';
+class BoolSerializer implements Serializer<bool> {
+  final bool structured = false;
+  final Iterable<Type> types = new BuiltList<Type>([bool]);
+  final String wireName = 'bool';
 
-  Object serialize(BuiltJsonSerializers builtJsonSerializers, bool object,
-      {String expectedType}) {
+  @override
+  Object serialize(Serializers serializers, bool object,
+      {GenericType genericType: const GenericType()}) {
     return object;
   }
 
-  bool deserialize(BuiltJsonSerializers builtJsonSerializers, Object object,
-      {String expectedType}) {
+  @override
+  bool deserialize(Serializers serializers, Object object,
+      {GenericType genericType: const GenericType()}) {
     return object as bool;
   }
 }

@@ -6,15 +6,35 @@ import 'package:built_json/built_json.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final serializer = new BuiltJsonSerializers();
+  final serializers = new Serializers();
 
-  group('bool', () {
+  group('bool with known genericType', () {
+    final data = true;
+    final serialized = true;
+    final genericType = const GenericType(bool);
+
     test('can be serialized', () {
-      expect(serializer.serialize(true), {'bool': true});
+      expect(serializers.serialize(data, genericType: genericType), serialized);
     });
 
     test('can be deserialized', () {
-      expect(serializer.deserialize(serializer.serialize(true)), true);
+      expect(
+          serializers.deserialize(serialized, genericType: genericType), data);
+    });
+  });
+
+  group('bool with unknown genericType', () {
+    final data = true;
+    final serialized = ['bool', true];
+    final genericType = const GenericType();
+
+    test('can be serialized', () {
+      expect(serializers.serialize(data, genericType: genericType), serialized);
+    });
+
+    test('can be deserialized', () {
+      expect(
+          serializers.deserialize(serialized, genericType: genericType), data);
     });
   });
 }
