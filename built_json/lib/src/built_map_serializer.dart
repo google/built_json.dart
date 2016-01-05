@@ -13,12 +13,12 @@ class BuiltMapSerializer implements Serializer<BuiltMap> {
   @override
   Object serialize(Serializers serializers, BuiltMap object,
       {GenericType genericType: const GenericType()}) {
-    final keyTypes = genericType.leaves.isEmpty
+    final keyTypes = genericType.parameters.isEmpty
         ? const GenericType()
-        : genericType.leaves[0];
-    final valueTypes = genericType.leaves.isEmpty
+        : genericType.parameters[0];
+    final valueTypes = genericType.parameters.isEmpty
         ? const GenericType()
-        : genericType.leaves[1];
+        : genericType.parameters[1];
 
     final result = <Object>[];
     for (final key in object.keys) {
@@ -32,12 +32,12 @@ class BuiltMapSerializer implements Serializer<BuiltMap> {
   @override
   BuiltMap deserialize(Serializers serializers, Object object,
       {GenericType genericType: const GenericType()}) {
-    final keyTypes = genericType.leaves.isEmpty
+    final keyTypes = genericType.parameters.isEmpty
         ? const GenericType()
-        : genericType.leaves[0];
-    final valueTypes = genericType.leaves.isEmpty
+        : genericType.parameters[0];
+    final valueTypes = genericType.parameters.isEmpty
         ? const GenericType()
-        : genericType.leaves[1];
+        : genericType.parameters[1];
 
     final result = serializers.newBuilder(genericType) as MapBuilder ??
         new MapBuilder<Object, Object>();

@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// 2015-12-08T16:15:17.813Z
+// 2016-01-05T16:23:30.833Z
 
 part of compound_value;
 
@@ -8,10 +8,6 @@ part of compound_value;
 // Target: library compound_value
 // **************************************************************************
 
-Serializers _$serializers = (new Serializers().toBuilder()
-  ..add(TestEnum.serializer)
-  ..add(CompoundValue.serializer)
-  ..add(Value.serializer)).build();
 Serializer<CompoundValue> _$compoundValueSerializer =
     new _$CompoundValueSerializer();
 

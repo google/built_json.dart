@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// 2015-12-08T16:15:17.773Z
+// 2016-01-05T16:23:30.814Z
 
 part of value;
 
@@ -8,10 +8,6 @@ part of value;
 // Target: library value
 // **************************************************************************
 
-Serializers _$serializers = (new Serializers().toBuilder()
-  ..add(TestEnum.serializer)
-  ..add(CompoundValue.serializer)
-  ..add(Value.serializer)).build();
 Serializer<Value> _$valueSerializer = new _$ValueSerializer();
 
 class _$ValueSerializer implements Serializer<Value> {

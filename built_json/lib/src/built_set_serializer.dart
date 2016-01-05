@@ -13,9 +13,9 @@ class BuiltSetSerializer implements Serializer<BuiltSet> {
   @override
   Object serialize(Serializers serializers, BuiltSet object,
       {GenericType genericType: const GenericType()}) {
-    final valueGenericType = genericType.leaves.isEmpty
+    final valueGenericType = genericType.parameters.isEmpty
         ? const GenericType()
-        : genericType.leaves[0];
+        : genericType.parameters[0];
 
     return object.map(
         (item) => serializers.serialize(item, genericType: valueGenericType));
@@ -24,9 +24,9 @@ class BuiltSetSerializer implements Serializer<BuiltSet> {
   @override
   BuiltSet deserialize(Serializers serializers, Object object,
       {GenericType genericType: const GenericType()}) {
-    final valueGenericType = genericType.leaves.isEmpty
+    final valueGenericType = genericType.parameters.isEmpty
         ? const GenericType()
-        : genericType.leaves[0];
+        : genericType.parameters[0];
 
     final result = serializers.newBuilder(genericType) as SetBuilder ??
         new SetBuilder<Object>();

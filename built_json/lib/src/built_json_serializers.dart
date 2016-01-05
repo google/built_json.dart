@@ -10,7 +10,6 @@ class BuiltJsonSerializers implements Serializers {
   final BuiltMap<Type, Serializer> _typeToSerializer;
   final BuiltMap<String, Serializer> _wireNameToSerializer;
   final BuiltMap<String, Serializer> _typeNameToSerializer;
-
   final BuiltMap<GenericType, Function> _builderFactories;
 
   BuiltJsonSerializers._(this._typeToSerializer, this._wireNameToSerializer,
@@ -48,8 +47,9 @@ class BuiltJsonSerializers implements Serializers {
       final wireName = (object as List).first;
 
       final serializer = _wireNameToSerializer[wireName];
-      if (serializer ==
-          null) throw new StateError("No serializer for '${wireName}'.");
+      if (serializer == null) {
+        throw new StateError("No serializer for '${wireName}'.");
+      }
       final json = serializer.structured
           ? (object as List).sublist(1)
           : (object as List)[1];
@@ -78,7 +78,7 @@ class BuiltJsonSerializers implements Serializers {
   }
 
   Serializer _getSerializerByType(Type type) {
-    return _typeToSerializer[type] ?? _typeNameToSerializer[_getName(type)];
+    return _typeToSerializer[type] ?? _typeNameToSerializer[_getRawName(type)];
   }
 }
 
@@ -106,7 +106,7 @@ class BuiltJsonSerializersBuilder implements SerializersBuilder {
     _wireNameToSerializer[serializer.wireName] = serializer;
     for (final type in serializer.types) {
       _typeToSerializer[type] = serializer;
-      _typeNameToSerializer[_getName(type)] = serializer;
+      _typeNameToSerializer[_getRawName(type)] = serializer;
     }
   }
 
@@ -123,9 +123,8 @@ class BuiltJsonSerializersBuilder implements SerializersBuilder {
   }
 }
 
-String _getName(Type type) => _makeRaw(type.toString());
-
-String _makeRaw(String name) {
+String _getRawName(Type type) {
+  final name = type.toString();
   final genericsStart = name.indexOf('<');
   return genericsStart == -1 ? name : name.substring(0, genericsStart);
 }
