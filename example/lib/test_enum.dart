@@ -11,13 +11,6 @@ import 'package:example/value.dart';
 
 part 'test_enum.g.dart';
 
-/// Example of how to use built_json.
-///
-/// Declare a top level [Serializers] field called
-/// serializers. The built_json code generator will provide the
-/// implementation. You usually only need to do this once per project.
-Serializers serializers = _$serializers;
-
 /// Example [EnumClass].
 class TestEnum extends EnumClass {
   /// Example of how to make an [EnumClass] serializable.

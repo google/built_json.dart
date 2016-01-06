@@ -13,9 +13,9 @@ class BuiltListSerializer implements Serializer<BuiltList> {
   @override
   Object serialize(Serializers serializers, BuiltList object,
       {GenericType genericType: const GenericType()}) {
-    final valueGenericType = genericType.leaves.isEmpty
+    final valueGenericType = genericType.parameters.isEmpty
         ? const GenericType()
-        : genericType.leaves[0];
+        : genericType.parameters[0];
 
     return object.map(
         (item) => serializers.serialize(item, genericType: valueGenericType));
@@ -24,9 +24,9 @@ class BuiltListSerializer implements Serializer<BuiltList> {
   @override
   BuiltList deserialize(Serializers serializers, Object object,
       {GenericType genericType: const GenericType()}) {
-    final valueGenericType = genericType.leaves.isEmpty
+    final valueGenericType = genericType.parameters.isEmpty
         ? const GenericType()
-        : genericType.leaves[0];
+        : genericType.parameters[0];
 
     final result = serializers.newBuilder(genericType) as ListBuilder ??
         new ListBuilder<Object>();

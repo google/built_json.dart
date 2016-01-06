@@ -42,6 +42,8 @@ abstract class Serializers {
   /// [genericType] will be needed to deserialize.
   ///
   /// Create one using [SerializersBuilder].
+  ///
+  /// TODO(davidmorgan): document the wire format.
   Object serialize(Object object,
       {GenericType genericType: const GenericType()});
 
@@ -84,9 +86,9 @@ class GenericType {
   final Type root;
 
   /// Type parameters of the type.
-  final List<GenericType> leaves;
+  final List<GenericType> parameters;
 
-  const GenericType([this.root = Object, this.leaves = const []]);
+  const GenericType([this.root = Object, this.parameters = const []]);
 
   bool get isObject => root == Object;
 }
@@ -103,7 +105,9 @@ abstract class Serializer<T> {
 
   /// The [Type]s that can be serialized.
   ///
-  /// They must all be equal to T or subclasses of T.
+  /// They must all be equal to T or a subclass of T. Subclasses are used when
+  /// T is an abstract class, which is the case with built_value generated
+  /// serializers.
   Iterable<Type> get types;
 
   /// The wire name of the serializable type. For most classes, the class name.
@@ -115,6 +119,8 @@ abstract class Serializer<T> {
   ///
   /// Use [serializers] as needed for nested serialization. Information about
   /// the type being serialized is provided in [genericType].
+  ///
+  /// TODO(davidmorgan): document the wire format.
   Object serialize(Serializers serializers, T object,
       {GenericType genericType: const GenericType()});
 
