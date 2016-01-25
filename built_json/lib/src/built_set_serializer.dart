@@ -11,27 +11,41 @@ class BuiltSetSerializer implements Serializer<BuiltSet> {
   final String wireName = 'set';
 
   @override
-  Object serialize(Serializers serializers, BuiltSet object,
-      {GenericType genericType: const GenericType()}) {
-    final valueGenericType = genericType.parameters.isEmpty
-        ? const GenericType()
-        : genericType.parameters[0];
+  Object serialize(Serializers serializers, BuiltSet builtSet,
+      {FullType specifiedType: const FullType()}) {
+    final isUnderspecified =
+        specifiedType.isObject || specifiedType.parameters.isEmpty;
 
-    return object.map(
-        (item) => serializers.serialize(item, genericType: valueGenericType));
+    final valueGenericType = specifiedType.parameters.isEmpty
+        ? const FullType()
+        : specifiedType.parameters[0];
+
+    if (!isUnderspecified && !serializers.hasBuilder(specifiedType)) {
+      throw new StateError('No builder for $specifiedType, cannot serialize.');
+    }
+
+    return builtSet.map(
+        (item) => serializers.serialize(item, specifiedType: valueGenericType));
   }
 
   @override
-  BuiltSet deserialize(Serializers serializers, Object object,
-      {GenericType genericType: const GenericType()}) {
-    final valueGenericType = genericType.parameters.isEmpty
-        ? const GenericType()
-        : genericType.parameters[0];
+  BuiltSet deserialize(Serializers serializers, Object serialized,
+      {FullType specifiedType: const FullType()}) {
+    final isUnderspecified =
+        specifiedType.isObject || specifiedType.parameters.isEmpty;
 
-    final result = serializers.newBuilder(genericType) as SetBuilder ??
-        new SetBuilder<Object>();
-    result.addAll((object as Iterable).map((item) =>
-        serializers.deserialize(item, genericType: valueGenericType)));
+    final valueGenericType = specifiedType.parameters.isEmpty
+        ? const FullType()
+        : specifiedType.parameters[0];
+    final result = isUnderspecified
+        ? new SetBuilder<Object>()
+        : serializers.newBuilder(specifiedType) as SetBuilder;
+    if (result == null) {
+      throw new StateError(
+          'No builder for $specifiedType, cannot deserialize.');
+    }
+    result.addAll((serialized as Iterable).map((item) =>
+        serializers.deserialize(item, specifiedType: valueGenericType)));
     return result.build();
   }
 }

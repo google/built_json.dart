@@ -10,7 +10,7 @@ import 'package:source_gen/source_gen.dart' as source_gen;
 import 'package:test/test.dart';
 
 void main() {
-  group('generator', () async {
+  group('generator', () {
     test('ignores empty library', () async {
       expect(await generate('library value;'), isEmpty);
     });
@@ -118,24 +118,24 @@ class _$ValueSerializer implements Serializer<Value> {
 
   @override
   Object serialize(Serializers serializers, Value object,
-      {GenericType genericType: const GenericType()}) {
+      {FullType specifiedType: const FullType()}) {
     return [
       'aBool',
-      serializers.serialize(object.aBool, genericType: const GenericType(bool)),
+      serializers.serialize(object.aBool, specifiedType: const FullType(bool)),
       'aDouble',
       serializers.serialize(object.aDouble,
-          genericType: const GenericType(double)),
+          specifiedType: const FullType(double)),
       'anInt',
-      serializers.serialize(object.anInt, genericType: const GenericType(int)),
+      serializers.serialize(object.anInt, specifiedType: const FullType(int)),
       'aString',
       serializers.serialize(object.aString,
-          genericType: const GenericType(String)),
+          specifiedType: const FullType(String)),
     ];
   }
 
   @override
   Value deserialize(Serializers serializers, Object object,
-      {GenericType genericType: const GenericType()}) {
+      {FullType specifiedType: const FullType()}) {
     final result = new ValueBuilder();
 
     var key;
@@ -152,19 +152,19 @@ class _$ValueSerializer implements Serializer<Value> {
         switch (key as String) {
           case 'aBool':
             result.aBool = serializers.deserialize(value,
-                genericType: const GenericType(bool));
+                specifiedType: const FullType(bool));
             break;
           case 'aDouble':
             result.aDouble = serializers.deserialize(value,
-                genericType: const GenericType(double));
+                specifiedType: const FullType(double));
             break;
           case 'anInt':
             result.anInt = serializers.deserialize(value,
-                genericType: const GenericType(int));
+                specifiedType: const FullType(int));
             break;
           case 'aString':
             result.aString = serializers.deserialize(value,
-                genericType: const GenericType(String));
+                specifiedType: const FullType(String));
             break;
         }
       }
@@ -214,22 +214,22 @@ class _$ValueSerializer implements Serializer<Value> {
 
   @override
   Object serialize(Serializers serializers, Value object,
-      {GenericType genericType: const GenericType()}) {
+      {FullType specifiedType: const FullType()}) {
     return [
       'aList',
       serializers.serialize(object.aList,
-          genericType:
-              const GenericType(BuiltList, const [const GenericType(String)])),
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(String)])),
       'aMap',
       serializers.serialize(object.aMap,
-          genericType: const GenericType(BuiltMap,
-              const [const GenericType(String), const GenericType(int)])),
+          specifiedType: const FullType(
+              BuiltMap, const [const FullType(String), const FullType(int)])),
     ];
   }
 
   @override
   Value deserialize(Serializers serializers, Object object,
-      {GenericType genericType: const GenericType()}) {
+      {FullType specifiedType: const FullType()}) {
     final result = new ValueBuilder();
 
     var key;
@@ -246,15 +246,13 @@ class _$ValueSerializer implements Serializer<Value> {
         switch (key as String) {
           case 'aList':
             result.aList.replace(serializers.deserialize(value,
-                genericType: const GenericType(
-                    BuiltList, const [const GenericType(String)])));
+                specifiedType:
+                    const FullType(BuiltList, const [const FullType(String)])));
             break;
           case 'aMap':
             result.aMap.replace(serializers.deserialize(value,
-                genericType: const GenericType(BuiltMap, const [
-                  const GenericType(String),
-                  const GenericType(int)
-                ])));
+                specifiedType: const FullType(BuiltMap,
+                    const [const FullType(String), const FullType(int)])));
             break;
         }
       }
@@ -301,17 +299,16 @@ class _$ValueSerializer implements Serializer<Value> {
 
   @override
   Object serialize(Serializers serializers, Value object,
-      {GenericType genericType: const GenericType()}) {
+      {FullType specifiedType: const FullType()}) {
     return [
       'value',
-      serializers.serialize(object.value,
-          genericType: const GenericType(Value)),
+      serializers.serialize(object.value, specifiedType: const FullType(Value)),
     ];
   }
 
   @override
   Value deserialize(Serializers serializers, Object object,
-      {GenericType genericType: const GenericType()}) {
+      {FullType specifiedType: const FullType()}) {
     final result = new ValueBuilder();
 
     var key;
@@ -328,7 +325,7 @@ class _$ValueSerializer implements Serializer<Value> {
         switch (key as String) {
           case 'value':
             result.value.replace(serializers.deserialize(value,
-                genericType: const GenericType(Value)));
+                specifiedType: const FullType(Value)));
             break;
         }
       }
@@ -372,13 +369,13 @@ class _$TestEnumSerializer implements Serializer<TestEnum> {
 
   @override
   Object serialize(Serializers serializers, TestEnum object,
-      {GenericType genericType: const GenericType()}) {
+      {FullType specifiedType: const FullType()}) {
     return object.name;
   }
 
   @override
   TestEnum deserialize(Serializers serializers, Object object,
-      {GenericType genericType: const GenericType()}) {
+      {FullType specifiedType: const FullType()}) {
     return TestEnum.valueOf(object);
   }
 }

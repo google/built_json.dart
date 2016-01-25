@@ -5,11 +5,19 @@
 library built_json_generator.source_field;
 
 import 'package:analyzer/src/generated/element.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 
 part 'source_field.g.dart';
 
 abstract class SourceField implements Built<SourceField, SourceFieldBuilder> {
+  static final BuiltMap<String, String> typesWithBuilder =
+      new BuiltMap<String, String>({
+    'BuiltList': 'ListBuilder',
+    'BuiltMap': 'MapBuiler',
+    'BuiltSet': 'SetBuilder',
+  });
+
   bool get isSerializable;
   String get name;
   String get type;
@@ -40,20 +48,26 @@ abstract class SourceField implements Built<SourceField, SourceFieldBuilder> {
     return result.build();
   }
 
-  String generateGenericType() {
-    return _generateGenericType(type);
+  String generateFullType() {
+    return _generateFullType(type);
   }
 
-  static String _generateGenericType(String type) {
+  bool get needsBuilder => typesWithBuilder.containsKey(_getBareType(type));
+
+  String generateBuilder() {
+    return 'new ${typesWithBuilder[_getBareType(type)]}<${_getGenerics(type)}>()';
+  }
+
+  static String _generateFullType(String type) {
     // TODO(davidmorgan): support more than one level of nesting.
     final bareType = _getBareType(type);
     final generics = _getGenerics(type);
     final genericItems = generics.split(', ');
 
     if (generics.isEmpty) {
-      return 'const GenericType($bareType)';
+      return 'const FullType($bareType)';
     } else {
-      return 'const GenericType($bareType, const [${genericItems.map(_generateGenericType).join(', ')}])';
+      return 'const FullType($bareType, const [${genericItems.map(_generateFullType).join(', ')}])';
     }
   }
 

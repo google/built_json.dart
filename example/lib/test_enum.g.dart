@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// 2016-01-05T16:23:30.760Z
+// 2016-01-25T19:49:57.083Z
 
 part of test_enum;
 
@@ -17,13 +17,13 @@ class _$TestEnumSerializer implements Serializer<TestEnum> {
 
   @override
   Object serialize(Serializers serializers, TestEnum object,
-      {GenericType genericType: const GenericType()}) {
+      {FullType specifiedType: const FullType()}) {
     return object.name;
   }
 
   @override
   TestEnum deserialize(Serializers serializers, Object object,
-      {GenericType genericType: const GenericType()}) {
+      {FullType specifiedType: const FullType()}) {
     return TestEnum.valueOf(object);
   }
 }

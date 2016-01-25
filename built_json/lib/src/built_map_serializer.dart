@@ -11,46 +11,61 @@ class BuiltMapSerializer implements Serializer<BuiltMap> {
   final String wireName = 'map';
 
   @override
-  Object serialize(Serializers serializers, BuiltMap object,
-      {GenericType genericType: const GenericType()}) {
-    final keyTypes = genericType.parameters.isEmpty
-        ? const GenericType()
-        : genericType.parameters[0];
-    final valueTypes = genericType.parameters.isEmpty
-        ? const GenericType()
-        : genericType.parameters[1];
+  Object serialize(Serializers serializers, BuiltMap builtMap,
+      {FullType specifiedType: const FullType()}) {
+    final isUnderspecified =
+        specifiedType.isObject || specifiedType.parameters.isEmpty;
+
+    final keyTypes = specifiedType.parameters.isEmpty
+        ? const FullType()
+        : specifiedType.parameters[0];
+    final valueTypes = specifiedType.parameters.isEmpty
+        ? const FullType()
+        : specifiedType.parameters[1];
+
+    if (!isUnderspecified && !serializers.hasBuilder(specifiedType)) {
+      throw new StateError('No builder for $specifiedType, cannot serialize.');
+    }
 
     final result = <Object>[];
-    for (final key in object.keys) {
-      result.add(serializers.serialize(key, genericType: keyTypes));
-      final value = object[key];
-      result.add(serializers.serialize(value, genericType: valueTypes));
+    for (final key in builtMap.keys) {
+      result.add(serializers.serialize(key, specifiedType: keyTypes));
+      final value = builtMap[key];
+      result.add(serializers.serialize(value, specifiedType: valueTypes));
     }
     return result;
   }
 
   @override
-  BuiltMap deserialize(Serializers serializers, Object object,
-      {GenericType genericType: const GenericType()}) {
-    final keyTypes = genericType.parameters.isEmpty
-        ? const GenericType()
-        : genericType.parameters[0];
-    final valueTypes = genericType.parameters.isEmpty
-        ? const GenericType()
-        : genericType.parameters[1];
+  BuiltMap deserialize(Serializers serializers, Object serialized,
+      {FullType specifiedType: const FullType()}) {
+    final isUnderspecified =
+        specifiedType.isObject || specifiedType.parameters.isEmpty;
 
-    final result = serializers.newBuilder(genericType) as MapBuilder ??
-        new MapBuilder<Object, Object>();
-    final list = object as List<Object>;
+    final keyTypes = specifiedType.parameters.isEmpty
+        ? const FullType()
+        : specifiedType.parameters[0];
+    final valueTypes = specifiedType.parameters.isEmpty
+        ? const FullType()
+        : specifiedType.parameters[1];
+
+    final result = isUnderspecified
+        ? new MapBuilder<Object, Object>()
+        : serializers.newBuilder(specifiedType) as MapBuilder;
+    if (result == null) {
+      throw new StateError(
+          'No builder for $specifiedType, cannot deserialize.');
+    }
+    final list = serialized as List<Object>;
 
     if (list.length & 1 == 1) {
       throw new ArgumentError('odd length');
     }
 
     for (int i = 0; i != list.length; i += 2) {
-      final key = serializers.deserialize(list[i], genericType: keyTypes);
+      final key = serializers.deserialize(list[i], specifiedType: keyTypes);
       final value =
-          serializers.deserialize(list[i + 1], genericType: valueTypes);
+          serializers.deserialize(list[i + 1], specifiedType: valueTypes);
       result[key] = value;
     }
 

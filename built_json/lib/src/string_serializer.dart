@@ -11,14 +11,14 @@ class StringSerializer implements Serializer<String> {
   final String wireName = 'String';
 
   @override
-  Object serialize(Serializers serializers, String object,
-      {GenericType genericType: const GenericType()}) {
-    return object;
+  Object serialize(Serializers serializers, String string,
+      {FullType specifiedType: const FullType()}) {
+    return string;
   }
 
   @override
-  String deserialize(Serializers serializers, Object object,
-      {GenericType genericType: const GenericType()}) {
-    return object as String;
+  String deserialize(Serializers serializers, Object serialized,
+      {FullType specifiedType: const FullType()}) {
+    return serialized as String;
   }
 }

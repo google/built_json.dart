@@ -11,27 +11,43 @@ class BuiltListSerializer implements Serializer<BuiltList> {
   final String wireName = 'list';
 
   @override
-  Object serialize(Serializers serializers, BuiltList object,
-      {GenericType genericType: const GenericType()}) {
-    final valueGenericType = genericType.parameters.isEmpty
-        ? const GenericType()
-        : genericType.parameters[0];
+  Object serialize(Serializers serializers, BuiltList builtList,
+      {FullType specifiedType: const FullType()}) {
+    final isUnderspecified =
+        specifiedType.isObject || specifiedType.parameters.isEmpty;
 
-    return object.map(
-        (item) => serializers.serialize(item, genericType: valueGenericType));
+    final valueGenericType = specifiedType.parameters.isEmpty
+        ? const FullType()
+        : specifiedType.parameters[0];
+
+    if (!isUnderspecified && !serializers.hasBuilder(specifiedType)) {
+      throw new StateError(
+          'No builder for $specifiedType, cannot serialize.');
+    }
+
+    return builtList.map(
+        (item) => serializers.serialize(item, specifiedType: valueGenericType));
   }
 
   @override
-  BuiltList deserialize(Serializers serializers, Object object,
-      {GenericType genericType: const GenericType()}) {
-    final valueGenericType = genericType.parameters.isEmpty
-        ? const GenericType()
-        : genericType.parameters[0];
+  BuiltList deserialize(Serializers serializers, Object serialized,
+      {FullType specifiedType: const FullType()}) {
+    final isUnderspecified =
+        specifiedType.isObject || specifiedType.parameters.isEmpty;
 
-    final result = serializers.newBuilder(genericType) as ListBuilder ??
-        new ListBuilder<Object>();
-    result.addAll((object as Iterable).map((item) =>
-        serializers.deserialize(item, genericType: valueGenericType)));
+    final valueGenericType = specifiedType.parameters.isEmpty
+        ? const FullType()
+        : specifiedType.parameters[0];
+
+    final result = isUnderspecified
+        ? new ListBuilder<Object>()
+        : serializers.newBuilder(specifiedType) as ListBuilder;
+    if (result == null) {
+      throw new StateError(
+          'No builder for $specifiedType, cannot deserialize.');
+    }
+    result.addAll((serialized as Iterable).map((item) =>
+        serializers.deserialize(item, specifiedType: valueGenericType)));
     return result.build();
   }
 }

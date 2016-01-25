@@ -4,6 +4,7 @@
 
 library serializers;
 
+import 'package:built_collection/built_collection.dart';
 import 'package:built_json/built_json.dart';
 import 'package:example/test_enum.dart';
 import 'package:example/value.dart';

@@ -37,34 +37,36 @@ abstract class Serializers {
   ///
   /// A [Serializer] must have been provided for every the object uses.
   ///
-  /// Types that are known statically can be provided via [genericType]. This
+  /// Types that are known statically can be provided via [specifiedType]. This
   /// will reduce the amount of data needed on the wire. The exact same
-  /// [genericType] will be needed to deserialize.
+  /// [specifiedType] will be needed to deserialize.
   ///
   /// Create one using [SerializersBuilder].
   ///
   /// TODO(davidmorgan): document the wire format.
-  Object serialize(Object object,
-      {GenericType genericType: const GenericType()});
+  Object serialize(Object object, {FullType specifiedType: const FullType()});
 
   /// Deserializes [serialized].
   ///
   /// A [Serializer] must have been provided for every the object uses.
   ///
-  /// If [serialized] was produced by calling [serialize] with [genericType],
-  /// the exact same [genericType] must be provided to deserialize.
+  /// If [serialized] was produced by calling [serialize] with [specifiedType],
+  /// the exact same [specifiedType] must be provided to deserialize.
   Object deserialize(Object serialized,
-      {GenericType genericType: const GenericType()});
+      {FullType specifiedType: const FullType()});
 
-  /// Creates a new builder for the type represented by [genericType].
+  /// Creates a new builder for the type represented by [fullType].
   ///
-  /// For example, if [genericType] is `BuiltList<int, String>`, returns a
+  /// For example, if [fullType] is `BuiltList<int, String>`, returns a
   /// `ListBuilder<int, String>`. This helps serializers to instantiate with
   /// correct generic type parameters.
   ///
   /// May return null if no matching builder factory has been added. In this
-  /// case the serializer should fall back to `Object`.
-  Object newBuilder(GenericType genericType);
+  /// case the serializer should throw a [StateError].
+  Object newBuilder(FullType fullType);
+
+  /// Whether a builder for [fullType] is available via [newBuilder].
+  bool hasBuilder(FullType fullType);
 
   SerializersBuilder toBuilder();
 }
@@ -75,22 +77,29 @@ abstract class SerializersBuilder {
 
   void add(Serializer serializer);
 
-  void addBuilderFactory(GenericType genericType, Function function);
+  void addBuilderFactory(FullType specifiedType, Function function);
 
   Serializers build();
 }
 
-/// A tree of [Type] instances.
-class GenericType {
+/// A [Type] with, optionally, [FullType] generic type parameters.
+class FullType {
   /// The root of the type.
   final Type root;
 
   /// Type parameters of the type.
-  final List<GenericType> parameters;
+  final List<FullType> parameters;
 
-  const GenericType([this.root = Object, this.parameters = const []]);
+  const FullType([this.root = Object, this.parameters = const []]);
 
   bool get isObject => root == Object;
+
+  @override
+  String toString() {
+    return parameters.isEmpty
+        ? root.toString()
+        : '${root.toString()}<${parameters.join(", ")}>';
+  }
 }
 
 /// Serializes a single type.
@@ -118,16 +127,16 @@ abstract class Serializer<T> {
   /// Serializes [object].
   ///
   /// Use [serializers] as needed for nested serialization. Information about
-  /// the type being serialized is provided in [genericType].
+  /// the type being serialized is provided in [specifiedType].
   ///
   /// TODO(davidmorgan): document the wire format.
   Object serialize(Serializers serializers, T object,
-      {GenericType genericType: const GenericType()});
+      {FullType specifiedType: const FullType()});
 
   /// Deserializes [serialized].
   ///
   /// Use [serializers] as needed for nested deserialization. Information about
-  /// the type being deserialized is provided in [genericType].
+  /// the type being deserialized is provided in [specifiedType].
   T deserialize(Serializers serializers, Object serialized,
-      {GenericType genericType: const GenericType()});
+      {FullType specifiedType: const FullType()});
 }

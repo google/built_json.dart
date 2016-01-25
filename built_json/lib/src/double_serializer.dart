@@ -12,14 +12,14 @@ class DoubleSerializer implements Serializer<double> {
   final String wireName = 'double';
 
   @override
-  Object serialize(Serializers serializers, double object,
-      {GenericType genericType: const GenericType()}) {
-    return object.toString();
+  Object serialize(Serializers serializers, double aDouble,
+      {FullType specifiedType: const FullType()}) {
+    return aDouble;
   }
 
   @override
-  double deserialize(Serializers serializers, Object object,
-      {GenericType genericType: const GenericType()}) {
-    return double.parse(object as String);
+  double deserialize(Serializers serializers, Object serialized,
+      {FullType specifiedType: const FullType()}) {
+    return (serialized as num).toDouble();
   }
 }

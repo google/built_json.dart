@@ -7,56 +7,68 @@ import 'package:built_json/built_json.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final serializers = new Serializers();
-
-  group('BuiltMap with known genericType', () {
+  group('BuiltMap with known specifiedType but missing builder', () {
     final data = new BuiltMap<int, String>({1: 'one', 2: 'two', 3: 'three'});
-    final genericType = const GenericType(
-        BuiltMap, const [const GenericType(int), const GenericType(String)]);
+    final specifiedType = const FullType(
+        BuiltMap, const [const FullType(int), const FullType(String)]);
+    final serializers = new Serializers();
+    final serialized = [1, 'one', 2, 'two', 3, 'three'];
+
+    test('cannot be serialized', () {
+      expect(() => serializers.serialize(data, specifiedType: specifiedType),
+          throws);
+    });
+
+    test('cannot be deserialized', () {
+      expect(
+          () =>
+              serializers.deserialize(serialized, specifiedType: specifiedType),
+          throws);
+    });
+  });
+
+  group('BuiltMap with known specifiedType and correct builder', () {
+    final data = new BuiltMap<int, String>({1: 'one', 2: 'two', 3: 'three'});
+    final specifiedType = const FullType(
+        BuiltMap, const [const FullType(int), const FullType(String)]);
+    final serializers = (new Serializers().toBuilder()
+      ..addBuilderFactory(
+          specifiedType, () => new MapBuilder<int, String>())).build();
     final serialized = [1, 'one', 2, 'two', 3, 'three'];
 
     test('can be serialized', () {
-      expect(serializers.serialize(data, genericType: genericType), serialized);
+      expect(serializers.serialize(data, specifiedType: specifiedType),
+          serialized);
     });
 
     test('can be deserialized', () {
-      expect(
-          serializers.deserialize(serialized, genericType: genericType), data);
+      expect(serializers.deserialize(serialized, specifiedType: specifiedType),
+          data);
     });
 
-    test('loses generic type without builder', () {
+    test('keeps generic type when deserialized', () {
       expect(
           serializers
-              .deserialize(serialized, genericType: genericType)
-              .runtimeType
-              .toString(),
-          'BuiltMap<Object, Object>');
-    });
-
-    test('keeps generic type with builder', () {
-      final genericSerializer = (serializers.toBuilder()
-        ..addBuilderFactory(
-            genericType, () => new MapBuilder<int, String>())).build();
-
-      expect(
-          genericSerializer
-              .deserialize(serialized, genericType: genericType)
+              .deserialize(serialized, specifiedType: specifiedType)
               .runtimeType
               .toString(),
           'BuiltMap<int, String>');
     });
   });
 
-  group('BuiltMap nested left with known genericType', () {
+  group('BuiltMap nested left with known specifiedType', () {
     final data = new BuiltMap<BuiltMap<int, String>, String>({
       new BuiltMap<int, String>({1: 'one'}): 'one!',
       new BuiltMap<int, String>({2: 'two'}): 'two!'
     });
-    final genericType = const GenericType(BuiltMap, const [
-      const GenericType(
-          BuiltMap, const [const GenericType(int), const GenericType(String)]),
-      const GenericType(String)
-    ]);
+    const innerTypeLeft = const FullType(
+        BuiltMap, const [const FullType(int), const FullType(String)]);
+    final specifiedType =
+        const FullType(BuiltMap, const [innerTypeLeft, const FullType(String)]);
+    final serializers = (new Serializers().toBuilder()
+      ..addBuilderFactory(innerTypeLeft, () => new MapBuilder<int, String>())
+      ..addBuilderFactory(specifiedType,
+          () => new MapBuilder<BuiltMap<int, String>, String>())).build();
     final serialized = [
       [1, 'one'],
       'one!',
@@ -65,25 +77,30 @@ void main() {
     ];
 
     test('can be serialized', () {
-      expect(serializers.serialize(data, genericType: genericType), serialized);
+      expect(serializers.serialize(data, specifiedType: specifiedType),
+          serialized);
     });
 
     test('can be deserialized', () {
-      expect(
-          serializers.deserialize(serialized, genericType: genericType), data);
+      expect(serializers.deserialize(serialized, specifiedType: specifiedType),
+          data);
     });
   });
 
-  group('BuiltMap nested right with known genericType', () {
+  group('BuiltMap nested right with known specifiedType', () {
     final data = new BuiltMap<int, BuiltMap<String, String>>({
       1: new BuiltMap<String, String>({'one': 'one!'}),
       2: new BuiltMap<String, String>({'two': 'two!'})
     });
-    final genericType = const GenericType(BuiltMap, const [
-      const GenericType(int),
-      const GenericType(BuiltMap,
-          const [const GenericType(String), const GenericType(String)])
-    ]);
+    const innerTypeRight = const FullType(
+        BuiltMap, const [const FullType(String), const FullType(String)]);
+    final specifiedType =
+        const FullType(BuiltMap, const [const FullType(int), innerTypeRight]);
+    final serializers = (new Serializers().toBuilder()
+      ..addBuilderFactory(
+          innerTypeRight, () => new MapBuilder<String, String>())
+      ..addBuilderFactory(specifiedType,
+          () => new MapBuilder<int, BuiltMap<String, String>>())).build();
     final serialized = [
       1,
       ['one', 'one!'],
@@ -92,28 +109,38 @@ void main() {
     ];
 
     test('can be serialized', () {
-      expect(serializers.serialize(data, genericType: genericType), serialized);
+      expect(serializers.serialize(data, specifiedType: specifiedType),
+          serialized);
     });
 
     test('can be deserialized', () {
-      expect(
-          serializers.deserialize(serialized, genericType: genericType), data);
+      expect(serializers.deserialize(serialized, specifiedType: specifiedType),
+          data);
     });
   });
 
-  group('BuiltMap nested both with known genericType', () {
+  group('BuiltMap nested both with known specifiedType', () {
     final data = new BuiltMap<BuiltMap<int, int>, BuiltMap<String, String>>({
       new BuiltMap<int, int>({1: 1}):
           new BuiltMap<String, String>({'one': 'one!'}),
       new BuiltMap<int, int>({2: 2}):
           new BuiltMap<String, String>({'two': 'two!'})
     });
-    const builtMapOfIntIntGenericType = const GenericType(
-        BuiltMap, const [const GenericType(int), const GenericType(int)]);
-    const builtMapOfStringStringGenericType = const GenericType(
-        BuiltMap, const [const GenericType(String), const GenericType(String)]);
-    final genericType = const GenericType(BuiltMap,
+    const builtMapOfIntIntGenericType = const FullType(
+        BuiltMap, const [const FullType(int), const FullType(int)]);
+    const builtMapOfStringStringGenericType = const FullType(
+        BuiltMap, const [const FullType(String), const FullType(String)]);
+    final specifiedType = const FullType(BuiltMap,
         const [builtMapOfIntIntGenericType, builtMapOfStringStringGenericType]);
+    final serializers = (new Serializers().toBuilder()
+      ..addBuilderFactory(
+          builtMapOfIntIntGenericType, () => new MapBuilder<int, int>())
+      ..addBuilderFactory(builtMapOfStringStringGenericType,
+          () => new MapBuilder<String, String>())
+      ..addBuilderFactory(
+          specifiedType,
+          () => new MapBuilder<BuiltMap<int, int>,
+              BuiltMap<String, String>>())).build();
     final serialized = [
       [1, 1],
       ['one', 'one!'],
@@ -122,27 +149,19 @@ void main() {
     ];
 
     test('can be serialized', () {
-      expect(serializers.serialize(data, genericType: genericType), serialized);
+      expect(serializers.serialize(data, specifiedType: specifiedType),
+          serialized);
     });
 
     test('can be deserialized', () {
-      expect(
-          serializers.deserialize(serialized, genericType: genericType), data);
+      expect(serializers.deserialize(serialized, specifiedType: specifiedType),
+          data);
     });
 
-    test('loses generic type without builder', () {
-      expect(
-          serializers
-              .deserialize(serialized, genericType: genericType)
-              .runtimeType
-              .toString(),
-          'BuiltMap<Object, Object>');
-    });
-
-    test('keeps generic type with builder', () {
+    test('keeps generic type on deserialization', () {
       final genericSerializer = (serializers.toBuilder()
         ..addBuilderFactory(
-            genericType,
+            specifiedType,
             () =>
                 new MapBuilder<BuiltMap<int, int>, BuiltMap<String, String>>())
         ..addBuilderFactory(
@@ -152,7 +171,7 @@ void main() {
 
       expect(
           genericSerializer
-              .deserialize(serialized, genericType: genericType)
+              .deserialize(serialized, specifiedType: specifiedType)
               .runtimeType
               .toString(),
           'BuiltMap<BuiltMap<int, int>, BuiltMap<String, String>>');
@@ -161,8 +180,11 @@ void main() {
 
   group('BuiltMap with Object values', () {
     final data = new BuiltMap<int, Object>({1: 'one', 2: 2, 3: 'three'});
-    final genericType = const GenericType(
-        BuiltMap, const [const GenericType(int), const GenericType()]);
+    final specifiedType =
+        const FullType(BuiltMap, const [const FullType(int), const FullType()]);
+    final serializers = (new Serializers().toBuilder()
+      ..addBuilderFactory(
+          specifiedType, () => new MapBuilder<int, Object>())).build();
     final serialized = [
       1,
       ['String', 'one'],
@@ -173,20 +195,24 @@ void main() {
     ];
 
     test('can be serialized', () {
-      expect(serializers.serialize(data, genericType: genericType), serialized);
+      expect(serializers.serialize(data, specifiedType: specifiedType),
+          serialized);
     });
 
     test('can be deserialized', () {
-      expect(
-          serializers.deserialize(serialized, genericType: genericType), data);
+      expect(serializers.deserialize(serialized, specifiedType: specifiedType),
+          data);
     });
   });
 
   group('BuiltMap with Object keys', () {
     final data =
         new BuiltMap<Object, String>({1: 'one', 'two': 'two', 3: 'three'});
-    final genericType = const GenericType(
-        BuiltMap, const [const GenericType(), const GenericType(String)]);
+    final specifiedType = const FullType(
+        BuiltMap, const [const FullType(), const FullType(String)]);
+    final serializers = (new Serializers().toBuilder()
+      ..addBuilderFactory(
+          specifiedType, () => new MapBuilder<Object, String>())).build();
     final serialized = [
       ['int', 1],
       'one',
@@ -197,18 +223,20 @@ void main() {
     ];
 
     test('can be serialized', () {
-      expect(serializers.serialize(data, genericType: genericType), serialized);
+      expect(serializers.serialize(data, specifiedType: specifiedType),
+          serialized);
     });
 
     test('can be deserialized', () {
-      expect(
-          serializers.deserialize(serialized, genericType: genericType), data);
+      expect(serializers.deserialize(serialized, specifiedType: specifiedType),
+          data);
     });
   });
 
   group('BuiltMap with Object keys and values', () {
     final data = new BuiltMap<Object, Object>({1: 'one', 'two': 2, 3: 'three'});
-    final genericType = const GenericType(BuiltMap);
+    final specifiedType = const FullType(BuiltMap);
+    final serializers = new Serializers();
     final serialized = [
       ['int', 1],
       ['String', 'one'],
@@ -219,18 +247,20 @@ void main() {
     ];
 
     test('can be serialized', () {
-      expect(serializers.serialize(data, genericType: genericType), serialized);
+      expect(serializers.serialize(data, specifiedType: specifiedType),
+          serialized);
     });
 
     test('can be deserialized', () {
-      expect(
-          serializers.deserialize(serialized, genericType: genericType), data);
+      expect(serializers.deserialize(serialized, specifiedType: specifiedType),
+          data);
     });
   });
 
-  group('BuiltMap with unknown genericType', () {
+  group('BuiltMap with unknown specifiedType', () {
     final data = new BuiltMap<Object, Object>({1: 'one', 'two': 2, 3: 'three'});
-    final genericType = const GenericType();
+    final specifiedType = const FullType();
+    final serializers = new Serializers();
     final serialized = [
       'map',
       ['int', 1],
@@ -242,12 +272,13 @@ void main() {
     ];
 
     test('can be serialized', () {
-      expect(serializers.serialize(data, genericType: genericType), serialized);
+      expect(serializers.serialize(data, specifiedType: specifiedType),
+          serialized);
     });
 
     test('can be deserialized', () {
-      expect(
-          serializers.deserialize(serialized, genericType: genericType), data);
+      expect(serializers.deserialize(serialized, specifiedType: specifiedType),
+          data);
     });
   });
 }

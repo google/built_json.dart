@@ -11,14 +11,14 @@ class BoolSerializer implements Serializer<bool> {
   final String wireName = 'bool';
 
   @override
-  Object serialize(Serializers serializers, bool object,
-      {GenericType genericType: const GenericType()}) {
-    return object;
+  Object serialize(Serializers serializers, bool boolean,
+      {FullType specifiedType: const FullType()}) {
+    return boolean;
   }
 
   @override
-  bool deserialize(Serializers serializers, Object object,
-      {GenericType genericType: const GenericType()}) {
-    return object as bool;
+  bool deserialize(Serializers serializers, Object serialized,
+      {FullType specifiedType: const FullType()}) {
+    return serialized as bool;
   }
 }

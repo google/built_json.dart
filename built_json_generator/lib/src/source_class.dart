@@ -59,6 +59,14 @@ abstract class SourceClass implements Built<SourceClass, SourceClassBuilder> {
     return '..add(${name}.serializer)';
   }
 
+  String generateBuilderFactoryAdders() {
+    return fields
+        .where((field) => field.needsBuilder)
+        .map((field) =>
+            '..addBuilderFactory(${field.generateFullType()}, () => ${field.generateBuilder()})')
+        .join('\n');
+  }
+
   String generateSerializerDeclaration() {
     final camelCaseName = _toCamelCase(name);
     return 'Serializer<$name> '
@@ -76,13 +84,13 @@ class _\$${name}Serializer implements Serializer<$name> {
 
   @override
   Object serialize(Serializers serializers, $name object,
-      {GenericType genericType: const GenericType()}) {
+      {FullType specifiedType: const FullType()}) {
     return [${_generateFieldSerializers()}];
   }
 
   @override
   $name deserialize(Serializers serializers, Object object,
-      {GenericType genericType: const GenericType()}) {
+      {FullType specifiedType: const FullType()}) {
     final result = new ${name}Builder();
 
     var key;
@@ -115,13 +123,13 @@ class _\$${name}Serializer implements Serializer<$name> {
 
   @override
   Object serialize(Serializers serializers, $name object,
-      {GenericType genericType: const GenericType()}) {
+      {FullType specifiedType: const FullType()}) {
     return object.name;
   }
 
   @override
   $name deserialize(Serializers serializers, Object object,
-      {GenericType genericType: const GenericType()}) {
+      {FullType specifiedType: const FullType()}) {
     return ${name}.valueOf(object);
   }
 }
@@ -135,7 +143,7 @@ class _\$${name}Serializer implements Serializer<$name> {
     return fields
         .map((field) => "'${field.name}', "
             "serializers.serialize(object.${field.name}, "
-            "genericType: ${field.generateGenericType()}),")
+            "specifiedType: ${field.generateFullType()}),")
         .join('');
   }
 
@@ -145,14 +153,14 @@ class _\$${name}Serializer implements Serializer<$name> {
         return '''
 case '${field.name}':
   result.${field.name}.replace(serializers.deserialize(
-      value, genericType: ${field.generateGenericType()}));
+      value, specifiedType: ${field.generateFullType()}));
   break;
 ''';
       } else {
         return '''
 case '${field.name}':
   result.${field.name} = serializers.deserialize(
-      value, genericType: ${field.generateGenericType()});
+      value, specifiedType: ${field.generateFullType()});
   break;
 ''';
       }
