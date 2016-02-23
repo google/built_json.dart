@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// 2016-01-05T16:23:30.833Z
+// 2016-01-25T19:49:57.154Z
 
 part of compound_value;
 
@@ -19,20 +19,20 @@ class _$CompoundValueSerializer implements Serializer<CompoundValue> {
 
   @override
   Object serialize(Serializers serializers, CompoundValue object,
-      {GenericType genericType: const GenericType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     return [
       'aValue',
       serializers.serialize(object.aValue,
-          genericType: const GenericType(Value)),
+          specifiedType: const FullType(Value)),
       'aTestEnum',
       serializers.serialize(object.aTestEnum,
-          genericType: const GenericType(TestEnum)),
+          specifiedType: const FullType(TestEnum)),
     ];
   }
 
   @override
   CompoundValue deserialize(Serializers serializers, Object object,
-      {GenericType genericType: const GenericType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     final result = new CompoundValueBuilder();
 
     var key;
@@ -49,11 +49,11 @@ class _$CompoundValueSerializer implements Serializer<CompoundValue> {
         switch (key as String) {
           case 'aValue':
             result.aValue.replace(serializers.deserialize(value,
-                genericType: const GenericType(Value)));
+                specifiedType: const FullType(Value)));
             break;
           case 'aTestEnum':
             result.aTestEnum = serializers.deserialize(value,
-                genericType: const GenericType(TestEnum));
+                specifiedType: const FullType(TestEnum));
             break;
         }
       }

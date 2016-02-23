@@ -59,7 +59,9 @@ abstract class SourceLibrary
             ? 'Serializers _\$serializers = (new Serializers().toBuilder()' +
                 transitiveSourceClasses
                     .map((sourceClass) =>
-                        sourceClass.generateTransitiveSerializerAdder())
+                        sourceClass.generateTransitiveSerializerAdder() +
+                            '\n' +
+                            sourceClass.generateBuilderFactoryAdders())
                     .join('\n') +
                 ').build();'
             : '') +

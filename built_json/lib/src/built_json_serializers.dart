@@ -10,15 +10,15 @@ class BuiltJsonSerializers implements Serializers {
   final BuiltMap<Type, Serializer> _typeToSerializer;
   final BuiltMap<String, Serializer> _wireNameToSerializer;
   final BuiltMap<String, Serializer> _typeNameToSerializer;
-  final BuiltMap<GenericType, Function> _builderFactories;
+  final BuiltMap<FullType, Function> _builderFactories;
 
   BuiltJsonSerializers._(this._typeToSerializer, this._wireNameToSerializer,
       this._typeNameToSerializer, this._builderFactories);
 
   @override
   Object serialize(Object object,
-      {GenericType genericType: const GenericType()}) {
-    if (genericType.isObject) {
+      {FullType specifiedType: FullType.unspecified}) {
+    if (specifiedType.isUnspecified) {
       final serializer = _getSerializerByType(object.runtimeType);
       if (serializer == null) throw new StateError(
           "No serializer for '${object.runtimeType}'.");
@@ -31,19 +31,19 @@ class BuiltJsonSerializers implements Serializers {
         return <Object>[serializer.wireName, serialized];
       }
     } else {
-      final serializer = _getSerializerByType(genericType.root);
+      final serializer = _getSerializerByType(specifiedType.root);
       if (serializer == null) throw new StateError(
-          "No serializer for '${genericType.root}'.");
+          "No serializer for '${specifiedType.root}'.");
       final result =
-          serializer.serialize(this, object, genericType: genericType);
+          serializer.serialize(this, object, specifiedType: specifiedType);
       return serializer.structured ? (result as Iterable).toList() : result;
     }
   }
 
   @override
   Object deserialize(Object object,
-      {GenericType genericType: const GenericType()}) {
-    if (genericType.isObject) {
+      {FullType specifiedType: FullType.unspecified}) {
+    if (specifiedType.isUnspecified) {
       final wireName = (object as List).first;
 
       final serializer = _wireNameToSerializer[wireName];
@@ -55,17 +55,22 @@ class BuiltJsonSerializers implements Serializers {
           : (object as List)[1];
       return serializer.deserialize(this, json);
     } else {
-      final serializer = _getSerializerByType(genericType.root);
+      final serializer = _getSerializerByType(specifiedType.root);
       if (serializer == null) throw new StateError(
-          "No serializer for '${genericType.root}'.");
-      return serializer.deserialize(this, object, genericType: genericType);
+          "No serializer for '${specifiedType.root}'.");
+      return serializer.deserialize(this, object, specifiedType: specifiedType);
     }
   }
 
   @override
-  Object newBuilder(types) {
-    final builderFactory = _builderFactories[types];
+  Object newBuilder(FullType fullType) {
+    final builderFactory = _builderFactories[fullType];
     return builderFactory == null ? null : builderFactory();
+  }
+
+  @override
+  bool hasBuilder(FullType fullType) {
+    return _builderFactories.containsKey(fullType);
   }
 
   @override
@@ -91,8 +96,8 @@ class BuiltJsonSerializersBuilder implements SerializersBuilder {
   MapBuilder<String, Serializer> _typeNameToSerializer =
       new MapBuilder<String, Serializer>();
 
-  MapBuilder<GenericType, Function> _builderFactories =
-      new MapBuilder<GenericType, Function>();
+  MapBuilder<FullType, Function> _builderFactories =
+      new MapBuilder<FullType, Function>();
 
   BuiltJsonSerializersBuilder();
 
@@ -110,7 +115,7 @@ class BuiltJsonSerializersBuilder implements SerializersBuilder {
     }
   }
 
-  void addBuilderFactory(GenericType types, Function function) {
+  void addBuilderFactory(FullType types, Function function) {
     _builderFactories[types] = function;
   }
 

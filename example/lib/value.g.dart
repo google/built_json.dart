@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// 2016-01-05T16:23:30.814Z
+// 2016-02-23T09:14:21.866Z
 
 part of value;
 
@@ -17,29 +17,29 @@ class _$ValueSerializer implements Serializer<Value> {
 
   @override
   Object serialize(Serializers serializers, Value object,
-      {GenericType genericType: const GenericType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     return [
       'anInt',
-      serializers.serialize(object.anInt, genericType: const GenericType(int)),
+      serializers.serialize(object.anInt, specifiedType: const FullType(int)),
       'aString',
       serializers.serialize(object.aString,
-          genericType: const GenericType(String)),
+          specifiedType: const FullType(String)),
       'anObject',
       serializers.serialize(object.anObject,
-          genericType: const GenericType(Object)),
+          specifiedType: FullType.unspecified),
       'aDefaultInt',
       serializers.serialize(object.aDefaultInt,
-          genericType: const GenericType(int)),
+          specifiedType: const FullType(int)),
       'listOfInt',
       serializers.serialize(object.listOfInt,
-          genericType:
-              const GenericType(BuiltList, const [const GenericType(int)])),
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(int)])),
     ];
   }
 
   @override
   Value deserialize(Serializers serializers, Object object,
-      {GenericType genericType: const GenericType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     final result = new ValueBuilder();
 
     var key;
@@ -56,24 +56,24 @@ class _$ValueSerializer implements Serializer<Value> {
         switch (key as String) {
           case 'anInt':
             result.anInt = serializers.deserialize(value,
-                genericType: const GenericType(int));
+                specifiedType: const FullType(int));
             break;
           case 'aString':
             result.aString = serializers.deserialize(value,
-                genericType: const GenericType(String));
+                specifiedType: const FullType(String));
             break;
           case 'anObject':
             result.anObject = serializers.deserialize(value,
-                genericType: const GenericType(Object));
+                specifiedType: FullType.unspecified);
             break;
           case 'aDefaultInt':
             result.aDefaultInt = serializers.deserialize(value,
-                genericType: const GenericType(int));
+                specifiedType: const FullType(int));
             break;
           case 'listOfInt':
             result.listOfInt.replace(serializers.deserialize(value,
-                genericType: const GenericType(
-                    BuiltList, const [const GenericType(int)])));
+                specifiedType:
+                    const FullType(BuiltList, const [const FullType(int)])));
             break;
         }
       }

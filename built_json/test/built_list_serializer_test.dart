@@ -7,54 +7,69 @@ import 'package:built_json/built_json.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final serializers = new Serializers();
-
-  group('BuiltList with known genericType', () {
+  group('BuiltList with known specifiedType but missing builder', () {
     final data = new BuiltList<int>([1, 2, 3]);
-    final genericType =
-        const GenericType(BuiltList, const [const GenericType(int)]);
+    final specifiedType =
+        const FullType(BuiltList, const [const FullType(int)]);
+    final serializers = new Serializers();
+    final serialized = [1, 2, 3];
+
+    test('serialize throws', () {
+      expect(() => serializers.serialize(data, specifiedType: specifiedType),
+          throws);
+    });
+
+    test('deserialize throws', () {
+      expect(
+          () =>
+              serializers.deserialize(serialized, specifiedType: specifiedType),
+          throws);
+    });
+  });
+
+  group('BuiltList with known specifiedType and correct builder', () {
+    final data = new BuiltList<int>([1, 2, 3]);
+    final specifiedType =
+        const FullType(BuiltList, const [const FullType(int)]);
+    final serializers = (new Serializers().toBuilder()
+      ..addBuilderFactory(specifiedType, () => new ListBuilder<int>())).build();
     final serialized = [1, 2, 3];
 
     test('can be serialized', () {
-      expect(serializers.serialize(data, genericType: genericType), serialized);
+      expect(serializers.serialize(data, specifiedType: specifiedType),
+          serialized);
     });
 
     test('can be deserialized', () {
-      expect(
-          serializers.deserialize(serialized, genericType: genericType), data);
+      expect(serializers.deserialize(serialized, specifiedType: specifiedType),
+          data);
     });
 
-    test('loses generic type without builder', () {
+    test('keeps generic type when deserialized', () {
       expect(
           serializers
-              .deserialize(serialized, genericType: genericType)
-              .runtimeType
-              .toString(),
-          'BuiltList<Object>');
-    });
-
-    test('keeps generic type with builder', () {
-      final genericSerializer = (serializers.toBuilder()
-        ..addBuilderFactory(genericType, () => new ListBuilder<int>())).build();
-
-      expect(
-          genericSerializer
-              .deserialize(serialized, genericType: genericType)
+              .deserialize(serialized, specifiedType: specifiedType)
               .runtimeType
               .toString(),
           'BuiltList<int>');
     });
   });
 
-  group('BuiltList nested with known genericType', () {
+  group('BuiltList nested with known specifiedType and correct builders', () {
     final data = new BuiltList<BuiltList<int>>([
       new BuiltList<int>([1, 2, 3]),
       new BuiltList<int>([4, 5, 6]),
       new BuiltList<int>([7, 8, 9])
     ]);
-    final genericType = const GenericType(BuiltList, const [
-      const GenericType(BuiltList, const [const GenericType(int)])
+    final specifiedType = const FullType(BuiltList, const [
+      const FullType(BuiltList, const [const FullType(int)])
     ]);
+    final serializers = (new Serializers().toBuilder()
+      ..addBuilderFactory(
+          specifiedType, () => new ListBuilder<BuiltList<int>>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(int)]),
+          () => new ListBuilder<int>())).build();
     final serialized = [
       [1, 2, 3],
       [4, 5, 6],
@@ -62,18 +77,20 @@ void main() {
     ];
 
     test('can be serialized', () {
-      expect(serializers.serialize(data, genericType: genericType), serialized);
+      expect(serializers.serialize(data, specifiedType: specifiedType),
+          serialized);
     });
 
     test('can be deserialized', () {
-      expect(
-          serializers.deserialize(serialized, genericType: genericType), data);
+      expect(serializers.deserialize(serialized, specifiedType: specifiedType),
+          data);
     });
   });
 
-  group('BuiltList with unknown genericType', () {
+  group('BuiltList with unknown specifiedType and no builders', () {
     final data = new BuiltList<int>([1, 2, 3]);
-    final genericType = const GenericType();
+    final specifiedType = FullType.unspecified;
+    final serializers = new Serializers();
     final serialized = [
       'list',
       ['int', 1],
@@ -82,12 +99,13 @@ void main() {
     ];
 
     test('can be serialized', () {
-      expect(serializers.serialize(data, genericType: genericType), serialized);
+      expect(serializers.serialize(data, specifiedType: specifiedType),
+          serialized);
     });
 
     test('can be deserialized', () {
-      expect(
-          serializers.deserialize(serialized, genericType: genericType), data);
+      expect(serializers.deserialize(serialized, specifiedType: specifiedType),
+          data);
     });
   });
 }

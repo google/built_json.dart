@@ -11,14 +11,14 @@ class IntSerializer implements Serializer<int> {
   final String wireName = 'int';
 
   @override
-  Object serialize(Serializers serializers, int object,
-      {GenericType genericType: const GenericType()}) {
-    return object;
+  Object serialize(Serializers serializers, int integer,
+      {FullType specifiedType: FullType.unspecified}) {
+    return integer;
   }
 
   @override
-  int deserialize(Serializers serializers, Object object,
-      {GenericType genericType: const GenericType()}) {
-    return object as int;
+  int deserialize(Serializers serializers, Object serialized,
+      {FullType specifiedType: FullType.unspecified}) {
+    return serialized as int;
   }
 }

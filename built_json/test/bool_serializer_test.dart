@@ -8,33 +8,33 @@ import 'package:test/test.dart';
 void main() {
   final serializers = new Serializers();
 
-  group('bool with known genericType', () {
+  group('bool with known specifiedType', () {
     final data = true;
     final serialized = true;
-    final genericType = const GenericType(bool);
+    final specifiedType = const FullType(bool);
 
     test('can be serialized', () {
-      expect(serializers.serialize(data, genericType: genericType), serialized);
+      expect(serializers.serialize(data, specifiedType: specifiedType), serialized);
     });
 
     test('can be deserialized', () {
       expect(
-          serializers.deserialize(serialized, genericType: genericType), data);
+          serializers.deserialize(serialized, specifiedType: specifiedType), data);
     });
   });
 
-  group('bool with unknown genericType', () {
+  group('bool with unknown specifiedType', () {
     final data = true;
     final serialized = ['bool', true];
-    final genericType = const GenericType();
+    final specifiedType = FullType.unspecified;
 
     test('can be serialized', () {
-      expect(serializers.serialize(data, genericType: genericType), serialized);
+      expect(serializers.serialize(data, specifiedType: specifiedType), serialized);
     });
 
     test('can be deserialized', () {
       expect(
-          serializers.deserialize(serialized, genericType: genericType), data);
+          serializers.deserialize(serialized, specifiedType: specifiedType), data);
     });
   });
 }
