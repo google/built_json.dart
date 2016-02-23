@@ -26,7 +26,7 @@ void main() {
   group('bool with unknown specifiedType', () {
     final data = true;
     final serialized = ['bool', true];
-    final specifiedType = const FullType();
+    final specifiedType = FullType.unspecified;
 
     test('can be serialized', () {
       expect(serializers.serialize(data, specifiedType: specifiedType), serialized);

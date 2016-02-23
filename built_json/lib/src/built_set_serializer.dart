@@ -12,12 +12,12 @@ class BuiltSetSerializer implements Serializer<BuiltSet> {
 
   @override
   Object serialize(Serializers serializers, BuiltSet builtSet,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     final isUnderspecified =
-        specifiedType.isObject || specifiedType.parameters.isEmpty;
+        specifiedType.isUnspecified || specifiedType.parameters.isEmpty;
 
-    final valueGenericType = specifiedType.parameters.isEmpty
-        ? const FullType()
+    final elementType = specifiedType.parameters.isEmpty
+        ? FullType.unspecified
         : specifiedType.parameters[0];
 
     if (!isUnderspecified && !serializers.hasBuilder(specifiedType)) {
@@ -25,17 +25,17 @@ class BuiltSetSerializer implements Serializer<BuiltSet> {
     }
 
     return builtSet.map(
-        (item) => serializers.serialize(item, specifiedType: valueGenericType));
+        (item) => serializers.serialize(item, specifiedType: elementType));
   }
 
   @override
   BuiltSet deserialize(Serializers serializers, Object serialized,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     final isUnderspecified =
-        specifiedType.isObject || specifiedType.parameters.isEmpty;
+        specifiedType.isUnspecified || specifiedType.parameters.isEmpty;
 
-    final valueGenericType = specifiedType.parameters.isEmpty
-        ? const FullType()
+    final elementType = specifiedType.parameters.isEmpty
+        ? FullType.unspecified
         : specifiedType.parameters[0];
     final result = isUnderspecified
         ? new SetBuilder<Object>()
@@ -45,7 +45,7 @@ class BuiltSetSerializer implements Serializer<BuiltSet> {
           'No builder for $specifiedType, cannot deserialize.');
     }
     result.addAll((serialized as Iterable).map((item) =>
-        serializers.deserialize(item, specifiedType: valueGenericType)));
+        serializers.deserialize(item, specifiedType: elementType)));
     return result.build();
   }
 }

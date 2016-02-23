@@ -12,12 +12,12 @@ class BuiltListSerializer implements Serializer<BuiltList> {
 
   @override
   Object serialize(Serializers serializers, BuiltList builtList,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     final isUnderspecified =
-        specifiedType.isObject || specifiedType.parameters.isEmpty;
+        specifiedType.isUnspecified || specifiedType.parameters.isEmpty;
 
-    final valueGenericType = specifiedType.parameters.isEmpty
-        ? const FullType()
+    final elementType = specifiedType.parameters.isEmpty
+        ? FullType.unspecified
         : specifiedType.parameters[0];
 
     if (!isUnderspecified && !serializers.hasBuilder(specifiedType)) {
@@ -26,17 +26,17 @@ class BuiltListSerializer implements Serializer<BuiltList> {
     }
 
     return builtList.map(
-        (item) => serializers.serialize(item, specifiedType: valueGenericType));
+        (item) => serializers.serialize(item, specifiedType: elementType));
   }
 
   @override
   BuiltList deserialize(Serializers serializers, Object serialized,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     final isUnderspecified =
-        specifiedType.isObject || specifiedType.parameters.isEmpty;
+        specifiedType.isUnspecified || specifiedType.parameters.isEmpty;
 
-    final valueGenericType = specifiedType.parameters.isEmpty
-        ? const FullType()
+    final elementType = specifiedType.parameters.isEmpty
+        ? FullType.unspecified
         : specifiedType.parameters[0];
 
     final result = isUnderspecified
@@ -47,7 +47,7 @@ class BuiltListSerializer implements Serializer<BuiltList> {
           'No builder for $specifiedType, cannot deserialize.');
     }
     result.addAll((serialized as Iterable).map((item) =>
-        serializers.deserialize(item, specifiedType: valueGenericType)));
+        serializers.deserialize(item, specifiedType: elementType)));
     return result.build();
   }
 }

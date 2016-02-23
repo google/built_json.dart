@@ -92,7 +92,7 @@ void main() {
 
   group('BuiltSet with unknown specifiedType and no builders', () {
     final data = new BuiltSet<int>([1, 2, 3]);
-    final specifiedType = const FullType();
+    final specifiedType = FullType.unspecified;
     final serializers = new Serializers();
     final serialized = [
       'set',

@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// 2016-01-25T19:49:57.138Z
+// 2016-02-23T09:14:21.866Z
 
 part of value;
 
@@ -17,7 +17,7 @@ class _$ValueSerializer implements Serializer<Value> {
 
   @override
   Object serialize(Serializers serializers, Value object,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     return [
       'anInt',
       serializers.serialize(object.anInt, specifiedType: const FullType(int)),
@@ -26,7 +26,7 @@ class _$ValueSerializer implements Serializer<Value> {
           specifiedType: const FullType(String)),
       'anObject',
       serializers.serialize(object.anObject,
-          specifiedType: const FullType(Object)),
+          specifiedType: FullType.unspecified),
       'aDefaultInt',
       serializers.serialize(object.aDefaultInt,
           specifiedType: const FullType(int)),
@@ -39,7 +39,7 @@ class _$ValueSerializer implements Serializer<Value> {
 
   @override
   Value deserialize(Serializers serializers, Object object,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     final result = new ValueBuilder();
 
     var key;
@@ -64,7 +64,7 @@ class _$ValueSerializer implements Serializer<Value> {
             break;
           case 'anObject':
             result.anObject = serializers.deserialize(value,
-                specifiedType: const FullType(Object));
+                specifiedType: FullType.unspecified);
             break;
           case 'aDefaultInt':
             result.aDefaultInt = serializers.deserialize(value,

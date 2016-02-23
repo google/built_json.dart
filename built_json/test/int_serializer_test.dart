@@ -26,7 +26,7 @@ void main() {
   group('int with unknown specifiedType', () {
     final data = 42;
     final serialized = ['int', 42];
-    final specifiedType = const FullType();
+    final specifiedType = FullType.unspecified;
 
     test('can be serialized', () {
       expect(serializers.serialize(data, specifiedType: specifiedType), serialized);

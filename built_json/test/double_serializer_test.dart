@@ -26,7 +26,7 @@ void main() {
   group('double with unknown specifiedType', () {
     final data = 3.141592653589793;
     final serialized = ['double', data];
-    final specifiedType = const FullType();
+    final specifiedType = FullType.unspecified;
 
     test('can be serialized', () {
       expect(serializers.serialize(data, specifiedType: specifiedType), serialized);

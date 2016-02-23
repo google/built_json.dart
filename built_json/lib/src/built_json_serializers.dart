@@ -17,8 +17,8 @@ class BuiltJsonSerializers implements Serializers {
 
   @override
   Object serialize(Object object,
-      {FullType specifiedType: const FullType()}) {
-    if (specifiedType.isObject) {
+      {FullType specifiedType: FullType.unspecified}) {
+    if (specifiedType.isUnspecified) {
       final serializer = _getSerializerByType(object.runtimeType);
       if (serializer == null) throw new StateError(
           "No serializer for '${object.runtimeType}'.");
@@ -42,8 +42,8 @@ class BuiltJsonSerializers implements Serializers {
 
   @override
   Object deserialize(Object object,
-      {FullType specifiedType: const FullType()}) {
-    if (specifiedType.isObject) {
+      {FullType specifiedType: FullType.unspecified}) {
+    if (specifiedType.isUnspecified) {
       final wireName = (object as List).first;
 
       final serializer = _wireNameToSerializer[wireName];

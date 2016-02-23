@@ -181,7 +181,7 @@ void main() {
   group('BuiltMap with Object values', () {
     final data = new BuiltMap<int, Object>({1: 'one', 2: 2, 3: 'three'});
     final specifiedType =
-        const FullType(BuiltMap, const [const FullType(int), const FullType()]);
+        const FullType(BuiltMap, const [const FullType(int), FullType.unspecified]);
     final serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           specifiedType, () => new MapBuilder<int, Object>())).build();
@@ -209,7 +209,7 @@ void main() {
     final data =
         new BuiltMap<Object, String>({1: 'one', 'two': 'two', 3: 'three'});
     final specifiedType = const FullType(
-        BuiltMap, const [const FullType(), const FullType(String)]);
+        BuiltMap, const [FullType.unspecified, const FullType(String)]);
     final serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           specifiedType, () => new MapBuilder<Object, String>())).build();
@@ -259,7 +259,7 @@ void main() {
 
   group('BuiltMap with unknown specifiedType', () {
     final data = new BuiltMap<Object, Object>({1: 'one', 'two': 2, 3: 'three'});
-    final specifiedType = const FullType();
+    final specifiedType = FullType.unspecified;
     final serializers = new Serializers();
     final serialized = [
       'map',

@@ -13,13 +13,13 @@ class DoubleSerializer implements Serializer<double> {
 
   @override
   Object serialize(Serializers serializers, double aDouble,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     return aDouble;
   }
 
   @override
   double deserialize(Serializers serializers, Object serialized,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     return (serialized as num).toDouble();
   }
 }

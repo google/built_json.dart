@@ -17,13 +17,13 @@ class _$TestEnumSerializer implements Serializer<TestEnum> {
 
   @override
   Object serialize(Serializers serializers, TestEnum object,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     return object.name;
   }
 
   @override
   TestEnum deserialize(Serializers serializers, Object object,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     return TestEnum.valueOf(object);
   }
 }

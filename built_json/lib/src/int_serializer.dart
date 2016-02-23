@@ -12,13 +12,13 @@ class IntSerializer implements Serializer<int> {
 
   @override
   Object serialize(Serializers serializers, int integer,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     return integer;
   }
 
   @override
   int deserialize(Serializers serializers, Object serialized,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     return serialized as int;
   }
 }

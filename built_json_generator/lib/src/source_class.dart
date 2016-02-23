@@ -84,13 +84,13 @@ class _\$${name}Serializer implements Serializer<$name> {
 
   @override
   Object serialize(Serializers serializers, $name object,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     return [${_generateFieldSerializers()}];
   }
 
   @override
   $name deserialize(Serializers serializers, Object object,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     final result = new ${name}Builder();
 
     var key;
@@ -123,13 +123,13 @@ class _\$${name}Serializer implements Serializer<$name> {
 
   @override
   Object serialize(Serializers serializers, $name object,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     return object.name;
   }
 
   @override
   $name deserialize(Serializers serializers, Object object,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     return ${name}.valueOf(object);
   }
 }

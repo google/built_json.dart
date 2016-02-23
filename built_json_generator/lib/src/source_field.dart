@@ -59,6 +59,14 @@ abstract class SourceField implements Built<SourceField, SourceFieldBuilder> {
   }
 
   static String _generateFullType(String type) {
+    // TODO(davidmorgan): Object or any abstract class that is not a Built
+    // Value should return 'unspecified'; serialization will have to use the
+    // runtime type as the static type is not specific enough. Add detection
+    // for the abstract class case.
+    if (type == 'Object') {
+      return 'FullType.unspecified';
+    }
+
     // TODO(davidmorgan): support more than one level of nesting.
     final bareType = _getBareType(type);
     final generics = _getGenerics(type);

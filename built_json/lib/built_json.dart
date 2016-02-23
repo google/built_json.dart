@@ -44,7 +44,8 @@ abstract class Serializers {
   /// Create one using [SerializersBuilder].
   ///
   /// TODO(davidmorgan): document the wire format.
-  Object serialize(Object object, {FullType specifiedType: const FullType()});
+  Object serialize(Object object,
+      {FullType specifiedType: FullType.unspecified});
 
   /// Deserializes [serialized].
   ///
@@ -53,7 +54,7 @@ abstract class Serializers {
   /// If [serialized] was produced by calling [serialize] with [specifiedType],
   /// the exact same [specifiedType] must be provided to deserialize.
   Object deserialize(Object serialized,
-      {FullType specifiedType: const FullType()});
+      {FullType specifiedType: FullType.unspecified});
 
   /// Creates a new builder for the type represented by [fullType].
   ///
@@ -83,23 +84,29 @@ abstract class SerializersBuilder {
 }
 
 /// A [Type] with, optionally, [FullType] generic type parameters.
+///
+/// May also be [unspecified], indicating that no type information is
+/// available.
 class FullType {
+  // An unspecified type.
+  static const unspecified = const FullType(null);
+
   /// The root of the type.
   final Type root;
 
   /// Type parameters of the type.
   final List<FullType> parameters;
 
-  const FullType([this.root = Object, this.parameters = const []]);
+  const FullType(this.root, [this.parameters = const []]);
 
-  bool get isObject => root == Object;
+  bool get isUnspecified => identical(root, null);
 
   @override
-  String toString() {
-    return parameters.isEmpty
-        ? root.toString()
-        : '${root.toString()}<${parameters.join(", ")}>';
-  }
+  String toString() => isUnspecified
+      ? 'unspecified'
+      : parameters.isEmpty
+          ? root.toString()
+          : '${root.toString()}<${parameters.join(", ")}>';
 }
 
 /// Serializes a single type.
@@ -131,12 +138,12 @@ abstract class Serializer<T> {
   ///
   /// TODO(davidmorgan): document the wire format.
   Object serialize(Serializers serializers, T object,
-      {FullType specifiedType: const FullType()});
+      {FullType specifiedType: FullType.unspecified});
 
   /// Deserializes [serialized].
   ///
   /// Use [serializers] as needed for nested deserialization. Information about
   /// the type being deserialized is provided in [specifiedType].
   T deserialize(Serializers serializers, Object serialized,
-      {FullType specifiedType: const FullType()});
+      {FullType specifiedType: FullType.unspecified});
 }

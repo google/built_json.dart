@@ -12,15 +12,15 @@ class BuiltMapSerializer implements Serializer<BuiltMap> {
 
   @override
   Object serialize(Serializers serializers, BuiltMap builtMap,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     final isUnderspecified =
-        specifiedType.isObject || specifiedType.parameters.isEmpty;
+        specifiedType.isUnspecified || specifiedType.parameters.isEmpty;
 
-    final keyTypes = specifiedType.parameters.isEmpty
-        ? const FullType()
+    final keyType = specifiedType.parameters.isEmpty
+        ? FullType.unspecified
         : specifiedType.parameters[0];
-    final valueTypes = specifiedType.parameters.isEmpty
-        ? const FullType()
+    final valueType = specifiedType.parameters.isEmpty
+        ? FullType.unspecified
         : specifiedType.parameters[1];
 
     if (!isUnderspecified && !serializers.hasBuilder(specifiedType)) {
@@ -29,24 +29,24 @@ class BuiltMapSerializer implements Serializer<BuiltMap> {
 
     final result = <Object>[];
     for (final key in builtMap.keys) {
-      result.add(serializers.serialize(key, specifiedType: keyTypes));
+      result.add(serializers.serialize(key, specifiedType: keyType));
       final value = builtMap[key];
-      result.add(serializers.serialize(value, specifiedType: valueTypes));
+      result.add(serializers.serialize(value, specifiedType: valueType));
     }
     return result;
   }
 
   @override
   BuiltMap deserialize(Serializers serializers, Object serialized,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     final isUnderspecified =
-        specifiedType.isObject || specifiedType.parameters.isEmpty;
+        specifiedType.isUnspecified || specifiedType.parameters.isEmpty;
 
-    final keyTypes = specifiedType.parameters.isEmpty
-        ? const FullType()
+    final keyType = specifiedType.parameters.isEmpty
+        ? FullType.unspecified
         : specifiedType.parameters[0];
-    final valueTypes = specifiedType.parameters.isEmpty
-        ? const FullType()
+    final valueType = specifiedType.parameters.isEmpty
+        ? FullType.unspecified
         : specifiedType.parameters[1];
 
     final result = isUnderspecified
@@ -63,9 +63,9 @@ class BuiltMapSerializer implements Serializer<BuiltMap> {
     }
 
     for (int i = 0; i != list.length; i += 2) {
-      final key = serializers.deserialize(list[i], specifiedType: keyTypes);
+      final key = serializers.deserialize(list[i], specifiedType: keyType);
       final value =
-          serializers.deserialize(list[i + 1], specifiedType: valueTypes);
+          serializers.deserialize(list[i + 1], specifiedType: valueType);
       result[key] = value;
     }
 

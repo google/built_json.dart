@@ -12,13 +12,13 @@ class BoolSerializer implements Serializer<bool> {
 
   @override
   Object serialize(Serializers serializers, bool boolean,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     return boolean;
   }
 
   @override
   bool deserialize(Serializers serializers, Object serialized,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     return serialized as bool;
   }
 }

@@ -12,13 +12,13 @@ class StringSerializer implements Serializer<String> {
 
   @override
   Object serialize(Serializers serializers, String string,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     return string;
   }
 
   @override
   String deserialize(Serializers serializers, Object serialized,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     return serialized as String;
   }
 }

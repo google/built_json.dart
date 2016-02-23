@@ -19,7 +19,7 @@ class _$CompoundValueSerializer implements Serializer<CompoundValue> {
 
   @override
   Object serialize(Serializers serializers, CompoundValue object,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     return [
       'aValue',
       serializers.serialize(object.aValue,
@@ -32,7 +32,7 @@ class _$CompoundValueSerializer implements Serializer<CompoundValue> {
 
   @override
   CompoundValue deserialize(Serializers serializers, Object object,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     final result = new CompoundValueBuilder();
 
     var key;

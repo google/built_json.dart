@@ -118,7 +118,7 @@ class _$ValueSerializer implements Serializer<Value> {
 
   @override
   Object serialize(Serializers serializers, Value object,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     return [
       'aBool',
       serializers.serialize(object.aBool, specifiedType: const FullType(bool)),
@@ -135,7 +135,7 @@ class _$ValueSerializer implements Serializer<Value> {
 
   @override
   Value deserialize(Serializers serializers, Object object,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     final result = new ValueBuilder();
 
     var key;
@@ -214,7 +214,7 @@ class _$ValueSerializer implements Serializer<Value> {
 
   @override
   Object serialize(Serializers serializers, Value object,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     return [
       'aList',
       serializers.serialize(object.aList,
@@ -229,7 +229,7 @@ class _$ValueSerializer implements Serializer<Value> {
 
   @override
   Value deserialize(Serializers serializers, Object object,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     final result = new ValueBuilder();
 
     var key;
@@ -299,7 +299,7 @@ class _$ValueSerializer implements Serializer<Value> {
 
   @override
   Object serialize(Serializers serializers, Value object,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     return [
       'value',
       serializers.serialize(object.value, specifiedType: const FullType(Value)),
@@ -308,7 +308,7 @@ class _$ValueSerializer implements Serializer<Value> {
 
   @override
   Value deserialize(Serializers serializers, Object object,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     final result = new ValueBuilder();
 
     var key;
@@ -369,13 +369,13 @@ class _$TestEnumSerializer implements Serializer<TestEnum> {
 
   @override
   Object serialize(Serializers serializers, TestEnum object,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     return object.name;
   }
 
   @override
   TestEnum deserialize(Serializers serializers, Object object,
-      {FullType specifiedType: const FullType()}) {
+      {FullType specifiedType: FullType.unspecified}) {
     return TestEnum.valueOf(object);
   }
 }
