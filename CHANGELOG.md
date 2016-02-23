@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.4
+
+- Update built_value dependency to 0.0.6.
+- Fix analyzer version constraints.
+
 ## 0.0.3
 
 - Stop falling back to "<Object>" for collection type parameters.
