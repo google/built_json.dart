@@ -12,7 +12,7 @@ import 'package:source_gen/source_gen.dart';
 
 /// Generator for Built JSON.
 ///
-/// See <https://github.com/google/built_json.dart/tree/master/example>
+/// See: https://github.com/google/built_json.dart/tree/master/example
 class BuiltJsonGenerator extends Generator {
   Future<String> generate(Element element) async {
     if (element is! LibraryElement) return null;

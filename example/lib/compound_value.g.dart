@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// 2016-01-25T19:49:57.154Z
+// 2016-02-24T12:15:37.871Z
 
 part of compound_value;
 
@@ -11,14 +11,13 @@ part of compound_value;
 Serializer<CompoundValue> _$compoundValueSerializer =
     new _$CompoundValueSerializer();
 
-class _$CompoundValueSerializer implements Serializer<CompoundValue> {
-  final bool structured = true;
+class _$CompoundValueSerializer implements StructuredSerializer<CompoundValue> {
   final Iterable<Type> types =
       new BuiltList<Type>([CompoundValue, _$CompoundValue]);
   final String wireName = 'CompoundValue';
 
   @override
-  Object serialize(Serializers serializers, CompoundValue object,
+  Iterable serialize(Serializers serializers, CompoundValue object,
       {FullType specifiedType: FullType.unspecified}) {
     return [
       'aValue',
@@ -31,7 +30,7 @@ class _$CompoundValueSerializer implements Serializer<CompoundValue> {
   }
 
   @override
-  CompoundValue deserialize(Serializers serializers, Object object,
+  CompoundValue deserialize(Serializers serializers, Iterable object,
       {FullType specifiedType: FullType.unspecified}) {
     final result = new CompoundValueBuilder();
 

@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// 2016-01-25T19:49:57.083Z
+// 2016-02-24T12:15:37.800Z
 
 part of test_enum;
 
@@ -10,8 +10,7 @@ part of test_enum;
 
 Serializer<TestEnum> _$testEnumSerializer = new _$TestEnumSerializer();
 
-class _$TestEnumSerializer implements Serializer<TestEnum> {
-  final bool structured = false;
+class _$TestEnumSerializer implements PrimitiveSerializer<TestEnum> {
   final Iterable<Type> types = new BuiltList<Type>([TestEnum]);
   final String wireName = 'TestEnum';
 
