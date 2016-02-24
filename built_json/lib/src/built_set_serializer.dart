@@ -5,13 +5,13 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_json/built_json.dart';
 
-class BuiltSetSerializer implements Serializer<BuiltSet> {
+class BuiltSetSerializer implements StructuredSerializer<BuiltSet> {
   final bool structured = true;
   final Iterable<Type> types = new BuiltList<Type>([BuiltSet]);
   final String wireName = 'set';
 
   @override
-  Object serialize(Serializers serializers, BuiltSet builtSet,
+  Iterable serialize(Serializers serializers, BuiltSet builtSet,
       {FullType specifiedType: FullType.unspecified}) {
     final isUnderspecified =
         specifiedType.isUnspecified || specifiedType.parameters.isEmpty;
@@ -29,7 +29,7 @@ class BuiltSetSerializer implements Serializer<BuiltSet> {
   }
 
   @override
-  BuiltSet deserialize(Serializers serializers, Object serialized,
+  BuiltSet deserialize(Serializers serializers, Iterable serialized,
       {FullType specifiedType: FullType.unspecified}) {
     final isUnderspecified =
         specifiedType.isUnspecified || specifiedType.parameters.isEmpty;
@@ -37,14 +37,14 @@ class BuiltSetSerializer implements Serializer<BuiltSet> {
     final elementType = specifiedType.parameters.isEmpty
         ? FullType.unspecified
         : specifiedType.parameters[0];
-    final result = isUnderspecified
+    SetBuilder result = isUnderspecified
         ? new SetBuilder<Object>()
         : serializers.newBuilder(specifiedType) as SetBuilder;
     if (result == null) {
       throw new StateError(
           'No builder for $specifiedType, cannot deserialize.');
     }
-    result.addAll((serialized as Iterable).map((item) =>
+    result.addAll(serialized.map((item) =>
         serializers.deserialize(item, specifiedType: elementType)));
     return result.build();
   }

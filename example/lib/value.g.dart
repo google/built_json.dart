@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// 2016-02-23T09:14:21.866Z
+// 2016-02-24T12:15:37.854Z
 
 part of value;
 
@@ -10,13 +10,12 @@ part of value;
 
 Serializer<Value> _$valueSerializer = new _$ValueSerializer();
 
-class _$ValueSerializer implements Serializer<Value> {
-  final bool structured = true;
+class _$ValueSerializer implements StructuredSerializer<Value> {
   final Iterable<Type> types = new BuiltList<Type>([Value, _$Value]);
   final String wireName = 'Value';
 
   @override
-  Object serialize(Serializers serializers, Value object,
+  Iterable serialize(Serializers serializers, Value object,
       {FullType specifiedType: FullType.unspecified}) {
     return [
       'anInt',
@@ -38,7 +37,7 @@ class _$ValueSerializer implements Serializer<Value> {
   }
 
   @override
-  Value deserialize(Serializers serializers, Object object,
+  Value deserialize(Serializers serializers, Iterable object,
       {FullType specifiedType: FullType.unspecified}) {
     final result = new ValueBuilder();
 

@@ -8,8 +8,17 @@ import 'package:built_json/built_json.dart';
 /// Default implementation of [Serializers].
 class BuiltJsonSerializers implements Serializers {
   final BuiltMap<Type, Serializer> _typeToSerializer;
+
+  // Implementation note: wire name is what gets sent in the JSON, type name is
+  // the runtime type name. Type name is complicated for two reasons:
+  //
+  // 1. Built Value classes have two types, the abstract class and the
+  // generated implementation.
+  //
+  // 2. When compiled to javascript the runtime type names are obfuscated.
   final BuiltMap<String, Serializer> _wireNameToSerializer;
   final BuiltMap<String, Serializer> _typeNameToSerializer;
+
   final BuiltMap<FullType, Function> _builderFactories;
 
   BuiltJsonSerializers._(this._typeToSerializer, this._wireNameToSerializer,
@@ -20,23 +29,30 @@ class BuiltJsonSerializers implements Serializers {
       {FullType specifiedType: FullType.unspecified}) {
     if (specifiedType.isUnspecified) {
       final serializer = _getSerializerByType(object.runtimeType);
-      if (serializer == null) throw new StateError(
-          "No serializer for '${object.runtimeType}'.");
-      final serialized = serializer.serialize(this, object);
-
-      if (serializer.structured) {
+      if (serializer == null) {
+        throw new StateError("No serializer for '${object.runtimeType}'.");
+      }
+      if (serializer is StructuredSerializer) {
         final result = <Object>[serializer.wireName];
-        return result..addAll(serialized as Iterable);
+        return result..addAll(serializer.serialize(this, object));
       } else {
-        return <Object>[serializer.wireName, serialized];
+        return <Object>[
+          serializer.wireName,
+          serializer.serialize(this, object)
+        ];
       }
     } else {
       final serializer = _getSerializerByType(specifiedType.root);
-      if (serializer == null) throw new StateError(
-          "No serializer for '${specifiedType.root}'.");
-      final result =
-          serializer.serialize(this, object, specifiedType: specifiedType);
-      return serializer.structured ? (result as Iterable).toList() : result;
+      if (serializer == null) {
+        throw new StateError("No serializer for '${specifiedType.root}'.");
+      }
+      if (serializer is StructuredSerializer) {
+        return serializer
+            .serialize(this, object, specifiedType: specifiedType)
+            .toList();
+      } else {
+        return serializer.serialize(this, object, specifiedType: specifiedType);
+      }
     }
   }
 
@@ -50,14 +66,15 @@ class BuiltJsonSerializers implements Serializers {
       if (serializer == null) {
         throw new StateError("No serializer for '${wireName}'.");
       }
-      final json = serializer.structured
+      final json = serializer is StructuredSerializer
           ? (object as List).sublist(1)
           : (object as List)[1];
       return serializer.deserialize(this, json);
     } else {
       final serializer = _getSerializerByType(specifiedType.root);
-      if (serializer == null) throw new StateError(
-          "No serializer for '${specifiedType.root}'.");
+      if (serializer == null) {
+        throw new StateError("No serializer for '${specifiedType.root}'.");
+      }
       return serializer.deserialize(this, object, specifiedType: specifiedType);
     }
   }
@@ -108,6 +125,12 @@ class BuiltJsonSerializersBuilder implements SerializersBuilder {
       this._builderFactories);
 
   void add(Serializer serializer) {
+    if (serializer is! StructuredSerializer &&
+        serializer is! PrimitiveSerializer) {
+      throw new ArgumentError(
+          'serializer must be StructuredSerializer or PrimitiveSerializer');
+    }
+
     _wireNameToSerializer[serializer.wireName] = serializer;
     for (final type in serializer.types) {
       _typeToSerializer[type] = serializer;

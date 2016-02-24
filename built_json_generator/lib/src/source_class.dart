@@ -77,19 +77,18 @@ abstract class SourceClass implements Built<SourceClass, SourceClassBuilder> {
   String generateSerializer() {
     if (isBuiltValue) {
       return '''
-class _\$${name}Serializer implements Serializer<$name> {
-  final bool structured = true;
+class _\$${name}Serializer implements StructuredSerializer<$name> {
   final Iterable<Type> types = new BuiltList<Type>([$name, _\$$name]);
   final String wireName = '$name';
 
   @override
-  Object serialize(Serializers serializers, $name object,
+  Iterable serialize(Serializers serializers, $name object,
       {FullType specifiedType: FullType.unspecified}) {
     return [${_generateFieldSerializers()}];
   }
 
   @override
-  $name deserialize(Serializers serializers, Object object,
+  $name deserialize(Serializers serializers, Iterable object,
       {FullType specifiedType: FullType.unspecified}) {
     final result = new ${name}Builder();
 
@@ -116,8 +115,7 @@ class _\$${name}Serializer implements Serializer<$name> {
 ''';
     } else if (isEnumClass) {
       return '''
-class _\$${name}Serializer implements Serializer<$name> {
-  final bool structured = false;
+class _\$${name}Serializer implements PrimitiveSerializer<$name> {
   final Iterable<Type> types = new BuiltList<Type>([$name]);
   final String wireName = '$name';
 
