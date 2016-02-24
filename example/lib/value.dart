@@ -7,8 +7,6 @@ library value;
 import 'package:built_collection/built_collection.dart';
 import 'package:built_json/built_json.dart';
 import 'package:built_value/built_value.dart';
-import 'package:example/compound_value.dart';
-import 'package:example/test_enum.dart';
 
 part 'value.g.dart';
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.5
+
+- Add PrimitiveSerializer and StructuredSerializer interfaces.
+
 ## 0.0.4
 
 - Update built_value dependency to 0.0.6.

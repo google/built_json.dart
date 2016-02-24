@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// 2016-01-25T19:49:57.154Z
+// 2016-03-18T09:22:43.809Z
 
 part of compound_value;
 
@@ -11,14 +11,13 @@ part of compound_value;
 Serializer<CompoundValue> _$compoundValueSerializer =
     new _$CompoundValueSerializer();
 
-class _$CompoundValueSerializer implements Serializer<CompoundValue> {
-  final bool structured = true;
+class _$CompoundValueSerializer implements StructuredSerializer<CompoundValue> {
   final Iterable<Type> types =
       new BuiltList<Type>([CompoundValue, _$CompoundValue]);
   final String wireName = 'CompoundValue';
 
   @override
-  Object serialize(Serializers serializers, CompoundValue object,
+  Iterable serialize(Serializers serializers, CompoundValue object,
       {FullType specifiedType: FullType.unspecified}) {
     return [
       'aValue',
@@ -31,14 +30,14 @@ class _$CompoundValueSerializer implements Serializer<CompoundValue> {
   }
 
   @override
-  CompoundValue deserialize(Serializers serializers, Object object,
+  CompoundValue deserialize(Serializers serializers, Iterable serialized,
       {FullType specifiedType: FullType.unspecified}) {
     final result = new CompoundValueBuilder();
 
     var key;
     var value;
     var expectingKey = true;
-    for (final item in object as List) {
+    for (final item in serialized) {
       if (expectingKey) {
         key = item;
         expectingKey = false;
@@ -100,18 +99,6 @@ class _$CompoundValue extends CompoundValue {
 
 class _$CompoundValueBuilder extends CompoundValueBuilder {
   _$CompoundValueBuilder() : super._();
-  ValueBuilder get aValue => super.aValue;
-  void set aValue(ValueBuilder aValue) {
-    if (aValue == null) throw new ArgumentError('null aValue');
-    super.aValue = aValue;
-  }
-
-  TestEnum get aTestEnum => super.aTestEnum;
-  void set aTestEnum(TestEnum aTestEnum) {
-    if (aTestEnum == null) throw new ArgumentError('null aTestEnum');
-    super.aTestEnum = aTestEnum;
-  }
-
   void replace(CompoundValue other) {
     super.aValue = other.aValue?.toBuilder();
     super.aTestEnum = other.aTestEnum;
@@ -121,6 +108,9 @@ class _$CompoundValueBuilder extends CompoundValueBuilder {
     if (updates != null) updates(this);
   }
 
-  CompoundValue build() =>
-      new _$CompoundValue._(aValue: aValue?.build(), aTestEnum: aTestEnum);
+  CompoundValue build() {
+    if (aValue == null) throw new ArgumentError('null aValue');
+    if (aTestEnum == null) throw new ArgumentError('null aTestEnum');
+    return new _$CompoundValue._(aValue: aValue?.build(), aTestEnum: aTestEnum);
+  }
 }
