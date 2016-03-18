@@ -17,7 +17,7 @@ export 'package:built_collection/built_collection.dart' show BuiltList;
 
 /// Serializes all known classes.
 ///
-/// See <https://github.com/google/built_json.dart/tree/master/example>
+/// See: https://github.com/google/built_json.dart/tree/master/example
 abstract class Serializers {
   /// Default [Serializers] that can serialize primitives and collections.
   ///
@@ -35,7 +35,7 @@ abstract class Serializers {
 
   /// Serializes [object].
   ///
-  /// A [Serializer] must have been provided for every the object uses.
+  /// A [Serializer] must have been provided for every type the object uses.
   ///
   /// Types that are known statically can be provided via [specifiedType]. This
   /// will reduce the amount of data needed on the wire. The exact same
@@ -49,7 +49,7 @@ abstract class Serializers {
 
   /// Deserializes [serialized].
   ///
-  /// A [Serializer] must have been provided for every the object uses.
+  /// A [Serializer] must have been provided for every type the object uses.
   ///
   /// If [serialized] was produced by calling [serialize] with [specifiedType],
   /// the exact same [specifiedType] must be provided to deserialize.
@@ -115,10 +115,10 @@ class FullType {
 /// are provided for collections and primitives in `built_json`. Classes using
 /// `built_value` and enums using `EnumClass` can have implementations
 /// generated using `built_json_generator`.
+///
+/// Implementations must extend either [PrimitiveSerializer] or
+/// [StructuredSerializer].
 abstract class Serializer<T> {
-  /// Whether the serialized format for this type is structured or primitive.
-  bool get structured;
-
   /// The [Type]s that can be serialized.
   ///
   /// They must all be equal to T or a subclass of T. Subclasses are used when
@@ -130,11 +130,17 @@ abstract class Serializer<T> {
   /// For primitives and collections a lower-case name is defined as part of
   /// the `built_json` wire format.
   String get wireName;
+}
 
+/// A [Serializer] that serializes to and from primitive JSON values.
+abstract class PrimitiveSerializer<T> implements Serializer<T> {
   /// Serializes [object].
   ///
   /// Use [serializers] as needed for nested serialization. Information about
   /// the type being serialized is provided in [specifiedType].
+  ///
+  /// Returns a value that can be represented as a JSON primitive: a boolean,
+  /// an integer, a double, or a String.
   ///
   /// TODO(davidmorgan): document the wire format.
   Object serialize(Serializers serializers, T object,
@@ -142,8 +148,36 @@ abstract class Serializer<T> {
 
   /// Deserializes [serialized].
   ///
+  /// [serialized] is a boolean, an integer, a double or a String.
+  ///
   /// Use [serializers] as needed for nested deserialization. Information about
   /// the type being deserialized is provided in [specifiedType].
   T deserialize(Serializers serializers, Object serialized,
+      {FullType specifiedType: FullType.unspecified});
+}
+
+/// A [Serializer] that serializes to and from an [Iterable] of primitive JSON
+/// values.
+abstract class StructuredSerializer<T> implements Serializer<T> {
+  /// Serializes [object].
+  ///
+  /// Use [serializers] as needed for nested serialization. Information about
+  /// the type being serialized is provided in [specifiedType].
+  ///
+  /// Returns an [Iterable] of values that can be represented as structured
+  /// JSON: booleans, integers, doubles, Strings and [Iterable]s.
+  ///
+  /// TODO(davidmorgan): document the wire format.
+  Iterable serialize(Serializers serializers, T object,
+      {FullType specifiedType: FullType.unspecified});
+
+  /// Deserializes [serialized].
+  ///
+  /// [serialized] is an [Iterable] that may contain booleans, integers,
+  /// doubles, Strings and/or [Iterable]s.
+  ///
+  /// Use [serializers] as needed for nested deserialization. Information about
+  /// the type being deserialized is provided in [specifiedType].
+  T deserialize(Serializers serializers, Iterable serialized,
       {FullType specifiedType: FullType.unspecified});
 }

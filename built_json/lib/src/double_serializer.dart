@@ -6,7 +6,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_json/built_json.dart';
 
 // TODO(davidmorgan): support special values.
-class DoubleSerializer implements Serializer<double> {
+class DoubleSerializer implements PrimitiveSerializer<double> {
   final bool structured = false;
   final Iterable<Type> types = new BuiltList<Type>([double]);
   final String wireName = 'double';

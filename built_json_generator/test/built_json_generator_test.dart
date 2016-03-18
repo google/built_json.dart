@@ -111,13 +111,12 @@ part of value;
 
 Serializer<Value> _$valueSerializer = new _$ValueSerializer();
 
-class _$ValueSerializer implements Serializer<Value> {
-  final bool structured = true;
+class _$ValueSerializer implements StructuredSerializer<Value> {
   final Iterable<Type> types = new BuiltList<Type>([Value, _$Value]);
   final String wireName = 'Value';
 
   @override
-  Object serialize(Serializers serializers, Value object,
+  Iterable serialize(Serializers serializers, Value object,
       {FullType specifiedType: FullType.unspecified}) {
     return [
       'aBool',
@@ -134,14 +133,14 @@ class _$ValueSerializer implements Serializer<Value> {
   }
 
   @override
-  Value deserialize(Serializers serializers, Object object,
+  Value deserialize(Serializers serializers, Iterable serialized,
       {FullType specifiedType: FullType.unspecified}) {
     final result = new ValueBuilder();
 
     var key;
     var value;
     var expectingKey = true;
-    for (final item in object as List) {
+    for (final item in serialized) {
       if (expectingKey) {
         key = item;
         expectingKey = false;
@@ -207,13 +206,12 @@ part of value;
 
 Serializer<Value> _$valueSerializer = new _$ValueSerializer();
 
-class _$ValueSerializer implements Serializer<Value> {
-  final bool structured = true;
+class _$ValueSerializer implements StructuredSerializer<Value> {
   final Iterable<Type> types = new BuiltList<Type>([Value, _$Value]);
   final String wireName = 'Value';
 
   @override
-  Object serialize(Serializers serializers, Value object,
+  Iterable serialize(Serializers serializers, Value object,
       {FullType specifiedType: FullType.unspecified}) {
     return [
       'aList',
@@ -228,14 +226,14 @@ class _$ValueSerializer implements Serializer<Value> {
   }
 
   @override
-  Value deserialize(Serializers serializers, Object object,
+  Value deserialize(Serializers serializers, Iterable serialized,
       {FullType specifiedType: FullType.unspecified}) {
     final result = new ValueBuilder();
 
     var key;
     var value;
     var expectingKey = true;
-    for (final item in object as List) {
+    for (final item in serialized) {
       if (expectingKey) {
         key = item;
         expectingKey = false;
@@ -292,13 +290,12 @@ part of value;
 
 Serializer<Value> _$valueSerializer = new _$ValueSerializer();
 
-class _$ValueSerializer implements Serializer<Value> {
-  final bool structured = true;
+class _$ValueSerializer implements StructuredSerializer<Value> {
   final Iterable<Type> types = new BuiltList<Type>([Value, _$Value]);
   final String wireName = 'Value';
 
   @override
-  Object serialize(Serializers serializers, Value object,
+  Iterable serialize(Serializers serializers, Value object,
       {FullType specifiedType: FullType.unspecified}) {
     return [
       'value',
@@ -307,14 +304,14 @@ class _$ValueSerializer implements Serializer<Value> {
   }
 
   @override
-  Value deserialize(Serializers serializers, Object object,
+  Value deserialize(Serializers serializers, Iterable serialized,
       {FullType specifiedType: FullType.unspecified}) {
     final result = new ValueBuilder();
 
     var key;
     var value;
     var expectingKey = true;
-    for (final item in object as List) {
+    for (final item in serialized) {
       if (expectingKey) {
         key = item;
         expectingKey = false;
@@ -362,8 +359,7 @@ part of value;
 
 Serializer<TestEnum> _$testEnumSerializer = new _$TestEnumSerializer();
 
-class _$TestEnumSerializer implements Serializer<TestEnum> {
-  final bool structured = false;
+class _$TestEnumSerializer implements PrimitiveSerializer<TestEnum> {
   final Iterable<Type> types = new BuiltList<Type>([TestEnum]);
   final String wireName = 'TestEnum';
 
@@ -374,9 +370,9 @@ class _$TestEnumSerializer implements Serializer<TestEnum> {
   }
 
   @override
-  TestEnum deserialize(Serializers serializers, Object object,
+  TestEnum deserialize(Serializers serializers, Object serialized,
       {FullType specifiedType: FullType.unspecified}) {
-    return TestEnum.valueOf(object);
+    return TestEnum.valueOf(serialized);
   }
 }
 ''');

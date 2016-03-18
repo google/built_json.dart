@@ -5,7 +5,7 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_json/built_json.dart';
 
-class IntSerializer implements Serializer<int> {
+class IntSerializer implements PrimitiveSerializer<int> {
   final bool structured = false;
   final Iterable<Type> types = new BuiltList<Type>([int]);
   final String wireName = 'int';

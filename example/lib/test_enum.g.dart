@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// 2016-01-25T19:49:57.083Z
+// 2016-03-18T09:22:43.740Z
 
 part of test_enum;
 
@@ -10,8 +10,7 @@ part of test_enum;
 
 Serializer<TestEnum> _$testEnumSerializer = new _$TestEnumSerializer();
 
-class _$TestEnumSerializer implements Serializer<TestEnum> {
-  final bool structured = false;
+class _$TestEnumSerializer implements PrimitiveSerializer<TestEnum> {
   final Iterable<Type> types = new BuiltList<Type>([TestEnum]);
   final String wireName = 'TestEnum';
 
@@ -22,9 +21,9 @@ class _$TestEnumSerializer implements Serializer<TestEnum> {
   }
 
   @override
-  TestEnum deserialize(Serializers serializers, Object object,
+  TestEnum deserialize(Serializers serializers, Object serialized,
       {FullType specifiedType: FullType.unspecified}) {
-    return TestEnum.valueOf(object);
+    return TestEnum.valueOf(serialized);
   }
 }
 

@@ -6,8 +6,6 @@ library test_enum;
 
 import 'package:built_json/built_json.dart';
 import 'package:enum_class/enum_class.dart';
-import 'package:example/compound_value.dart';
-import 'package:example/value.dart';
 
 part 'test_enum.g.dart';
 
