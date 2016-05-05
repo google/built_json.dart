@@ -6,8 +6,9 @@ library compound_value;
 
 import 'package:built_json/built_json.dart';
 import 'package:built_value/built_value.dart';
-import 'package:example/value.dart';
+import 'package:example/has_int.dart';
 import 'package:example/test_enum.dart';
+import 'package:example/value.dart';
 
 part 'compound_value.g.dart';
 
@@ -22,6 +23,7 @@ abstract class CompoundValue
   static final Serializer<CompoundValue> serializer = _$compoundValueSerializer;
 
   Value get aValue;
+  HasInt get aHasInt;
   TestEnum get aTestEnum;
 
   CompoundValue._();
@@ -32,6 +34,7 @@ abstract class CompoundValue
 abstract class CompoundValueBuilder
     implements Builder<CompoundValue, CompoundValueBuilder> {
   ValueBuilder aValue = new ValueBuilder();
+  HasInt aHasInt;
   TestEnum aTestEnum;
 
   CompoundValueBuilder._();

@@ -7,11 +7,12 @@ library value;
 import 'package:built_collection/built_collection.dart';
 import 'package:built_json/built_json.dart';
 import 'package:built_value/built_value.dart';
+import 'package:example/has_int.dart';
 
 part 'value.g.dart';
 
 /// Example built_value type.
-abstract class Value implements Built<Value, ValueBuilder> {
+abstract class Value implements Built<Value, ValueBuilder>, HasInt {
   /// Example of how to make a built_value type serializable.
   ///
   /// Declare a static final [Serializer] field called `serializer`.
@@ -50,4 +51,3 @@ abstract class ValueBuilder implements Builder<Value, ValueBuilder> {
     aDefaultInt = value;
   }
 }
-

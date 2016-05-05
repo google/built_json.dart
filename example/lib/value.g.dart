@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// 2016-05-05T07:53:48.754103Z
+// 2016-05-05T11:40:55.857543Z
 
 part of value;
 
@@ -39,7 +39,7 @@ class _$ValueSerializer implements StructuredSerializer<Value> {
     if (object.anObject != null) {
       result.add('anObject');
       result.add(serializers.serialize(object.anObject,
-          specifiedType: FullType.unspecified));
+          specifiedType: const FullType(Object)));
     }
 
     return result;
@@ -76,7 +76,7 @@ class _$ValueSerializer implements StructuredSerializer<Value> {
             break;
           case 'anObject':
             result.anObject = serializers.deserialize(value,
-                specifiedType: FullType.unspecified);
+                specifiedType: const FullType(Object));
             break;
           case 'aDefaultInt':
             result.aDefaultInt = serializers.deserialize(value,

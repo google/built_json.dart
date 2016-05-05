@@ -48,7 +48,8 @@ class BuiltJsonSerializers implements Serializers {
     } else {
       final serializer = _getSerializerByType(specifiedType.root);
       if (serializer == null) {
-        throw new StateError("No serializer for '${specifiedType.root}'.");
+        // Might be an interface; try resolving using the runtime type.
+        return serialize(object);
       }
       if (serializer is StructuredSerializer) {
         return serializer
@@ -85,7 +86,8 @@ class BuiltJsonSerializers implements Serializers {
     } else {
       final serializer = _getSerializerByType(specifiedType.root);
       if (serializer == null) {
-        throw new StateError("No serializer for '${specifiedType.root}'.");
+        // Might be an interface; try resolving using the runtime type.
+        return deserialize(object);
       }
 
       if (serializer is StructuredSerializer) {
