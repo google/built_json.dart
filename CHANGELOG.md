@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.6
+
+- Fix serialization of null @nullable fields: omit them entirely.
+
 ## 0.0.5
 
 - Add PrimitiveSerializer and StructuredSerializer interfaces.

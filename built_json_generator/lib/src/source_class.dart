@@ -84,7 +84,9 @@ class _\$${name}Serializer implements StructuredSerializer<$name> {
   @override
   Iterable serialize(Serializers serializers, $name object,
       {FullType specifiedType: FullType.unspecified}) {
-    return [${_generateFieldSerializers()}];
+    final result = [${_generateRequiredFieldSerializers()}];
+    ${_generateNullableFieldSerializers()}
+    return result;
   }
 
   @override
@@ -137,12 +139,25 @@ class _\$${name}Serializer implements PrimitiveSerializer<$name> {
     }
   }
 
-  String _generateFieldSerializers() {
+  String _generateRequiredFieldSerializers() {
     return fields
+        .where((field) => !field.isNullable)
         .map((field) => "'${field.name}', "
             "serializers.serialize(object.${field.name}, "
             "specifiedType: ${field.generateFullType()}),")
         .join('');
+  }
+
+  String _generateNullableFieldSerializers() {
+    return fields
+        .where((field) => field.isNullable)
+        .map((field) => '''
+    if (object.${field.name} != null) {
+      result.add('${field.name}');
+      result.add(serializers.serialize(
+          object.${field.name}, specifiedType: ${field.generateFullType()}));
+    }
+''').join('');
   }
 
   String _generateFieldDeserializers() {

@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// 2015-12-04T10:20:21.611Z
+// 2016-05-05T07:17:56.185641Z
 
 part of built_json_generator.source_class;
 
@@ -49,30 +49,6 @@ class _$SourceClass extends SourceClass {
 
 class _$SourceClassBuilder extends SourceClassBuilder {
   _$SourceClassBuilder() : super._();
-  String get name => super.name;
-  void set name(String name) {
-    if (name == null) throw new ArgumentError('null name');
-    super.name = name;
-  }
-
-  bool get isBuiltValue => super.isBuiltValue;
-  void set isBuiltValue(bool isBuiltValue) {
-    if (isBuiltValue == null) throw new ArgumentError('null isBuiltValue');
-    super.isBuiltValue = isBuiltValue;
-  }
-
-  bool get isEnumClass => super.isEnumClass;
-  void set isEnumClass(bool isEnumClass) {
-    if (isEnumClass == null) throw new ArgumentError('null isEnumClass');
-    super.isEnumClass = isEnumClass;
-  }
-
-  ListBuilder<SourceField> get fields => super.fields;
-  void set fields(ListBuilder<SourceField> fields) {
-    if (fields == null) throw new ArgumentError('null fields');
-    super.fields = fields;
-  }
-
   void replace(SourceClass other) {
     super.name = other.name;
     super.isBuiltValue = other.isBuiltValue;
@@ -84,9 +60,15 @@ class _$SourceClassBuilder extends SourceClassBuilder {
     if (updates != null) updates(this);
   }
 
-  SourceClass build() => new _$SourceClass._(
-      name: name,
-      isBuiltValue: isBuiltValue,
-      isEnumClass: isEnumClass,
-      fields: fields?.build());
+  SourceClass build() {
+    if (name == null) throw new ArgumentError('null name');
+    if (isBuiltValue == null) throw new ArgumentError('null isBuiltValue');
+    if (isEnumClass == null) throw new ArgumentError('null isEnumClass');
+    if (fields == null) throw new ArgumentError('null fields');
+    return new _$SourceClass._(
+        name: name,
+        isBuiltValue: isBuiltValue,
+        isEnumClass: isEnumClass,
+        fields: fields?.build());
+  }
 }

@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// 2016-03-18T09:22:43.809Z
+// 2016-05-05T07:24:29.075857Z
 
 part of compound_value;
 
@@ -19,7 +19,7 @@ class _$CompoundValueSerializer implements StructuredSerializer<CompoundValue> {
   @override
   Iterable serialize(Serializers serializers, CompoundValue object,
       {FullType specifiedType: FullType.unspecified}) {
-    return [
+    final result = [
       'aValue',
       serializers.serialize(object.aValue,
           specifiedType: const FullType(Value)),
@@ -27,6 +27,8 @@ class _$CompoundValueSerializer implements StructuredSerializer<CompoundValue> {
       serializers.serialize(object.aTestEnum,
           specifiedType: const FullType(TestEnum)),
     ];
+
+    return result;
   }
 
   @override

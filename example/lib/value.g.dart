@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// 2016-03-18T09:22:43.793Z
+// 2016-05-05T07:53:48.754103Z
 
 part of value;
 
@@ -17,15 +17,12 @@ class _$ValueSerializer implements StructuredSerializer<Value> {
   @override
   Iterable serialize(Serializers serializers, Value object,
       {FullType specifiedType: FullType.unspecified}) {
-    return [
+    final result = [
       'anInt',
       serializers.serialize(object.anInt, specifiedType: const FullType(int)),
       'aString',
       serializers.serialize(object.aString,
           specifiedType: const FullType(String)),
-      'anObject',
-      serializers.serialize(object.anObject,
-          specifiedType: FullType.unspecified),
       'aDefaultInt',
       serializers.serialize(object.aDefaultInt,
           specifiedType: const FullType(int)),
@@ -34,6 +31,18 @@ class _$ValueSerializer implements StructuredSerializer<Value> {
           specifiedType:
               const FullType(BuiltList, const [const FullType(int)])),
     ];
+    if (object.anotherString != null) {
+      result.add('anotherString');
+      result.add(serializers.serialize(object.anotherString,
+          specifiedType: const FullType(String)));
+    }
+    if (object.anObject != null) {
+      result.add('anObject');
+      result.add(serializers.serialize(object.anObject,
+          specifiedType: FullType.unspecified));
+    }
+
+    return result;
   }
 
   @override
@@ -59,6 +68,10 @@ class _$ValueSerializer implements StructuredSerializer<Value> {
             break;
           case 'aString':
             result.aString = serializers.deserialize(value,
+                specifiedType: const FullType(String));
+            break;
+          case 'anotherString':
+            result.anotherString = serializers.deserialize(value,
                 specifiedType: const FullType(String));
             break;
           case 'anObject':
@@ -90,12 +103,14 @@ class _$ValueSerializer implements StructuredSerializer<Value> {
 class _$Value extends Value {
   final int anInt;
   final String aString;
+  final String anotherString;
   final Object anObject;
   final int aDefaultInt;
   final BuiltList<int> listOfInt;
   _$Value._(
       {this.anInt,
       this.aString,
+      this.anotherString,
       this.anObject,
       this.aDefaultInt,
       this.listOfInt})
@@ -114,19 +129,22 @@ class _$Value extends Value {
     if (other is! Value) return false;
     return anInt == other.anInt &&
         aString == other.aString &&
+        anotherString == other.anotherString &&
         anObject == other.anObject &&
         aDefaultInt == other.aDefaultInt &&
         listOfInt == other.listOfInt;
   }
 
   int get hashCode {
-    return hashObjects([anInt, aString, anObject, aDefaultInt, listOfInt]);
+    return hashObjects(
+        [anInt, aString, anotherString, anObject, aDefaultInt, listOfInt]);
   }
 
   String toString() {
     return 'Value {'
         'anInt=${anInt.toString()}\n'
         'aString=${aString.toString()}\n'
+        'anotherString=${anotherString.toString()}\n'
         'anObject=${anObject.toString()}\n'
         'aDefaultInt=${aDefaultInt.toString()}\n'
         'listOfInt=${listOfInt.toString()}\n'
@@ -139,6 +157,7 @@ class _$ValueBuilder extends ValueBuilder {
   void replace(Value other) {
     super.anInt = other.anInt;
     super.aString = other.aString;
+    super.anotherString = other.anotherString;
     super.anObject = other.anObject;
     super.aDefaultInt = other.aDefaultInt;
     super.listOfInt = other.listOfInt?.toBuilder();
@@ -156,6 +175,7 @@ class _$ValueBuilder extends ValueBuilder {
     return new _$Value._(
         anInt: anInt,
         aString: aString,
+        anotherString: anotherString,
         anObject: anObject,
         aDefaultInt: aDefaultInt,
         listOfInt: listOfInt?.build());

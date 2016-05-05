@@ -1,5 +1,5 @@
 name: example
-version: 0.0.5
+version: 0.0.6
 description: >
   Just an example, not for publishing.
 authors:
@@ -16,7 +16,7 @@ dependencies:
   enum_class: '^0.0.6'
 
 dev_dependencies:
-  built_json_generator: '^0.0.5'
+  built_json_generator: '^0.0.6'
   built_value_generator: '^0.0.6'
   enum_class_generator: '^0.0.6'
   test: any
