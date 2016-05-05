@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// 2015-12-04T12:55:13.981Z
+// 2016-05-05T07:17:56.196051Z
 
 part of built_json_generator.source_field;
 
@@ -10,20 +10,23 @@ part of built_json_generator.source_field;
 
 class _$SourceField extends SourceField {
   final bool isSerializable;
+  final bool isNullable;
   final String name;
   final String type;
   final bool builderFieldUsesNestedBuilder;
   _$SourceField._(
       {this.isSerializable,
+      this.isNullable,
       this.name,
       this.type,
       this.builderFieldUsesNestedBuilder})
       : super._() {
     if (isSerializable == null) throw new ArgumentError('null isSerializable');
+    if (isNullable == null) throw new ArgumentError('null isNullable');
     if (name == null) throw new ArgumentError('null name');
     if (type == null) throw new ArgumentError('null type');
-    if (builderFieldUsesNestedBuilder ==
-        null) throw new ArgumentError('null builderFieldUsesNestedBuilder');
+    if (builderFieldUsesNestedBuilder == null)
+      throw new ArgumentError('null builderFieldUsesNestedBuilder');
   }
   factory _$SourceField([updates(SourceFieldBuilder b)]) =>
       (new SourceFieldBuilder()..update(updates)).build();
@@ -33,19 +36,26 @@ class _$SourceField extends SourceField {
   bool operator ==(other) {
     if (other is! SourceField) return false;
     return isSerializable == other.isSerializable &&
+        isNullable == other.isNullable &&
         name == other.name &&
         type == other.type &&
         builderFieldUsesNestedBuilder == other.builderFieldUsesNestedBuilder;
   }
 
   int get hashCode {
-    return hashObjects(
-        [isSerializable, name, type, builderFieldUsesNestedBuilder]);
+    return hashObjects([
+      isSerializable,
+      isNullable,
+      name,
+      type,
+      builderFieldUsesNestedBuilder
+    ]);
   }
 
   String toString() {
     return 'SourceField {'
         'isSerializable=${isSerializable.toString()}\n'
+        'isNullable=${isNullable.toString()}\n'
         'name=${name.toString()}\n'
         'type=${type.toString()}\n'
         'builderFieldUsesNestedBuilder=${builderFieldUsesNestedBuilder.toString()}\n'
@@ -55,33 +65,9 @@ class _$SourceField extends SourceField {
 
 class _$SourceFieldBuilder extends SourceFieldBuilder {
   _$SourceFieldBuilder() : super._();
-  bool get isSerializable => super.isSerializable;
-  void set isSerializable(bool isSerializable) {
-    if (isSerializable == null) throw new ArgumentError('null isSerializable');
-    super.isSerializable = isSerializable;
-  }
-
-  String get name => super.name;
-  void set name(String name) {
-    if (name == null) throw new ArgumentError('null name');
-    super.name = name;
-  }
-
-  String get type => super.type;
-  void set type(String type) {
-    if (type == null) throw new ArgumentError('null type');
-    super.type = type;
-  }
-
-  bool get builderFieldUsesNestedBuilder => super.builderFieldUsesNestedBuilder;
-  void set builderFieldUsesNestedBuilder(bool builderFieldUsesNestedBuilder) {
-    if (builderFieldUsesNestedBuilder ==
-        null) throw new ArgumentError('null builderFieldUsesNestedBuilder');
-    super.builderFieldUsesNestedBuilder = builderFieldUsesNestedBuilder;
-  }
-
   void replace(SourceField other) {
     super.isSerializable = other.isSerializable;
+    super.isNullable = other.isNullable;
     super.name = other.name;
     super.type = other.type;
     super.builderFieldUsesNestedBuilder = other.builderFieldUsesNestedBuilder;
@@ -91,9 +77,18 @@ class _$SourceFieldBuilder extends SourceFieldBuilder {
     if (updates != null) updates(this);
   }
 
-  SourceField build() => new _$SourceField._(
-      isSerializable: isSerializable,
-      name: name,
-      type: type,
-      builderFieldUsesNestedBuilder: builderFieldUsesNestedBuilder);
+  SourceField build() {
+    if (isSerializable == null) throw new ArgumentError('null isSerializable');
+    if (isNullable == null) throw new ArgumentError('null isNullable');
+    if (name == null) throw new ArgumentError('null name');
+    if (type == null) throw new ArgumentError('null type');
+    if (builderFieldUsesNestedBuilder == null)
+      throw new ArgumentError('null builderFieldUsesNestedBuilder');
+    return new _$SourceField._(
+        isSerializable: isSerializable,
+        isNullable: isNullable,
+        name: name,
+        type: type,
+        builderFieldUsesNestedBuilder: builderFieldUsesNestedBuilder);
+  }
 }

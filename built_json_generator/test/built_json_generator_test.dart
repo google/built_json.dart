@@ -118,7 +118,7 @@ class _$ValueSerializer implements StructuredSerializer<Value> {
   @override
   Iterable serialize(Serializers serializers, Value object,
       {FullType specifiedType: FullType.unspecified}) {
-    return [
+    final result = [
       'aBool',
       serializers.serialize(object.aBool, specifiedType: const FullType(bool)),
       'aDouble',
@@ -130,6 +130,8 @@ class _$ValueSerializer implements StructuredSerializer<Value> {
       serializers.serialize(object.aString,
           specifiedType: const FullType(String)),
     ];
+
+    return result;
   }
 
   @override
@@ -164,6 +166,91 @@ class _$ValueSerializer implements StructuredSerializer<Value> {
           case 'aString':
             result.aString = serializers.deserialize(value,
                 specifiedType: const FullType(String));
+            break;
+        }
+      }
+    }
+
+    return result.build();
+  }
+}
+''');
+    });
+
+    test('generates correct serializer for built_value with nullables',
+        () async {
+      expect(
+          await generate(r'''
+library value;
+
+import 'package:test_support/test_support.dart';
+
+abstract class Value implements Built<Value, ValueBuilder> {
+  static final Serializer<Value> serializer = _$serializer;
+  bool get aBool;
+  @nullable double get aDouble;
+}
+
+abstract class ValueBuilder implements Builder<Value, ValueBuilder> {
+  bool aBool;
+  @nullable double aDouble;
+}
+'''),
+          r'''// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of value;
+
+// **************************************************************************
+// Generator: BuiltJsonGenerator
+// Target: library value
+// **************************************************************************
+
+Serializer<Value> _$valueSerializer = new _$ValueSerializer();
+
+class _$ValueSerializer implements StructuredSerializer<Value> {
+  final Iterable<Type> types = new BuiltList<Type>([Value, _$Value]);
+  final String wireName = 'Value';
+
+  @override
+  Iterable serialize(Serializers serializers, Value object,
+      {FullType specifiedType: FullType.unspecified}) {
+    final result = [
+      'aBool',
+      serializers.serialize(object.aBool, specifiedType: const FullType(bool)),
+    ];
+    if (object.aDouble != null) {
+      result.add('aDouble');
+      result.add(serializers.serialize(object.aDouble,
+          specifiedType: const FullType(double)));
+    }
+
+    return result;
+  }
+
+  @override
+  Value deserialize(Serializers serializers, Iterable serialized,
+      {FullType specifiedType: FullType.unspecified}) {
+    final result = new ValueBuilder();
+
+    var key;
+    var value;
+    var expectingKey = true;
+    for (final item in serialized) {
+      if (expectingKey) {
+        key = item;
+        expectingKey = false;
+      } else {
+        value = item;
+        expectingKey = true;
+
+        switch (key as String) {
+          case 'aBool':
+            result.aBool = serializers.deserialize(value,
+                specifiedType: const FullType(bool));
+            break;
+          case 'aDouble':
+            result.aDouble = serializers.deserialize(value,
+                specifiedType: const FullType(double));
             break;
         }
       }
@@ -213,7 +300,7 @@ class _$ValueSerializer implements StructuredSerializer<Value> {
   @override
   Iterable serialize(Serializers serializers, Value object,
       {FullType specifiedType: FullType.unspecified}) {
-    return [
+    final result = [
       'aList',
       serializers.serialize(object.aList,
           specifiedType:
@@ -223,6 +310,8 @@ class _$ValueSerializer implements StructuredSerializer<Value> {
           specifiedType: const FullType(
               BuiltMap, const [const FullType(String), const FullType(int)])),
     ];
+
+    return result;
   }
 
   @override
@@ -297,10 +386,12 @@ class _$ValueSerializer implements StructuredSerializer<Value> {
   @override
   Iterable serialize(Serializers serializers, Value object,
       {FullType specifiedType: FullType.unspecified}) {
-    return [
+    final result = [
       'value',
       serializers.serialize(object.value, specifiedType: const FullType(Value)),
     ];
+
+    return result;
   }
 
   @override
@@ -405,6 +496,8 @@ Future<String> generate(String source) async {
 // Classes mentioned in the test input need to exist, but we don't need the
 // real versions. So just use minimal ones.
 const String testSupportSource = r'''
+const String nullable = 'nullable';
+
 class Built<V, B> {}
 
 class BuiltList<E> {}

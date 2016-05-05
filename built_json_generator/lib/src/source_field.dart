@@ -19,6 +19,7 @@ abstract class SourceField implements Built<SourceField, SourceFieldBuilder> {
   });
 
   bool get isSerializable;
+  bool get isNullable;
   String get name;
   String get type;
   bool get builderFieldUsesNestedBuilder;
@@ -38,6 +39,9 @@ abstract class SourceField implements Built<SourceField, SourceFieldBuilder> {
     result.isSerializable = isSerializable;
 
     if (isSerializable) {
+      result.isNullable =
+          fieldElement.getter.metadata.any((metadata) => metadata.constantValue
+              .toStringValue() == 'nullable');
       result.name = fieldElement.displayName;
       result.type = fieldElement.getter.returnType.displayName;
       result.builderFieldUsesNestedBuilder = builderFieldElement != null &&
@@ -97,6 +101,7 @@ abstract class SourceField implements Built<SourceField, SourceFieldBuilder> {
 abstract class SourceFieldBuilder
     implements Builder<SourceField, SourceFieldBuilder> {
   bool isSerializable;
+  bool isNullable = false;
   String name = '';
   String type = '';
   bool builderFieldUsesNestedBuilder = false;
