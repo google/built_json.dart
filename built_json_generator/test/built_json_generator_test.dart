@@ -189,11 +189,13 @@ abstract class Value implements Built<Value, ValueBuilder> {
   static final Serializer<Value> serializer = _$serializer;
   bool get aBool;
   @nullable double get aDouble;
+  @nullable int get anInt;
 }
 
 abstract class ValueBuilder implements Builder<Value, ValueBuilder> {
   bool aBool;
   @nullable double aDouble;
+  @nullable int anInt;
 }
 '''),
           r'''// GENERATED CODE - DO NOT MODIFY BY HAND
@@ -223,6 +225,11 @@ class _$ValueSerializer implements StructuredSerializer<Value> {
       result.add(serializers.serialize(object.aDouble,
           specifiedType: const FullType(double)));
     }
+    if (object.anInt != null) {
+      result.add('anInt');
+      result.add(serializers.serialize(object.anInt,
+          specifiedType: const FullType(int)));
+    }
 
     return result;
   }
@@ -251,6 +258,10 @@ class _$ValueSerializer implements StructuredSerializer<Value> {
           case 'aDouble':
             result.aDouble = serializers.deserialize(value,
                 specifiedType: const FullType(double));
+            break;
+          case 'anInt':
+            result.anInt = serializers.deserialize(value,
+                specifiedType: const FullType(int));
             break;
         }
       }
