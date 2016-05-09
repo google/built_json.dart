@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.7
+
+- Allow non-serializable static types provided runtime types are serializable.
+
 ## 0.0.6
 
 - Fix serialization of null @nullable fields: omit them entirely.

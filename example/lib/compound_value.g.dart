@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// 2016-05-05T07:24:29.075857Z
+// 2016-05-05T12:13:14.578893Z
 
 part of compound_value;
 
@@ -23,6 +23,9 @@ class _$CompoundValueSerializer implements StructuredSerializer<CompoundValue> {
       'aValue',
       serializers.serialize(object.aValue,
           specifiedType: const FullType(Value)),
+      'aHasInt',
+      serializers.serialize(object.aHasInt,
+          specifiedType: const FullType(HasInt)),
       'aTestEnum',
       serializers.serialize(object.aTestEnum,
           specifiedType: const FullType(TestEnum)),
@@ -52,6 +55,10 @@ class _$CompoundValueSerializer implements StructuredSerializer<CompoundValue> {
             result.aValue.replace(serializers.deserialize(value,
                 specifiedType: const FullType(Value)));
             break;
+          case 'aHasInt':
+            result.aHasInt = serializers.deserialize(value,
+                specifiedType: const FullType(HasInt));
+            break;
           case 'aTestEnum':
             result.aTestEnum = serializers.deserialize(value,
                 specifiedType: const FullType(TestEnum));
@@ -71,9 +78,11 @@ class _$CompoundValueSerializer implements StructuredSerializer<CompoundValue> {
 
 class _$CompoundValue extends CompoundValue {
   final Value aValue;
+  final HasInt aHasInt;
   final TestEnum aTestEnum;
-  _$CompoundValue._({this.aValue, this.aTestEnum}) : super._() {
+  _$CompoundValue._({this.aValue, this.aHasInt, this.aTestEnum}) : super._() {
     if (aValue == null) throw new ArgumentError('null aValue');
+    if (aHasInt == null) throw new ArgumentError('null aHasInt');
     if (aTestEnum == null) throw new ArgumentError('null aTestEnum');
   }
   factory _$CompoundValue([updates(CompoundValueBuilder b)]) =>
@@ -84,16 +93,19 @@ class _$CompoundValue extends CompoundValue {
       new _$CompoundValueBuilder()..replace(this);
   bool operator ==(other) {
     if (other is! CompoundValue) return false;
-    return aValue == other.aValue && aTestEnum == other.aTestEnum;
+    return aValue == other.aValue &&
+        aHasInt == other.aHasInt &&
+        aTestEnum == other.aTestEnum;
   }
 
   int get hashCode {
-    return hashObjects([aValue, aTestEnum]);
+    return hashObjects([aValue, aHasInt, aTestEnum]);
   }
 
   String toString() {
     return 'CompoundValue {'
         'aValue=${aValue.toString()}\n'
+        'aHasInt=${aHasInt.toString()}\n'
         'aTestEnum=${aTestEnum.toString()}\n'
         '}';
   }
@@ -103,6 +115,7 @@ class _$CompoundValueBuilder extends CompoundValueBuilder {
   _$CompoundValueBuilder() : super._();
   void replace(CompoundValue other) {
     super.aValue = other.aValue?.toBuilder();
+    super.aHasInt = other.aHasInt;
     super.aTestEnum = other.aTestEnum;
   }
 
@@ -112,7 +125,9 @@ class _$CompoundValueBuilder extends CompoundValueBuilder {
 
   CompoundValue build() {
     if (aValue == null) throw new ArgumentError('null aValue');
+    if (aHasInt == null) throw new ArgumentError('null aHasInt');
     if (aTestEnum == null) throw new ArgumentError('null aTestEnum');
-    return new _$CompoundValue._(aValue: aValue?.build(), aTestEnum: aTestEnum);
+    return new _$CompoundValue._(
+        aValue: aValue?.build(), aHasInt: aHasInt, aTestEnum: aTestEnum);
   }
 }

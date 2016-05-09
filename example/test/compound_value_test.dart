@@ -5,6 +5,7 @@
 import 'package:example/compound_value.dart';
 import 'package:example/serializers.dart';
 import 'package:example/test_enum.dart';
+import 'package:example/value.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -13,6 +14,7 @@ void main() {
       ..aValue.anInt = 1
       ..aValue.aString = 'two'
       ..aValue.anObject = 3
+      ..aHasInt = new Value((b) => b..anInt = 4..aString = 'five')
       ..aTestEnum = TestEnum.no);
     final serialized = [
       'CompoundValue',
@@ -28,6 +30,18 @@ void main() {
         [],
         'anObject',
         ['int', 3],
+      ],
+      'aHasInt',
+      [
+        'Value',
+        'anInt',
+        4,
+        'aString',
+        'five',
+        'aDefaultInt',
+        7,
+        'listOfInt',
+        [],
       ],
       'aTestEnum',
       'no',
