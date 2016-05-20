@@ -1,5 +1,4 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// 2016-05-05T12:13:14.578893Z
 
 part of compound_value;
 

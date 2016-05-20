@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.1
+
+- Fix error in pubspec.yaml.
+
+## 0.1.0
+
+- Upgrade to source_gen 0.5.0.
+- Breaking change; see example for required changes to build.dart.
+
 ## 0.0.7
 
 - Allow non-serializable static types provided runtime types are serializable.

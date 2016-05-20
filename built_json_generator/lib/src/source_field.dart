@@ -4,7 +4,7 @@
 
 library built_json_generator.source_field;
 
-import 'package:analyzer/src/generated/element.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 
@@ -39,9 +39,8 @@ abstract class SourceField implements Built<SourceField, SourceFieldBuilder> {
     result.isSerializable = isSerializable;
 
     if (isSerializable) {
-      result.isNullable =
-          fieldElement.getter.metadata.any((metadata) => metadata.constantValue
-              .toStringValue() == 'nullable');
+      result.isNullable = fieldElement.getter.metadata.any(
+          (metadata) => metadata.constantValue.toStringValue() == 'nullable');
       result.name = fieldElement.displayName;
       result.type = fieldElement.getter.returnType.displayName;
       result.builderFieldUsesNestedBuilder = builderFieldElement != null &&

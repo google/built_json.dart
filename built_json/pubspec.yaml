@@ -1,5 +1,5 @@
 name: built_json
-version: 0.0.7
+version: 0.1.1
 description: >
   JSON serialization for Built Collections, Built Values and Enum Classes.
   This library is the runtime dependency.

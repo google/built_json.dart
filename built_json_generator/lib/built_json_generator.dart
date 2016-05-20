@@ -6,7 +6,8 @@ library built_json_generator;
 
 import 'dart:async';
 
-import 'package:analyzer/src/generated/element.dart';
+import 'package:analyzer/dart/element/element.dart';
+import 'package:build/build.dart';
 import 'package:built_json_generator/src/source_library.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -14,7 +15,8 @@ import 'package:source_gen/source_gen.dart';
 ///
 /// See: https://github.com/google/built_json.dart/tree/master/example
 class BuiltJsonGenerator extends Generator {
-  Future<String> generate(Element element) async {
+  @override
+  Future<String> generate(Element element, BuildStep buildStep) async {
     if (element is! LibraryElement) return null;
 
     final sourceLibrary = SourceLibrary.fromLibraryElement(element as LibraryElement);

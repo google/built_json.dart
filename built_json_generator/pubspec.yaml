@@ -1,5 +1,5 @@
 name: built_json_generator
-version: 0.0.7
+version: 0.1.1
 description: >
   JSON serialization for Built Collections, Built Values and Enum Classes.
   This library is the dev dependency.
@@ -12,12 +12,14 @@ environment:
 
 dependencies:
   analyzer: '>=0.27.1 <0.28.0'
+  build: '^0.3.0'
   built_collection: '^1.0.1'
-  built_json: '^0.0.7'
-  source_gen: '>=0.4.3 <0.5.0'
+  built_json: '^0.1.0'
+  source_gen: '>=0.5.0 <0.6.0'
   quiver: '>=0.21.0 <0.22.0'
 
 dev_dependencies:
-  built_value: '^0.0.6'
-  built_value_generator: '^0.0.6'
+  build_test: '^0.1.0'
+  built_value: '^0.1.0'
+  built_value_generator: '^0.1.0'
   test: any
