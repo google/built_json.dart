@@ -1,5 +1,4 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// 2016-05-05T07:17:56.185641Z
 
 part of built_json_generator.source_class;
 

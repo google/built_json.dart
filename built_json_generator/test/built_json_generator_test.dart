@@ -3,10 +3,11 @@
 // license that can be found in the LICENSE file.
 
 import 'dart:async';
-import 'dart:io';
 
+import 'package:build/build.dart';
+import 'package:build_test/build_test.dart';
 import 'package:built_json_generator/built_json_generator.dart';
-import 'package:source_gen/source_gen.dart' as source_gen;
+import 'package:source_gen/source_gen.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -437,7 +438,8 @@ class _$ValueSerializer implements StructuredSerializer<Value> {
     });
 
     test('generates correct serializer for EnumClass', () async {
-      expect(await generate(r'''
+      expect(
+          await generate(r'''
 library value;
 
 import 'package:test_support/test_support.dart';
@@ -449,7 +451,8 @@ abstract class TestEnum extends EnumClass {
   static const TestEnum no = _$no;
   static const TestEnum maybe = _$maybe;
 }
-'''), r'''
+'''),
+          r'''
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of value;
@@ -484,24 +487,24 @@ class _$TestEnumSerializer implements PrimitiveSerializer<TestEnum> {
 
 // Test setup.
 
+final String pkgName = 'pkg';
+final PackageGraph packageGraph =
+    new PackageGraph.fromRoot(new PackageNode(pkgName, null, null, null));
+
+final PhaseGroup phaseGroup = new PhaseGroup.singleAction(
+    new GeneratorBuilder([new BuiltJsonGenerator()]),
+    new InputSet(pkgName, const ['lib/*.dart']));
+
 Future<String> generate(String source) async {
-  final tempDir =
-      Directory.systemTemp.createTempSync('built_json_generator.dart.');
-  final packageDir = new Directory(tempDir.path + '/packages')..createSync();
-  final builtJsonDir = new Directory(packageDir.path + '/test_support')
-    ..createSync();
-  final builtJsonFile = new File(builtJsonDir.path + '/test_support.dart')
-    ..createSync();
-  builtJsonFile.writeAsStringSync(testSupportSource);
+  final srcs = <String, String>{
+    'test_support|lib/test_support.dart': testSupportSource,
+    '$pkgName|lib/value.dart': source,
+  };
 
-  final libDir = new Directory(tempDir.path + '/lib')..createSync();
-  final sourceFile = new File(libDir.path + '/value.dart');
-  sourceFile.writeAsStringSync(source);
-
-  await source_gen.generate(tempDir.path, [new BuiltJsonGenerator()],
-      librarySearchPaths: <String>['lib'], omitGenerateTimestamp: true);
-  final outputFile = new File(libDir.path + '/value.g.dart');
-  return outputFile.existsSync() ? outputFile.readAsStringSync() : '';
+  final writer = new InMemoryAssetWriter();
+  await testPhases(phaseGroup, srcs,
+      packageGraph: packageGraph, writer: writer);
+  return writer.assets[new AssetId(pkgName, 'lib/value.g.dart')]?.value ?? '';
 }
 
 // Classes mentioned in the test input need to exist, but we don't need the
