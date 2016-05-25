@@ -4,7 +4,7 @@
 
 library built_json_generator.source_library;
 
-import 'package:analyzer/src/generated/element.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_json_generator/src/library_elements.dart';
 import 'package:built_json_generator/src/source_class.dart';
@@ -60,8 +60,8 @@ abstract class SourceLibrary
                 transitiveSourceClasses
                     .map((sourceClass) =>
                         sourceClass.generateTransitiveSerializerAdder() +
-                            '\n' +
-                            sourceClass.generateBuilderFactoryAdders())
+                        '\n' +
+                        sourceClass.generateBuilderFactoryAdders())
                     .join('\n') +
                 ').build();'
             : '') +

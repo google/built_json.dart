@@ -4,7 +4,7 @@
 
 library built_json_generator.source_class;
 
-import 'package:analyzer/src/generated/element.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_json_generator/src/source_field.dart';
 import 'package:built_value/built_value.dart';
@@ -149,9 +149,7 @@ class _\$${name}Serializer implements PrimitiveSerializer<$name> {
   }
 
   String _generateNullableFieldSerializers() {
-    return fields
-        .where((field) => field.isNullable)
-        .map((field) => '''
+    return fields.where((field) => field.isNullable).map((field) => '''
     if (object.${field.name} != null) {
       result.add('${field.name}');
       result.add(serializers.serialize(

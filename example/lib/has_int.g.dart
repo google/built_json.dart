@@ -1,5 +1,4 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// 2016-05-05T12:12:11.877877Z
 
 part of has_int;
 
