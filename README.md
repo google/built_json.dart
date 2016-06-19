@@ -1,5 +1,5 @@
 # Built JSON for Dart
-
+[![Build Status](https://travis-ci.org/google/built_json.dart.svg?branch=master)](https://travis-ci.org/google/built_json.dart)
 ## Introduction
 
 Built JSON provides serialization for the [Libraries for Object Oriented Dart]
