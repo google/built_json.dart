@@ -6,5 +6,9 @@ script:
   - pub run test
   - cd ../example
   - pub get
-  - pub run tool/build.dart
+  - dart tool/build.dart
+  - pub run test
+  - cd ../chat_example
+  - pub get
+  - dart tool/build.dart
   - pub run test
