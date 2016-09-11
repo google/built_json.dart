@@ -48,5 +48,8 @@ TestEnum _$valueOf(String name) {
   }
 }
 
-final BuiltSet<TestEnum> _$values =
-    new BuiltSet<TestEnum>(const [_$yes, _$no, _$maybe,]);
+final BuiltSet<TestEnum> _$values = new BuiltSet<TestEnum>(const [
+  _$yes,
+  _$no,
+  _$maybe,
+]);

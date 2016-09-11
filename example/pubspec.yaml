@@ -1,5 +1,5 @@
 name: example
-version: 0.1.0
+version: 0.1.2
 description: >
   Just an example, not for publishing.
 authors:
@@ -11,12 +11,16 @@ environment:
 
 dependencies:
   built_collection: '^1.0.0'
-  built_json: '^0.1.0'
+# built_json: '^0.1.2'
+  built_json:
+    path: ../built_json
   built_value: '^0.1.0'
   enum_class: '^0.1.0'
 
 dev_dependencies:
-  built_json_generator: '^0.1.0'
+#  built_json_generator: '^0.1.2'
+  built_json_generator:
+    path: ../built_json_generator
   built_value_generator: '^0.1.0'
   enum_class_generator: '^0.1.0'
   test: any
