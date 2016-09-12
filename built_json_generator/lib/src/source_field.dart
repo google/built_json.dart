@@ -14,7 +14,7 @@ abstract class SourceField implements Built<SourceField, SourceFieldBuilder> {
   static final BuiltMap<String, String> typesWithBuilder =
       new BuiltMap<String, String>({
     'BuiltList': 'ListBuilder',
-    'BuiltMap': 'MapBuiler',
+    'BuiltMap': 'MapBuilder',
     'BuiltSet': 'SetBuilder',
   });
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.2
+
+- Fix issue with BuiltMap deserialization.
+
 ## 0.1.1
 
 - Fix error in pubspec.yaml.

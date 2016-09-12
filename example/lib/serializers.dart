@@ -6,6 +6,7 @@ library serializers;
 
 import 'package:built_collection/built_collection.dart';
 import 'package:built_json/built_json.dart';
+import 'package:example/collections.dart';
 import 'package:example/compound_value.dart';
 import 'package:example/has_int.dart';
 import 'package:example/test_enum.dart';

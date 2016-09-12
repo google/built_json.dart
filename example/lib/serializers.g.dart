@@ -12,6 +12,16 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(TestEnum.serializer)
       ..add(ValueWithInt.serializer)
       ..add(EnumWithInt.serializer)
+      ..add(Collections.serializer)
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
+      ..addBuilderFactory(const FullType(BuiltSet, const [const FullType(int)]),
+          () => new SetBuilder<int>())
+      ..addBuilderFactory(
+          const FullType(
+              BuiltMap, const [const FullType(String), const FullType(int)]),
+          () => new MapBuilder<String, int>())
       ..add(Value.serializer)
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(int)]),
