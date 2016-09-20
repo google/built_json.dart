@@ -29,14 +29,3 @@ abstract class CompoundValue
   CompoundValue._();
   factory CompoundValue([updates(CompoundValueBuilder b)]) = _$CompoundValue;
 }
-
-/// Builder class for [CompoundValue].
-abstract class CompoundValueBuilder
-    implements Builder<CompoundValue, CompoundValueBuilder> {
-  ValueBuilder aValue = new ValueBuilder();
-  HasInt aHasInt;
-  TestEnum aTestEnum;
-
-  CompoundValueBuilder._();
-  factory CompoundValueBuilder() = _$CompoundValueBuilder;
-}

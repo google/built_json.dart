@@ -5,10 +5,19 @@
 library built_json_generator.source_field;
 
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 
 part 'source_field.g.dart';
+
+BuiltSet<String> _builtCollectionNames = new BuiltSet<String>([
+  'BuiltList',
+  'BuiltListMultimap',
+  'BuiltMap',
+  'BuiltSet',
+  'BuiltSetMultimap',
+]);
 
 abstract class SourceField implements Built<SourceField, SourceFieldBuilder> {
   static final BuiltMap<String, String> typesWithBuilder =
@@ -43,8 +52,13 @@ abstract class SourceField implements Built<SourceField, SourceFieldBuilder> {
           (metadata) => metadata.constantValue.toStringValue() == 'nullable');
       result.name = fieldElement.displayName;
       result.type = fieldElement.getter.returnType.displayName;
-      result.builderFieldUsesNestedBuilder = builderFieldElement != null &&
-          fieldElement.getter.returnType.displayName !=
+
+      // If the builder is present, check it to determine whether a nested
+      // builder is needed. Otherwise, use the same logic as built_value when
+      // it decides whether to use a nested builder.
+      result.builderFieldUsesNestedBuilder = builderFieldElement == null
+          ? _needsNestedBuilder(fieldElement.getter.returnType)
+          : fieldElement.getter.returnType.displayName !=
               builderFieldElement.getter.returnType.displayName;
     }
 
@@ -86,6 +100,25 @@ abstract class SourceField implements Built<SourceField, SourceFieldBuilder> {
         : name
             .substring(genericsStart + 1)
             .substring(0, name.length - genericsStart - 2);
+  }
+
+  // These three methods are copied from built_value to match the behaviour
+  // when a builder is not explicitly defined.
+  // TODO(davidmorgan): dedupe.
+  static bool _needsNestedBuilder(DartType type) {
+    return _isBuiltValue(type) || _isBuiltCollection(type);
+  }
+
+  static bool _isBuiltValue(DartType type) {
+    if (type.element is! ClassElement) return false;
+    return (type.element as ClassElement)
+        .allSupertypes
+        .any((interfaceType) => interfaceType.name == 'Built');
+  }
+
+  static bool _isBuiltCollection(DartType type) {
+    return _builtCollectionNames
+        .any((name) => type.displayName.startsWith('${name}<'));
   }
 }
 

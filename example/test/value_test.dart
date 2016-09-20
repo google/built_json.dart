@@ -19,8 +19,6 @@ void main() {
       1,
       'aString',
       'two',
-      'aDefaultInt',
-      7,
       'listOfInt',
       [],
       'anObject',

@@ -22,9 +22,6 @@ class _$ValueSerializer implements StructuredSerializer<Value> {
       'aString',
       serializers.serialize(object.aString,
           specifiedType: const FullType(String)),
-      'aDefaultInt',
-      serializers.serialize(object.aDefaultInt,
-          specifiedType: const FullType(int)),
       'listOfInt',
       serializers.serialize(object.listOfInt,
           specifiedType:
@@ -77,10 +74,6 @@ class _$ValueSerializer implements StructuredSerializer<Value> {
             result.anObject = serializers.deserialize(value,
                 specifiedType: const FullType(Object));
             break;
-          case 'aDefaultInt':
-            result.aDefaultInt = serializers.deserialize(value,
-                specifiedType: const FullType(int));
-            break;
           case 'listOfInt':
             result.listOfInt.replace(serializers.deserialize(value,
                 specifiedType:
@@ -104,62 +97,66 @@ class _$Value extends Value {
   final String aString;
   final String anotherString;
   final Object anObject;
-  final int aDefaultInt;
   final BuiltList<int> listOfInt;
+
   _$Value._(
       {this.anInt,
       this.aString,
       this.anotherString,
       this.anObject,
-      this.aDefaultInt,
       this.listOfInt})
       : super._() {
     if (anInt == null) throw new ArgumentError('null anInt');
     if (aString == null) throw new ArgumentError('null aString');
-    if (aDefaultInt == null) throw new ArgumentError('null aDefaultInt');
     if (listOfInt == null) throw new ArgumentError('null listOfInt');
   }
+
   factory _$Value([updates(ValueBuilder b)]) =>
       (new ValueBuilder()..update(updates)).build();
+
   Value rebuild(updates(ValueBuilder b)) =>
       (toBuilder()..update(updates)).build();
-  _$ValueBuilder toBuilder() => new _$ValueBuilder()..replace(this);
+
+  ValueBuilder toBuilder() => new ValueBuilder()..replace(this);
+
   bool operator ==(other) {
     if (other is! Value) return false;
     return anInt == other.anInt &&
         aString == other.aString &&
         anotherString == other.anotherString &&
         anObject == other.anObject &&
-        aDefaultInt == other.aDefaultInt &&
         listOfInt == other.listOfInt;
   }
 
   int get hashCode {
-    return hashObjects(
-        [anInt, aString, anotherString, anObject, aDefaultInt, listOfInt]);
+    return hashObjects([anInt, aString, anotherString, anObject, listOfInt]);
   }
 
   String toString() {
     return 'Value {'
-        'anInt=${anInt.toString()}\n'
-        'aString=${aString.toString()}\n'
-        'anotherString=${anotherString.toString()}\n'
-        'anObject=${anObject.toString()}\n'
-        'aDefaultInt=${aDefaultInt.toString()}\n'
-        'listOfInt=${listOfInt.toString()}\n'
+        'anInt=${anInt.toString()},\n'
+        'aString=${aString.toString()},\n'
+        'anotherString=${anotherString.toString()},\n'
+        'anObject=${anObject.toString()},\n'
+        'listOfInt=${listOfInt.toString()},\n'
         '}';
   }
 }
 
-class _$ValueBuilder extends ValueBuilder {
-  _$ValueBuilder() : super._();
+class ValueBuilder implements Builder<Value, ValueBuilder> {
+  ValueBuilder();
+  int anInt;
+  String aString;
+  String anotherString;
+  Object anObject;
+  ListBuilder<int> listOfInt = new ListBuilder<int>();
+
   void replace(Value other) {
-    super.anInt = other.anInt;
-    super.aString = other.aString;
-    super.anotherString = other.anotherString;
-    super.anObject = other.anObject;
-    super.aDefaultInt = other.aDefaultInt;
-    super.listOfInt = other.listOfInt?.toBuilder();
+    this.anInt = other.anInt;
+    this.aString = other.aString;
+    this.anotherString = other.anotherString;
+    this.anObject = other.anObject;
+    this.listOfInt = other.listOfInt?.toBuilder();
   }
 
   void update(updates(ValueBuilder b)) {
@@ -167,16 +164,11 @@ class _$ValueBuilder extends ValueBuilder {
   }
 
   Value build() {
-    if (anInt == null) throw new ArgumentError('null anInt');
-    if (aString == null) throw new ArgumentError('null aString');
-    if (aDefaultInt == null) throw new ArgumentError('null aDefaultInt');
-    if (listOfInt == null) throw new ArgumentError('null listOfInt');
     return new _$Value._(
         anInt: anInt,
         aString: aString,
         anotherString: anotherString,
         anObject: anObject,
-        aDefaultInt: aDefaultInt,
         listOfInt: listOfInt?.build());
   }
 }

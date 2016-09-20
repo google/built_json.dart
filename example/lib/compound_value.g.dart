@@ -79,17 +79,21 @@ class _$CompoundValue extends CompoundValue {
   final Value aValue;
   final HasInt aHasInt;
   final TestEnum aTestEnum;
+
   _$CompoundValue._({this.aValue, this.aHasInt, this.aTestEnum}) : super._() {
     if (aValue == null) throw new ArgumentError('null aValue');
     if (aHasInt == null) throw new ArgumentError('null aHasInt');
     if (aTestEnum == null) throw new ArgumentError('null aTestEnum');
   }
+
   factory _$CompoundValue([updates(CompoundValueBuilder b)]) =>
       (new CompoundValueBuilder()..update(updates)).build();
+
   CompoundValue rebuild(updates(CompoundValueBuilder b)) =>
       (toBuilder()..update(updates)).build();
-  _$CompoundValueBuilder toBuilder() =>
-      new _$CompoundValueBuilder()..replace(this);
+
+  CompoundValueBuilder toBuilder() => new CompoundValueBuilder()..replace(this);
+
   bool operator ==(other) {
     if (other is! CompoundValue) return false;
     return aValue == other.aValue &&
@@ -103,19 +107,24 @@ class _$CompoundValue extends CompoundValue {
 
   String toString() {
     return 'CompoundValue {'
-        'aValue=${aValue.toString()}\n'
-        'aHasInt=${aHasInt.toString()}\n'
-        'aTestEnum=${aTestEnum.toString()}\n'
+        'aValue=${aValue.toString()},\n'
+        'aHasInt=${aHasInt.toString()},\n'
+        'aTestEnum=${aTestEnum.toString()},\n'
         '}';
   }
 }
 
-class _$CompoundValueBuilder extends CompoundValueBuilder {
-  _$CompoundValueBuilder() : super._();
+class CompoundValueBuilder
+    implements Builder<CompoundValue, CompoundValueBuilder> {
+  CompoundValueBuilder();
+  ValueBuilder aValue = new ValueBuilder();
+  HasInt aHasInt;
+  TestEnum aTestEnum;
+
   void replace(CompoundValue other) {
-    super.aValue = other.aValue?.toBuilder();
-    super.aHasInt = other.aHasInt;
-    super.aTestEnum = other.aTestEnum;
+    this.aValue = other.aValue?.toBuilder();
+    this.aHasInt = other.aHasInt;
+    this.aTestEnum = other.aTestEnum;
   }
 
   void update(updates(CompoundValueBuilder b)) {
@@ -123,9 +132,6 @@ class _$CompoundValueBuilder extends CompoundValueBuilder {
   }
 
   CompoundValue build() {
-    if (aValue == null) throw new ArgumentError('null aValue');
-    if (aHasInt == null) throw new ArgumentError('null aHasInt');
-    if (aTestEnum == null) throw new ArgumentError('null aTestEnum');
     return new _$CompoundValue._(
         aValue: aValue?.build(), aHasInt: aHasInt, aTestEnum: aTestEnum);
   }

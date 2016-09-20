@@ -83,16 +83,21 @@ class _$Collections extends Collections {
   final BuiltList<String> list;
   final BuiltSet<int> set;
   final BuiltMap<String, int> map;
+
   _$Collections._({this.list, this.set, this.map}) : super._() {
     if (list == null) throw new ArgumentError('null list');
     if (set == null) throw new ArgumentError('null set');
     if (map == null) throw new ArgumentError('null map');
   }
+
   factory _$Collections([updates(CollectionsBuilder b)]) =>
       (new CollectionsBuilder()..update(updates)).build();
+
   Collections rebuild(updates(CollectionsBuilder b)) =>
       (toBuilder()..update(updates)).build();
+
   _$CollectionsBuilder toBuilder() => new _$CollectionsBuilder()..replace(this);
+
   bool operator ==(other) {
     if (other is! Collections) return false;
     return list == other.list && set == other.set && map == other.map;
@@ -104,9 +109,9 @@ class _$Collections extends Collections {
 
   String toString() {
     return 'Collections {'
-        'list=${list.toString()}\n'
-        'set=${set.toString()}\n'
-        'map=${map.toString()}\n'
+        'list=${list.toString()},\n'
+        'set=${set.toString()},\n'
+        'map=${map.toString()},\n'
         '}';
   }
 }
@@ -124,9 +129,6 @@ class _$CollectionsBuilder extends CollectionsBuilder {
   }
 
   Collections build() {
-    if (list == null) throw new ArgumentError('null list');
-    if (set == null) throw new ArgumentError('null set');
-    if (map == null) throw new ArgumentError('null map');
     return new _$Collections._(
         list: list?.build(), set: set?.build(), map: map?.build());
   }
