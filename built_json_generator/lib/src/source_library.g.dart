@@ -11,6 +11,7 @@ class _$SourceLibrary extends SourceLibrary {
   final bool hasSerializers;
   final BuiltSet<SourceClass> sourceClasses;
   final BuiltSet<SourceClass> transitiveSourceClasses;
+
   _$SourceLibrary._(
       {this.hasSerializers, this.sourceClasses, this.transitiveSourceClasses})
       : super._() {
@@ -19,12 +20,16 @@ class _$SourceLibrary extends SourceLibrary {
     if (transitiveSourceClasses == null)
       throw new ArgumentError('null transitiveSourceClasses');
   }
+
   factory _$SourceLibrary([updates(SourceLibraryBuilder b)]) =>
       (new SourceLibraryBuilder()..update(updates)).build();
+
   SourceLibrary rebuild(updates(SourceLibraryBuilder b)) =>
       (toBuilder()..update(updates)).build();
+
   _$SourceLibraryBuilder toBuilder() =>
       new _$SourceLibraryBuilder()..replace(this);
+
   bool operator ==(other) {
     if (other is! SourceLibrary) return false;
     return hasSerializers == other.hasSerializers &&
@@ -39,9 +44,9 @@ class _$SourceLibrary extends SourceLibrary {
 
   String toString() {
     return 'SourceLibrary {'
-        'hasSerializers=${hasSerializers.toString()}\n'
-        'sourceClasses=${sourceClasses.toString()}\n'
-        'transitiveSourceClasses=${transitiveSourceClasses.toString()}\n'
+        'hasSerializers=${hasSerializers.toString()},\n'
+        'sourceClasses=${sourceClasses.toString()},\n'
+        'transitiveSourceClasses=${transitiveSourceClasses.toString()},\n'
         '}';
   }
 }
@@ -59,10 +64,6 @@ class _$SourceLibraryBuilder extends SourceLibraryBuilder {
   }
 
   SourceLibrary build() {
-    if (hasSerializers == null) throw new ArgumentError('null hasSerializers');
-    if (sourceClasses == null) throw new ArgumentError('null sourceClasses');
-    if (transitiveSourceClasses == null)
-      throw new ArgumentError('null transitiveSourceClasses');
     return new _$SourceLibrary._(
         hasSerializers: hasSerializers,
         sourceClasses: sourceClasses?.build(),

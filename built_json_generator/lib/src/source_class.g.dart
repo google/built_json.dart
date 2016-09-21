@@ -12,6 +12,7 @@ class _$SourceClass extends SourceClass {
   final bool isBuiltValue;
   final bool isEnumClass;
   final BuiltList<SourceField> fields;
+
   _$SourceClass._({this.name, this.isBuiltValue, this.isEnumClass, this.fields})
       : super._() {
     if (name == null) throw new ArgumentError('null name');
@@ -19,11 +20,15 @@ class _$SourceClass extends SourceClass {
     if (isEnumClass == null) throw new ArgumentError('null isEnumClass');
     if (fields == null) throw new ArgumentError('null fields');
   }
+
   factory _$SourceClass([updates(SourceClassBuilder b)]) =>
       (new SourceClassBuilder()..update(updates)).build();
+
   SourceClass rebuild(updates(SourceClassBuilder b)) =>
       (toBuilder()..update(updates)).build();
+
   _$SourceClassBuilder toBuilder() => new _$SourceClassBuilder()..replace(this);
+
   bool operator ==(other) {
     if (other is! SourceClass) return false;
     return name == other.name &&
@@ -38,10 +43,10 @@ class _$SourceClass extends SourceClass {
 
   String toString() {
     return 'SourceClass {'
-        'name=${name.toString()}\n'
-        'isBuiltValue=${isBuiltValue.toString()}\n'
-        'isEnumClass=${isEnumClass.toString()}\n'
-        'fields=${fields.toString()}\n'
+        'name=${name.toString()},\n'
+        'isBuiltValue=${isBuiltValue.toString()},\n'
+        'isEnumClass=${isEnumClass.toString()},\n'
+        'fields=${fields.toString()},\n'
         '}';
   }
 }
@@ -60,10 +65,6 @@ class _$SourceClassBuilder extends SourceClassBuilder {
   }
 
   SourceClass build() {
-    if (name == null) throw new ArgumentError('null name');
-    if (isBuiltValue == null) throw new ArgumentError('null isBuiltValue');
-    if (isEnumClass == null) throw new ArgumentError('null isEnumClass');
-    if (fields == null) throw new ArgumentError('null fields');
     return new _$SourceClass._(
         name: name,
         isBuiltValue: isBuiltValue,

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.4
+
+- Upgrade analyzer, build and source_gen dependencies.
+
 ## 0.1.3
 
 - Fix serialization when built_value builder is fully generated.

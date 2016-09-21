@@ -13,6 +13,7 @@ class _$SourceField extends SourceField {
   final String name;
   final String type;
   final bool builderFieldUsesNestedBuilder;
+
   _$SourceField._(
       {this.isSerializable,
       this.isNullable,
@@ -27,11 +28,15 @@ class _$SourceField extends SourceField {
     if (builderFieldUsesNestedBuilder == null)
       throw new ArgumentError('null builderFieldUsesNestedBuilder');
   }
+
   factory _$SourceField([updates(SourceFieldBuilder b)]) =>
       (new SourceFieldBuilder()..update(updates)).build();
+
   SourceField rebuild(updates(SourceFieldBuilder b)) =>
       (toBuilder()..update(updates)).build();
+
   _$SourceFieldBuilder toBuilder() => new _$SourceFieldBuilder()..replace(this);
+
   bool operator ==(other) {
     if (other is! SourceField) return false;
     return isSerializable == other.isSerializable &&
@@ -53,11 +58,11 @@ class _$SourceField extends SourceField {
 
   String toString() {
     return 'SourceField {'
-        'isSerializable=${isSerializable.toString()}\n'
-        'isNullable=${isNullable.toString()}\n'
-        'name=${name.toString()}\n'
-        'type=${type.toString()}\n'
-        'builderFieldUsesNestedBuilder=${builderFieldUsesNestedBuilder.toString()}\n'
+        'isSerializable=${isSerializable.toString()},\n'
+        'isNullable=${isNullable.toString()},\n'
+        'name=${name.toString()},\n'
+        'type=${type.toString()},\n'
+        'builderFieldUsesNestedBuilder=${builderFieldUsesNestedBuilder.toString()},\n'
         '}';
   }
 }
@@ -77,12 +82,6 @@ class _$SourceFieldBuilder extends SourceFieldBuilder {
   }
 
   SourceField build() {
-    if (isSerializable == null) throw new ArgumentError('null isSerializable');
-    if (isNullable == null) throw new ArgumentError('null isNullable');
-    if (name == null) throw new ArgumentError('null name');
-    if (type == null) throw new ArgumentError('null type');
-    if (builderFieldUsesNestedBuilder == null)
-      throw new ArgumentError('null builderFieldUsesNestedBuilder');
     return new _$SourceField._(
         isSerializable: isSerializable,
         isNullable: isNullable,
