@@ -25,29 +25,8 @@ abstract class Value implements Built<Value, ValueBuilder>, HasInt {
   String get aString;
   @nullable String get anotherString;
   @nullable Object get anObject;
-  int get aDefaultInt;
   BuiltList<int> get listOfInt;
-
-  int get youCanWriteDerivedGetters => anInt + aDefaultInt;
 
   Value._();
   factory Value([updates(ValueBuilder b)]) = _$Value;
-}
-
-/// Builder class for [Value].
-abstract class ValueBuilder implements Builder<Value, ValueBuilder> {
-  int anInt;
-  String aString;
-  @nullable String anotherString;
-  @nullable Object anObject;
-  int aDefaultInt = 7;
-  ListBuilder<int> listOfInt = new ListBuilder<int>();
-
-  ValueBuilder._();
-  factory ValueBuilder() = _$ValueBuilder;
-
-  set youCanWriteExtraSetters(int value) {
-    anInt = value;
-    aDefaultInt = value;
-  }
 }

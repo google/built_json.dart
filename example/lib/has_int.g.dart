@@ -80,61 +80,8 @@ class _$EnumWithIntSerializer implements PrimitiveSerializer<EnumWithInt> {
 }
 
 // **************************************************************************
-// Generator: BuiltValueGenerator
-// Target: abstract class ValueWithInt
-// **************************************************************************
-
-class _$ValueWithInt extends ValueWithInt {
-  final int anInt;
-  final String note;
-  _$ValueWithInt._({this.anInt, this.note}) : super._() {
-    if (anInt == null) throw new ArgumentError('null anInt');
-    if (note == null) throw new ArgumentError('null note');
-  }
-  factory _$ValueWithInt([updates(ValueWithIntBuilder b)]) =>
-      (new ValueWithIntBuilder()..update(updates)).build();
-  ValueWithInt rebuild(updates(ValueWithIntBuilder b)) =>
-      (toBuilder()..update(updates)).build();
-  _$ValueWithIntBuilder toBuilder() =>
-      new _$ValueWithIntBuilder()..replace(this);
-  bool operator ==(other) {
-    if (other is! ValueWithInt) return false;
-    return anInt == other.anInt && note == other.note;
-  }
-
-  int get hashCode {
-    return hashObjects([anInt, note]);
-  }
-
-  String toString() {
-    return 'ValueWithInt {'
-        'anInt=${anInt.toString()}\n'
-        'note=${note.toString()}\n'
-        '}';
-  }
-}
-
-class _$ValueWithIntBuilder extends ValueWithIntBuilder {
-  _$ValueWithIntBuilder() : super._();
-  void replace(ValueWithInt other) {
-    super.anInt = other.anInt;
-    super.note = other.note;
-  }
-
-  void update(updates(ValueWithIntBuilder b)) {
-    if (updates != null) updates(this);
-  }
-
-  ValueWithInt build() {
-    if (anInt == null) throw new ArgumentError('null anInt');
-    if (note == null) throw new ArgumentError('null note');
-    return new _$ValueWithInt._(anInt: anInt, note: note);
-  }
-}
-
-// **************************************************************************
 // Generator: EnumClassGenerator
-// Target: class EnumWithInt
+// Target: library has_int
 // **************************************************************************
 
 const EnumWithInt _$one = const EnumWithInt._('one');
@@ -159,3 +106,59 @@ final BuiltSet<EnumWithInt> _$values = new BuiltSet<EnumWithInt>(const [
   _$two,
   _$three,
 ]);
+
+// **************************************************************************
+// Generator: BuiltValueGenerator
+// Target: abstract class ValueWithInt
+// **************************************************************************
+
+class _$ValueWithInt extends ValueWithInt {
+  final int anInt;
+  final String note;
+
+  _$ValueWithInt._({this.anInt, this.note}) : super._() {
+    if (anInt == null) throw new ArgumentError('null anInt');
+    if (note == null) throw new ArgumentError('null note');
+  }
+
+  factory _$ValueWithInt([updates(ValueWithIntBuilder b)]) =>
+      (new ValueWithIntBuilder()..update(updates)).build();
+
+  ValueWithInt rebuild(updates(ValueWithIntBuilder b)) =>
+      (toBuilder()..update(updates)).build();
+
+  _$ValueWithIntBuilder toBuilder() =>
+      new _$ValueWithIntBuilder()..replace(this);
+
+  bool operator ==(other) {
+    if (other is! ValueWithInt) return false;
+    return anInt == other.anInt && note == other.note;
+  }
+
+  int get hashCode {
+    return hashObjects([anInt, note]);
+  }
+
+  String toString() {
+    return 'ValueWithInt {'
+        'anInt=${anInt.toString()},\n'
+        'note=${note.toString()},\n'
+        '}';
+  }
+}
+
+class _$ValueWithIntBuilder extends ValueWithIntBuilder {
+  _$ValueWithIntBuilder() : super._();
+  void replace(ValueWithInt other) {
+    super.anInt = other.anInt;
+    super.note = other.note;
+  }
+
+  void update(updates(ValueWithIntBuilder b)) {
+    if (updates != null) updates(this);
+  }
+
+  ValueWithInt build() {
+    return new _$ValueWithInt._(anInt: anInt, note: note);
+  }
+}

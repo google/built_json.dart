@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.3
+
+- Fix serialization when built_value builder is fully generated.
+
 ## 0.1.2
 
 - Fix issue with BuiltMap deserialization.

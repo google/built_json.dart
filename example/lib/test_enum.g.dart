@@ -28,7 +28,7 @@ class _$TestEnumSerializer implements PrimitiveSerializer<TestEnum> {
 
 // **************************************************************************
 // Generator: EnumClassGenerator
-// Target: class TestEnum
+// Target: library test_enum
 // **************************************************************************
 
 const TestEnum _$yes = const TestEnum._('yes');

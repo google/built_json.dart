@@ -24,7 +24,7 @@ void main() {
       'list',
       ['ValueWithInt', 'anInt', 2, 'note', 'two'],
       ['EnumWithInt', 'one'],
-      ['Value', 'anInt', 3, 'aString', 'four', 'aDefaultInt', 7, 'listOfInt', []
+      ['Value', 'anInt', 3, 'aString', 'four', 'listOfInt', []
       ],
     ];
 
