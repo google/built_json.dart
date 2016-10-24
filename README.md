@@ -19,9 +19,15 @@ for Java, mapping Enum Classes to standard Java enums, Built Collections to
 Values to [AutoValues]
 (https://github.com/google/auto/tree/master/value#autovalue).
 
-## Status
 
-Built JSON is not yet ready for use. Watch this space!
+## Example Code
+
+[Simple examples]
+(https://github.com/google/built_json.dart/tree/master/example); for a more
+realistic project see the
+[chat example](https://github.com/google/built_json.dart/tree/master/chat_example)
+for an end to end use of built_json on server and client.
+
 
 ## Motivation
 
@@ -69,12 +75,6 @@ And, finally, Built JSON _is pluggable_. Arbitrary extensions can be added to
 give custom JSON serialization for your own types. This could be used to
 interoperate with other tools or to add hand coded high performance serializers
 for specific classes. Some other libraries are not so extensible.
-
-## Examples
-
-See [this example]
-(https://github.com/google/built_json.dart/tree/master/example) for a full
-project with a `build.dart` and some examples.
 
 ## Features and bugs
 
