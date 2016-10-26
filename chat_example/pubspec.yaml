@@ -14,6 +14,7 @@ dependencies:
   built_json: '^0.1.4'
   built_value: '^0.1.3'
   enum_class: '^1.0.0'
+  package_resolver: ^1.0.0 
   route: '>=0.4.6'
 
 dev_dependencies:
