@@ -5,6 +5,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:package_resolver/package_resolver.dart';
 import 'package:route/server.dart';
 
 typedef SocketReceiver(WebSocket webSocket);
@@ -36,12 +37,24 @@ class ResourceServer {
         ..close();
     });
 
-    router.serve(new RegExp(r'.*\.dart$')).listen((request) {
+    router.serve(new RegExp(r'.*\.dart$')).listen((request) async {
+      var path = request.uri.path;
+
+      if (path.startsWith('/packages/')) {
+        final package = path
+            .replaceFirst('/packages/', '')
+            .replaceFirst(new RegExp('/.*'), '');
+        final resolved = await PackageResolver.current.packagePath(package);
+        path = resolved + '/lib' + path.replaceFirst('/packages/$package', '');
+      } else {
+        path = '.$path';
+      }
+
       request.response
         ..statusCode = HttpStatus.OK
         ..headers.contentType =
             new ContentType('application', 'dart', charset: 'utf-8')
-        ..write(new File('.' + request.uri.path).readAsStringSync())
+        ..write(new File(path).readAsStringSync())
         ..close();
     });
 
