@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.0
+
+- Deleted. Equivalent functionality is now available from built_value.
+
 ## 0.1.5
 
 - Allow quiver 0.23.
